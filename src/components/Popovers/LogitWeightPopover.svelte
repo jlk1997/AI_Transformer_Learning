@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { messages } from '~/i18n';
+	$: m = $messages;
 	import { modelMeta, tokens, rootRem } from '~/store';
 	import * as d3 from 'd3';
 	import { gsap } from '~/utils/gsap';
@@ -317,13 +319,13 @@
 	};
 </script>
 
-<WeightPopoverCard id="logits" title={'Logits'} bind:isAnimationActive {timeline} bind:isOpen>
+<WeightPopoverCard id="logits" title={m.logits} bind:isAnimationActive {timeline} bind:isOpen>
 	<div class="weight-popover-content flex items-center justify-start">
 		<div class="matrix flex flex-col items-center">
 			<div class="title flex items-center gap-1">
-				<span>Output<br />Embedding</span>
+				<span>{m.outputEmbedding}</span>
 				<HelpPopover id="hidden-states" 
-					>{`After passing through all blocks, \nthe final token's embedding vector \ncontains all the contextual information \nfrom the preceding tokens.`}</HelpPopover
+					>{m.popovers.hiddenStates}</HelpPopover
 				>
 			</div>
 			<Matrix
@@ -341,9 +343,9 @@
 		<div class="operator"><div class="symbol mul pl-3">&times;</div></div>
 		<div class="matrix flex flex-col items-center">
 			<div class="title flex items-center gap-1">
-				Output Projection Weights
+				{m.outputProjWeights}
 				<HelpPopover id="lm-head-weights" 
-					>{`Transforms the final embedding into a vocabulary distribution.\nParameters were learned in training, fixed in prediction.`}</HelpPopover
+					>{m.popovers.lmHeadWeights}</HelpPopover
 				>
 			</div>
 			<div class="flex gap-0">
@@ -365,8 +367,8 @@
 		<div class="operator"><div class="symbol plus">+</div></div>
 		<div class="matrix flex flex-col items-center">
 			<div class="title flex items-center gap-1">
-				Output Projection Bias<HelpPopover id="lm-head-bias" 
-					>{`Offsets added after the transformation.\nParameters were learned in training, fixed in prediction.`}</HelpPopover
+				{m.outputProjBias}<HelpPopover id="lm-head-bias" 
+					>{m.popovers.lmHeadBias}</HelpPopover
 				>
 			</div>
 			<Matrix
@@ -385,9 +387,9 @@
 		<div class="operator"><div class="symbol equal">=</div></div>
 		<div class="matrix flex flex-col items-center">
 			<div class="title flex items-center gap-1">
-				Logits
+				{m.logits}
 				<HelpPopover id="logits" 
-					>{`Raw scores representing the model’s preference \nfor each vocabulary token before applying softmax.`}</HelpPopover
+					>{m.popovers.logitsHelp}</HelpPopover
 				>
 			</div>
 			<div class="flex">

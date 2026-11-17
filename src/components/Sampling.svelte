@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { Radio } from 'flowbite-svelte';
 	import { sampling, userId } from '~/store';
+	import { messages } from '~/i18n';
 	import HelpPopover from './common/HelpPopover.svelte';
 	import Slider from './common/Slider.svelte';
 	import TextbookTooltip from './common/TextbookTooltip.svelte';
 	import { textPages } from '~/utils/textbookPages';
+
+	$: m = $messages;
 
 	export let disabled: boolean = false;
 
@@ -13,7 +16,7 @@
 	$: samplingValStep = $sampling.type === 'top-k' ? 1 : 0.1;
 </script>
 
-<div class="sampling-input" data-click="input-sampling">
+<div class="sampling-input" data-click="input-sampling" data-te-sampling="topk">
 	<Slider
 		{disabled}
 		className="sampling-slider"
@@ -29,7 +32,7 @@
 		<div class="sampling-type">
 			<div class="title flex items-center gap-[2px]">
 				<TextbookTooltip id="sampling">
-					<div>Sampling</div></TextbookTooltip
+					<div>{m.sampling}</div></TextbookTooltip
 				>
 				<!-- <HelpPopover
 					id="sampling-help"
@@ -59,7 +62,7 @@
 					}}
 					checked={$sampling.type === 'top-k'}
 					{disabled}
-					color="purple">Top-k</Radio
+					color="purple">{m.topk}</Radio
 				>
 				<Radio
 					class={`type-btn ${disabled ? 'disabled' : ''}`}
@@ -79,7 +82,7 @@
 						});
 					}}
 					{disabled}
-					color="purple">Top-p</Radio
+					color="purple">{m.topp}</Radio
 				>
 			</div>
 		</div>

@@ -1,0 +1,403 @@
+[
+  {
+    "id": "music-next-note",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "step",
+      "listen",
+      "knobs",
+      "invite",
+      "map"
+    ],
+    "intents": [
+      "next_note",
+      "right_table",
+      "what_is_this"
+    ],
+    "keywords": [
+      "下一个音",
+      "生成下一个音符",
+      "写出"
+    ],
+    "titleZh": "一次只写出下一个音",
+    "titleEn": "It writes only the next note",
+    "bodyZh": "任务区里的「生成下一个音符」一次只在琴卷上多一格，和文字课一次只猜一个词是同一件事。先看右边概率，再看中间多出来的那一格。现在还不用拧。",
+    "bodyEn": "“Generate next note” in the task cluster adds one cell to the piano roll — the same idea as guessing one word in the text course. Read the probabilities on the right, then look for the new cell in the middle. Leave the knobs alone for now.",
+    "citeZh": "出处：任务区「生成下一个音符」，中间琴卷，以及右边概率。",
+    "citeEn": "Source: “Generate next note” in the task cluster, the piano roll, and the right-hand probabilities.",
+    "highlightSel": "[data-te-task=\"cluster\"], .music-probs",
+    "nextStepHintZh": "写出一个音之后，可以再点「推进一步」，或听一听当前片段。",
+    "nextStepHintEn": "After a note is written, you may press “Take one step,” or play the current snippet."
+  },
+  {
+    "id": "music-knobs-early",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "map",
+      "step",
+      "listen"
+    ],
+    "lockedOnly": true,
+    "requiresUnlocked": "musicKnobs",
+    "intents": [
+      "temperature_early",
+      "knobs"
+    ],
+    "keywords": [
+      "温度",
+      "旋钮",
+      "temperature",
+      "top-k"
+    ],
+    "titleZh": "音乐课的旋钮也还锁着",
+    "titleEn": "The music knobs are still locked too",
+    "bodyZh": "温度和选音方式只改「怎么从右边的概率里抽下一个音」，不改这段示例规则本身。它们在任务区里，现在还锁着。先看清三块、写出一个音，再走到旋钮那一关。",
+    "bodyEn": "Temperature and the note-picking method only change how the next note is drawn from the right-hand ranking. They do not change the example rules themselves. Those knobs live in the task cluster and are still locked. Map the three parts and write one note first.",
+    "citeZh": "出处：任务区里暂时锁着的音乐旋钮。",
+    "citeEn": "Source: the still-locked music knobs in the task cluster.",
+    "highlightSel": "[data-te-music=\"show-knobs\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先写出下一个音，再跟着「推进一步」。",
+    "nextStepHintEn": "Write the next note first, then follow “Take one step.”",
+    "spoilerTags": [
+      "sampling"
+    ]
+  },
+  {
+    "id": "music-not-live-model",
+    "kind": "misconception",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this"
+    ],
+    "keywords": [
+      "大模型",
+      "完整首",
+      "自动播",
+      "live model"
+    ],
+    "titleZh": "这是示例旋律，不会自动播完整首",
+    "titleEn": "This is an example melody; it will not auto-play a full song",
+    "bodyZh": "音乐课用预先设计的示例旋律和采样规则，把「猜下一个音」看懂。试听是简易合成音，不会自动把整首放完，也不会在浏览器里再下一份很大的模型。",
+    "bodyEn": "The music course uses pre-designed melodies and sampling rules so you can see “guess the next note.” Playback is a simple synth. It will not auto-play a full song, and it will not download a large model into the browser.",
+    "citeZh": "出处：音乐课舞台上的说明，以及中间琴卷。",
+    "citeEn": "Source: the music-course disclaimer and the piano roll.",
+    "highlightSel": "[data-te-task=\"cluster\"]",
+    "nextStepHintZh": "看清三块后，在任务区写出下一个音。",
+    "nextStepHintEn": "After mapping the three parts, write the next note in the task cluster."
+  },
+  {
+    "id": "music-math-prob",
+    "kind": "math",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "step",
+      "listen",
+      "knobs",
+      "invite"
+    ],
+    "intents": [
+      "next_note",
+      "right_table"
+    ],
+    "keywords": [
+      "怎么算",
+      "百分比",
+      "推演",
+      "softmax"
+    ],
+    "titleZh": "下一个音的百分比怎么来",
+    "titleEn": "Where the next-note percentages come from",
+    "bodyZh": "和文字课右边那张表一样：先有分数，再变成加起来为 100% 的百分比。你写出至少一个音之后，推演卡会用右边表上的数走给你看。{topList}是眼下最靠前的几个音。",
+    "bodyEn": "It is the same idea as the text-course table: scores first, then percentages that add to 100%. After at least one note is written, the walk-through uses the numbers on the right. The top rows right now are: {topList}.",
+    "citeZh": "出处：右侧音高概率，以及音乐概率推演卡。",
+    "citeEn": "Source: the pitch probabilities on the right and the music-probability walk-through.",
+    "highlightSel": ".music-probs, [data-te-math=\"dock\"]",
+    "mathWalkId": "musicProb",
+    "nextStepHintZh": "对照右表看完推演，可以再听一听。",
+    "nextStepHintEn": "After the walk-through, you may listen to the snippet."
+  },
+  {
+    "id": "music-knobs-unlocked",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "knobs",
+      "invite"
+    ],
+    "intents": [
+      "knobs",
+      "what_is_this",
+      "how_number"
+    ],
+    "keywords": [
+      "意外程度",
+      "温度",
+      "temperature",
+      "旋钮",
+      "表怎么变",
+      "变尖",
+      "选音方式",
+      "这个旋钮",
+      "排行怎么变",
+      "表怎么变了",
+      "怎么抽",
+      "抽音"
+    ],
+    "titleZh": "抽音旋钮解开了，只改怎么抽",
+    "titleEn": "The note-sampling knobs are unlocked; they only change the draw",
+    "bodyZh": "抽音旋钮现在解开了，在任务区里而不在顶部。先看右边音高排行：拧「意外程度」时条形会变尖或变平。这些旋钮只改怎么从已经算好的排行里抽下一个音，不改分数从哪来。意外程度就是温度：更低时更常抽第一名，但第一名仍然不是保证。\n\n这段排行来自预先设计的示例旋律和采样规则，不是浏览器里跑的大模型。下面的推演会先让你看排行怎么变，再起名字。",
+    "bodyEn": "The sampling knobs are unlocked now, in the task cluster rather than at the top. First watch the pitch ranking on the right: turning “surprise” sharpens or flattens the bars. The knobs only change how the next note is drawn from this already-computed ranking, not where the scores come from. Surprise is temperature: lower more often draws first place, but first place is still not a guarantee.\n\nThis ranking comes from a pre-designed example melody and sampling rules, not a live large model in the browser. The walk lets you see how the ranking changes first, then names the knob.",
+    "citeZh": "出处：任务区抽音旋钮，以及右边的音高排行。",
+    "citeEn": "Source: the sampling knobs in the task cluster, and the pitch ranking on the right.",
+    "highlightSel": "[data-te-music=\"knobs-panel\"], [data-te-music=\"knobs\"], .music-probs, [data-te-task=\"cluster\"]",
+    "mathWalkId": "temp",
+    "nextStepHintZh": "试过旋钮后，点「推进一步」。教材在书库里。",
+    "nextStepHintEn": "After you have tried the knobs, press “Take one step.” The textbook stays in the Library.",
+    "requiresUnlocked": "musicKnobs"
+  },
+  {
+    "id": "music-cutoff-set",
+    "kind": "math",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "requiresUnlocked": "musicKnobs",
+    "intents": [
+      "cutoff",
+      "knobs",
+      "how_number"
+    ],
+    "keywords": [
+      "候选音怎么变少了",
+      "候选音怎么变少",
+      "候选音",
+      "还能抽哪些音",
+      "Top-k是什么",
+      "Top-p是什么",
+      "top-k",
+      "top-p",
+      "topk",
+      "topp",
+      "截断着抽",
+      "candidate set",
+      "next-note set"
+    ],
+    "titleZh": "候选音怎么变少、变多",
+    "titleEn": "How the next-note set shrinks or grows",
+    "bodyZh": "先看右边的音高排行：哪些音还留在抽取集合里。眼下还留着的是：{keptList}。现在旋钮在 {samplingKnob}。把这个值拧小，还能抽的音会变少；拧大，集合会变大。先看见集合变短或变长，再记住名字：留下最高的 k 个音叫 Top-k，按百分比往下加到 p 叫 Top-p。它们只改怎么从已经算好的排行里抽下一个音，不改分数从哪来，也不改这段示例规则本身。下面的推演会用当前排行上的真数带你先看集合，再起名字。",
+    "bodyEn": "First look at the pitch ranking on the right: which notes are still in the candidate set. The notes still in the set right now are: {keptList}. The knob is at {samplingKnob}. A smaller value shrinks the drawable set; a larger value grows it. See the set shrink or grow first, then keep the names: keeping the highest k notes is Top-k; adding percentages down to p is Top-p. They only change how the next note is drawn from this already-computed ranking, not where the scores come from, and not the example itself. The walk below uses the real numbers on the current ranking, shows the set first, then names the cutoff.",
+    "citeZh": "出处：任务区里的抽音旋钮，以及右边的音高排行和「候选音怎么变少、变多」推演。",
+    "citeEn": "Source: the sampling knobs in the task cluster, the pitch ranking on the right, and the “how the next-note set shrinks or grows” walk.",
+    "highlightSel": "[data-te-music=\"knobs-panel\"], [data-te-music=\"knobs\"], .music-probs, [data-te-zone=\"right\"]",
+    "mathWalkId": "cutoff",
+    "nextStepHintZh": "先看还能抽的音变少或变多，再点「推进一步」。",
+    "nextStepHintEn": "Watch the drawable notes shrink or grow, then press “Take one step.”",
+    "spoilerTags": [
+      "cutoff"
+    ]
+  },
+  {
+    "id": "music-yellow-see",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "step",
+      "listen",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "music_yellow",
+      "what_is_this"
+    ],
+    "keywords": [
+      "黄边是什么",
+      "黄框是什么",
+      "黄边",
+      "黄框",
+      "主题回看",
+      "gold outline",
+      "yellow border",
+      "yellow outline"
+    ],
+    "titleZh": "黄边是在回看已经写出的音",
+    "titleEn": "The gold outline looks back at notes already written",
+    "bodyZh": "先看钢琴卷帘上那些黄边：写下一个音时，它会回看已经出现的音，黄边落在更被依赖的早先音符上。这是示意的主题回看，不是现场大模型算出来的精确注意力百分比，我也不会编一套假的百分数。这和文字课一次猜下一个词是同一件事，只是这里一次猜下一个音。本课是示例旋律，不是现场大模型。",
+    "bodyEn": "First look at the gold outlines on the piano roll: when writing the next note, it looks back at notes already there, and the gold outline falls on earlier notes that are relied on more. This is a schematic motif recall, not a precise attention percentage from a live large model, and I will not invent a fake set of percentages. It is the same idea as guessing the next word in the text course, except here it guesses the next note. These are example melodies, not a live large model.",
+    "citeZh": "出处：钢琴卷帘上的黄边（示意），以及「这和文字课是一件事吗」的对照。",
+    "citeEn": "Source: the gold outlines on the piano roll (a sketch), and the “is this the same as the text course?” contrast.",
+    "highlightSel": "[data-te-music=\"yellow\"], .piano-roll, [data-te-music=\"roll\"]",
+    "nextStepHintZh": "看清黄边是示意回看即可。我不会替你点，也不会换课。",
+    "nextStepHintEn": "It is enough to see that the gold outline is a schematic look-back. I will not click or switch courses."
+  },
+  {
+    "id": "music-station-step",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "step"
+    ],
+    "intents": [
+      "what_is_this",
+      "next_note",
+      "ui"
+    ],
+    "keywords": [
+      "下一个音",
+      "生成下一个音符",
+      "写出",
+      "虚线",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这一关是写出下一个音",
+    "titleEn": "This station is Write the next note",
+    "bodyZh": "你现在在音乐课的「写出下一个音」这一关。先看右边下一个音的排行，再看中间琴卷上的虚线「下一个」位置。点任务区的「生成下一个音符」，一次只多一格，和文字课一次只猜一个词是同一件事。这是预先设计的示例旋律，不是浏览器里跑的大模型。现在还不用拧旋钮。",
+    "bodyEn": "You are on the music course’s “Write the next note” station. Look at the next-note ranking on the right, then at the dashed “next” cell on the piano roll. Click “Generate next note” in the task cluster: it adds one cell, the same idea as guessing one word in the text course. This is a pre-designed example melody, not a large model in the browser. Leave the knobs alone for now.",
+    "citeZh": "出处：任务区「生成下一个音符」，中间琴卷上的虚线，以及右边排行。",
+    "citeEn": "Source: “Generate next note” in the task cluster, the dashed next cell on the piano roll, and the ranking on the right.",
+    "highlightSel": "[data-te-task=\"cluster\"], .music-probs, [data-te-music=\"roll\"]",
+    "nextStepHintZh": "写出一个音之后，再对照右边的排行，或点「推进一步」。",
+    "nextStepHintEn": "After a note is written, compare it with the ranking, or press “Take one step.”"
+  },
+  {
+    "id": "music-station-listen",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "listen"
+    ],
+    "intents": [
+      "what_is_this",
+      "next_note",
+      "ui"
+    ],
+    "keywords": [
+      "试听",
+      "听一听",
+      "当前片段",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这一关是听一听当前片段",
+    "titleEn": "This station is Listen to the current snippet",
+    "bodyZh": "你现在在音乐课的「听一听」这一关。试听是把已经写出的音用简易合成音放给你听，不会自动把整首播完。先听（或看）刚才写下的那一个音，再对照右边的候选。这是示例旋律，不是现场大模型。",
+    "bodyEn": "You are on the music course’s Listen station. Playback is a simple synth of the notes already written; it will not auto-play a full song. Listen to (or look at) the note just written, then compare it with the candidates on the right. This is an example melody, not a live large model.",
+    "citeZh": "出处：试听按钮，中间琴卷，以及右边下一个音的排行。",
+    "citeEn": "Source: the Listen button, the piano roll, and the next-note ranking on the right.",
+    "highlightSel": "[data-te-music=\"listen\"], .music-probs, [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "听完当前片段，再点「推进一步」，或再写一个音。",
+    "nextStepHintEn": "After you have heard the snippet, press “Take one step,” or write one more note."
+  },
+  {
+    "id": "music-station-knobs",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "knobs"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui"
+    ],
+    "keywords": [
+      "这些旋钮",
+      "意外程度",
+      "抽音",
+      "排行怎么变",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "抽音旋钮已经解开，只改怎么抽",
+    "titleEn": "The note-sampling knobs are unlocked; they only change the draw",
+    "bodyZh": "你现在在音乐课的「再拧旋钮」这一关。抽音旋钮在任务区里，已经解开了。先看右边音高排行：拧「意外程度」时，条形会变尖或变平。这些旋钮只改怎么从已经算好的排行里抽下一个音，不改这段示例规则本身。先看排行怎么变，再给旋钮起名字。这仍是示例旋律，不是浏览器里跑的大模型。",
+    "bodyEn": "You are on the music course’s knob station. The sampling knobs in the task cluster are unlocked now. First watch the pitch ranking on the right: turning “surprise” sharpens or flattens the bars. The knobs only change how the next note is drawn from this already-computed ranking, not the example rules themselves. See how the ranking changes first, then name the knob. This is still an example melody, not a large model in the browser.",
+    "citeZh": "出处：任务区抽音旋钮，以及右边的音高排行。",
+    "citeEn": "Source: the sampling knobs in the task cluster, and the pitch ranking on the right.",
+    "highlightSel": "[data-te-music=\"knobs-panel\"], [data-te-music=\"knobs\"], .music-probs, [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "试过旋钮后，点「推进一步」。教材在书库里。",
+    "nextStepHintEn": "After you have tried the knobs, press “Take one step.” The textbook stays in the Library."
+  },
+  {
+    "id": "music-station-invite",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "invite"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "textbook"
+    ],
+    "keywords": [
+      "书库里有什么",
+      "短路",
+      "最后一关",
+      "教材在书库",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "音乐课短路走到书库门口",
+    "titleEn": "The music short path ends at the Library door",
+    "bodyZh": "你现在在音乐课短路的最后一关。完整教材在顶栏「书库」里，不会自动打开。当前先看清三块和已经写出的音；想再往下，可以自己打开书库，或打开左下角的学习工作台。我不会替你打开书库，也不会换课。",
+    "bodyEn": "You are on the last station of the music short path. The full textbook lives in the top bar “Library” and does not auto-open. For now, keep the three regions and the notes already written in view; if you want to go further, open the Library yourself, or the learning workbench at the lower left. I will not open the Library or switch courses.",
+    "citeZh": "出处：顶栏「书库」，以及左下角的学习工作台。",
+    "citeEn": "Source: the top bar “Library”, and the learning workbench at the lower left.",
+    "highlightSel": "[data-te-article=\"show\"], [data-te-wb=\"open\"]",
+    "nextStepHintZh": "想再往下时，自己打开书库或学习工作台。我不会替你点。",
+    "nextStepHintEn": "When you want to go further, open the Library or the workbench yourself. I will not click them."
+  }
+]

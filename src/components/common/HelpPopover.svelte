@@ -1,7 +1,14 @@
 <script lang="ts">
+	import { locale, messages } from '~/i18n';
+	$: m = $messages;
+	$: zh = $locale !== 'en';
 	import { Popover } from 'flowbite-svelte';
-	import { userId } from '~/store';
+	import { userId, isTextbookOpen } from '~/store';
 	import { onClickReadMore } from '~/utils/event';
+
+	const openInAppTextbook = () => {
+		isTextbookOpen.set(true);
+	};
 
 	export let id: string;
 	export let placement: string = 'bottom';
@@ -29,9 +36,23 @@
 	};
 </script>
 
-<div {id} class="help" data-click={`help-icon`}>
+<div
+	{id}
+	class="help"
+	data-click={`help-icon`}
+	role="button"
+	tabindex="0"
+	aria-label={zh ? '说明' : 'Help'}
+	on:keydown={(e) => {
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			(e.currentTarget as HTMLElement).click();
+		}
+	}}
+>
 	<svg
-		class="h-4 w-4 text-gray-300"
+		class="h-4 w-4 text-violet-700"
+		aria-hidden="true"
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 -960 960 960"
 		fill="currentColor"
@@ -56,14 +77,14 @@
 		<slot />
 		{#if textbook}
 			<div class="textbook-link">
-				<a
-					href={`https://transformer-explainer.github.io/textbook/${textbook}`}
-					target="_blank"
+				<button
+					type="button"
 					data-click={`textbook-link-${id}`}
 					class="text-blue-600 hover:underline"
+					on:click={openInAppTextbook}
 				>
-					Open Textbook
-				</a>
+					{m.openTextbookLink}
+				</button>
 			</div>
 		{/if}
 		{#if goTo}
@@ -72,7 +93,7 @@
 				class="more-btn mt-1 text-blue-600 hover:underline"
 				on:click={(e) => onClickReadMore(e, goTo, { value: id })}
 			>
-				Read more
+				{m.readMore}
 			</div>
 		{/if}
 	</div></Popover

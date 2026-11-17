@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { Button } from 'flowbite-svelte';
 	import { fade } from 'svelte/transition';
+	import { onMount, tick } from 'svelte';
 	import { textbookCurrentPage } from '~/store';
-	import { textPages } from '~/utils/textbookPages';
+	import { locale } from '~/i18n';
+	import { activeTextbookPages } from '~/store/course';
 	import TextbookNavigation from './TextbookNavigation.svelte';
 
 	export let onClose: () => void;
+	$: textPages = $activeTextbookPages;
+	$: zh = $locale !== 'en';
 
 	let isMouseInCard = false;
 	let mousePosition = { x: 0, y: 0 };
@@ -13,20 +17,89 @@
 
 	// Draggable state
 	let isDragging = false;
-	let position = { x: window.innerWidth - 540 - 32, y: window.innerHeight - 300 - 32 };
+	let position = { x: 32, y: 96 };
 	let dragStart = { x: 0, y: 0 };
 
 	// Resizable state
 	let isResizing = false;
 	let resizeDirection = '';
-	let size = { width: 540, height: 300 };
+	let size = { width: 520, height: 360 };
 	let resizeStart = { x: 0, y: 0, width: 0, height: 0, posX: 0, posY: 0 };
 
-	const MIN_WIDTH = 400;
-	const MIN_HEIGHT = 250;
+	const MIN_WIDTH = 360;
+	const MIN_HEIGHT = 240;
 	const RESIZE_HANDLE_SIZE = 10;
-	const EDGE_MARGIN = 32; // 2rem
+	const EDGE_MARGIN = 24;
 	const SNAP_DISTANCE = 100; // pixels from corner to trigger snap
+	const HEADER_FALLBACK = 120;
+	const COACH_FALLBACK = 220;
+	let pageBodyEl: HTMLDivElement;
+
+	function cssPx(name: string, fallback: number) {
+		if (typeof document === 'undefined') return fallback;
+		const v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name));
+		return Number.isFinite(v) && v > 0 ? v : fallback;
+	}
+
+	function reserves() {
+		return {
+			top: cssPx('--te-topbar-h', HEADER_FALLBACK) + 8,
+			bottom: cssPx('--te-guide-h', COACH_FALLBACK) + 12
+		};
+	}
+
+	function placeAboveCoach() {
+		if (typeof window === 'undefined') return;
+		const { top, bottom } = reserves();
+		const availH = Math.max(MIN_HEIGHT, window.innerHeight - top - bottom);
+		const availW = Math.max(MIN_WIDTH, window.innerWidth - EDGE_MARGIN * 2);
+		const width = Math.min(560, availW);
+		const height = Math.min(Math.max(280, Math.min(420, availH)), availH);
+		size = { width, height };
+		position = {
+			x: Math.max(EDGE_MARGIN, window.innerWidth - width - EDGE_MARGIN),
+			y: top
+		};
+		clampToCoach();
+	}
+
+	function clampToCoach() {
+		if (typeof window === 'undefined') return;
+		const { top, bottom } = reserves();
+		const maxY = Math.max(top, window.innerHeight - bottom - size.height);
+		const maxX = Math.max(EDGE_MARGIN, window.innerWidth - EDGE_MARGIN - size.width);
+		const maxH = Math.max(MIN_HEIGHT, window.innerHeight - top - bottom);
+		const maxW = Math.max(MIN_WIDTH, window.innerWidth - EDGE_MARGIN * 2);
+		if (size.height > maxH) size = { ...size, height: maxH };
+		if (size.width > maxW) size = { ...size, width: maxW };
+		position = {
+			x: Math.min(Math.max(EDGE_MARGIN, position.x), maxX),
+			y: Math.min(Math.max(top, position.y), maxY)
+		};
+	}
+
+	const resetPageScroll = async () => {
+		await tick();
+		const roots: HTMLElement[] = [];
+		if (pageBodyEl) roots.push(pageBodyEl);
+		if (cardElement) roots.push(cardElement);
+		for (const root of roots) {
+			root.scrollTop = 0;
+			root.querySelectorAll('.carousel-content, .textbook-content, [data-te-book="page-body"]').forEach((n) => {
+				(n as HTMLElement).scrollTop = 0;
+			});
+		}
+	};
+
+	onMount(() => {
+		placeAboveCoach();
+		void resetPageScroll();
+		const onResize = () => clampToCoach();
+		window.addEventListener('resize', onResize);
+		return () => window.removeEventListener('resize', onResize);
+	});
+
+	$: if ($textbookCurrentPage >= 0) void resetPageScroll();
 
 	function handleClose() {
 		// Execute current page's out callback before closing
@@ -78,6 +151,7 @@
 				x: event.clientX - dragStart.x,
 				y: event.clientY - dragStart.y
 			};
+			clampToCoach();
 		} else if (isResizing) {
 			handleResize(event);
 		}
@@ -115,6 +189,9 @@
 	function handleGlobalMouseUp() {
 		if (isDragging) {
 			snapToCorner();
+		}
+		if (isDragging || isResizing) {
+			clampToCoach();
 		}
 		isDragging = false;
 		isResizing = false;
@@ -216,6 +293,7 @@
 
 		size = { width: newWidth, height: newHeight };
 		position = { x: newX, y: newY };
+		clampToCoach();
 	}
 
 	function getCursorForDirection(direction: string): string {
@@ -239,7 +317,8 @@
 
 <div
 	class="floating-container"
-	transition:fade={{ duration: 150 }}
+	data-te-book="card"
+	transition:fade={{ duration: 180 }}
 	style="left: {position.x}px; top: {position.y}px;"
 >
 	<div
@@ -250,22 +329,33 @@
 		on:mouseenter={handleMouseEnter}
 		on:mouseleave={handleMouseLeave}
 		role="dialog"
-		aria-label="Textbook"
+		aria-label={zh ? '书库' : 'Library'}
+		data-te-book="panel"
 		style="width: {size.width}px; height: {size.height}px;"
 	>
 		<div class="card-header">
-			<div class="flex w-full items-center justify-between">
-				<h3 class="text-lg font-semibold text-gray-900">
+			<p class="role" data-te-book="role">
+				{zh
+					? '这是本课的教材书库，从第 1 页读起。入门请先走底部教练，书库不是教室的入口。'
+					: 'This is the course textbook library, starting at page 1. The short path still starts at the coach below — the library is not the entrance.'}
+			</p>
+			<div class="flex w-full items-center justify-between gap-2">
+				<h3 class="text-lg font-semibold text-gray-900" data-te-book="title">
 					{textPages[$textbookCurrentPage].title}
 				</h3>
-				<Button color="light" size="xs" class="close-btn" on:click={handleClose}>✕</Button>
+				<span class="page-index" data-te-book="page-index">
+					{zh
+						? `第 ${$textbookCurrentPage + 1} 页 / 共 ${textPages.length} 页`
+						: `Page ${$textbookCurrentPage + 1} of ${textPages.length}`}
+				</span>
+				<Button color="light" size="xs" class="close-btn" aria-label={zh ? '关闭书库' : 'Close library'} on:click={handleClose}>✕</Button>
 			</div>
 		</div>
-		<div class="card-body">
+		<div class="card-body" bind:this={pageBodyEl} data-te-book="page-body">
 			<div class="text-carousel">
 				<div class="carousel-content">
 					{#each textPages as page, index}
-						<div class="carousel-slide" class:active={$textbookCurrentPage === index}>
+						<div class="carousel-slide" class:active={$textbookCurrentPage === index} aria-hidden={$textbookCurrentPage !== index}>
 							<div class="textbook-content">
 								{#if page.component}
 									<svelte:component this={page.component} />
@@ -286,7 +376,8 @@
 <style lang="scss">
 	.floating-container {
 		position: fixed;
-		z-index: 1000;
+		/* Below the coach (10000) and the top bar (10030) so the library cannot cover 「现在做这件事」. */
+		z-index: 9000;
 	}
 
 	.text-card {
@@ -295,11 +386,14 @@
 			0 4px 8px rgba(0, 0, 0, 0.06);
 		border-radius: 0.6rem;
 		backdrop-filter: blur(10px);
-		background: rgba(255, 255, 255, 0.4);
+		background: rgba(255, 255, 255, 0.97);
+		border: 1px solid #ddd6fe;
 		display: flex;
 		flex-direction: column;
 		user-select: none;
 		cursor: var(--card-cursor, grab);
+		overflow: hidden;
+		box-sizing: border-box;
 
 		* {
 			cursor: inherit;
@@ -307,23 +401,46 @@
 
 		.card-header {
 			flex-shrink: 0;
-			padding: 0.5rem;
+			padding: 0.45rem 0.7rem 0.35rem;
+			background: #fff;
+			border-bottom: 1px solid #f3e8ff;
 		}
 
 		.card-body {
-			flex: 1 0 0;
+			flex: 1 1 auto;
+			min-height: 0;
 			padding: 0 1rem 0.5rem 1rem;
+			overflow: hidden;
 		}
+	}
+
+	.role {
+		margin: 0 0 0.3rem;
+		font-size: 0.75rem;
+		line-height: 1.4;
+		color: #6b7280;
+	}
+
+	.page-index {
+		flex-shrink: 0;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: #6d28d9;
+		white-space: nowrap;
 	}
 
 	.text-carousel {
 		position: relative;
 		height: 100%;
-		padding-bottom: 2rem;
+		padding-bottom: 3.4rem;
+		min-height: 0;
+		box-sizing: border-box;
 
 		.carousel-content {
+			overflow-y: auto;
 			position: relative;
 			height: 100%;
+			min-height: 0;
 		}
 
 		.carousel-slide {
@@ -333,13 +450,17 @@
 			width: 100%;
 			height: 100%;
 			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+			z-index: 0;
 			transition: opacity 0.3s ease;
-			// display: flex;
-			// flex-direction: column;
-			// justify-content: center;
+			overflow-y: auto;
 
 			&.active {
 				opacity: 1;
+				visibility: visible;
+				pointer-events: auto;
+				z-index: 1;
 			}
 		}
 	}
@@ -351,9 +472,13 @@
 
 	/* Textbook Content Styles */
 	.textbook-content {
+		overflow-y: auto;
+		max-height: 100%;
 		line-height: 1.6;
 		font-size: 0.95rem;
 		cursor: default;
+		padding-top: 0.15rem;
+		box-sizing: border-box;
 	}
 
 	:global(.textbook-content p) {

@@ -1,0 +1,669 @@
+[
+  {
+    "id": "ft-station-map",
+    "kind": "station",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "map"
+    ],
+    "intents": [
+      "what_is_this",
+      "finetune"
+    ],
+    "keywords": [
+      "先分清",
+      "抽样",
+      "训练",
+      "权重",
+      "温度",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "先分清抽样和训练：这一课才改权重",
+    "titleEn": "First separate sampling from training: this lesson changes weights",
+    "bodyZh": "你现在在微调课的第一关。先分清抽样和训练：文字课改的是怎么抽下一个词，这一课才改权重。拧抽样旋钮不是在训练，也不会改权重。这是本机 GPT-2 小实验，不是在调 ChatGPT。主按钮「推进一步」在任务区，只讲解，不开训。温度只是抽样旋钮的一个名字，现在先分清这两件事。先看对照板，再去看示例会被切成哪些词片。",
+    "bodyEn": "You are on the first station of the fine-tune course. First separate sampling from training: the text course changes how the next word is drawn; this course is the one that changes weights. Turning a sampling knob is not training, and it does not change weights. This is a local GPT-2 lab, not ChatGPT. The main button “Take one step” lives in the task cluster; it only explains, and it does not start training. Temperature is only one name for a sampling knob; separate these two ideas first. Look at the comparison board, then see how the example is cut into tokens.",
+    "citeZh": "出处：对照板和任务区的「推进一步」。",
+    "citeEn": "Source: the comparison board and “Take one step” in the task cluster.",
+    "highlightSel": "[data-te-ft=\"first-line\"], [data-te-ft=\"now\"]",
+    "nextStepHintZh": "先分清抽样和训练，再点「推进一步」去看分词。",
+    "nextStepHintEn": "Separate sampling from training, then press “Take one step” to see tokenization."
+  },
+  {
+    "id": "ft-pack",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "pack"
+    ],
+    "intents": [
+      "tokens",
+      "what_is_this",
+      "finetune"
+    ],
+    "keywords": [
+      "分词",
+      "词片",
+      "预览",
+      "数据台"
+    ],
+    "titleZh": "训练吃进去的是词片",
+    "titleEn": "Training eats token pieces",
+    "bodyZh": "训练真正吃进去的是词片，不是整句汉字。中文一个字常被切成多片，不是界面故障。到数据台看完整分词，认一认那些小标签。预览不会开训，也不用等很久。",
+    "bodyEn": "Training actually eats token pieces, not whole Chinese sentences. One character may become several pieces — that is not a UI bug. Open the data bench, preview tokenization, and read the chips. Previewing does not start a run and should not hang.",
+    "citeZh": "出处：数据台的分词预览。",
+    "citeEn": "Source: the tokenization preview on the data bench.",
+    "highlightSel": ".ft-tokenize, [data-te-bridge=\"ready\"]",
+    "nextStepHintZh": "看过词片后，再往前走到「存下微调前的续写」。",
+    "nextStepHintEn": "After you have seen the pieces, go on to saving a before-training baseline."
+  },
+  {
+    "id": "ft-baseline",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "baseline"
+    ],
+    "intents": [
+      "finetune",
+      "what_is_this"
+    ],
+    "keywords": [
+      "基线",
+      "baseline",
+      "微调前",
+      "续写"
+    ],
+    "titleZh": "没有「前」，开训后就没法对照",
+    "titleEn": "Without a before, you cannot compare after",
+    "bodyZh": "必须让本机教学服务真正写出续写，才算存好基线。没连上 8787 时不能把这一步标成已完成。存好之后，用同一批提示词才能看前后差别。",
+    "bodyEn": "The local teaching service must actually write a continuation before a baseline counts. This step cannot be marked done while the trainer on 8787 is off. After it is saved, compare the same prompts before and after.",
+    "citeZh": "出处：对照游乐场的「存下微调前的续写」。",
+    "citeEn": "Source: “Save the before-training continuation” in the comparison playground.",
+    "highlightSel": "[data-te-ft=\"now\"]",
+    "nextStepHintZh": "存好基线后，再去做一次极短跑。",
+    "nextStepHintEn": "After the baseline is saved, do a very short run."
+  },
+  {
+    "id": "ft-start-short",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "start"
+    ],
+    "intents": [
+      "finetune",
+      "what_is_this"
+    ],
+    "keywords": [
+      "开训",
+      "极短跑",
+      "训练",
+      "权重"
+    ],
+    "titleZh": "开训才会改权重；极短跑即可",
+    "titleEn": "Weights change only when a run starts; a short run is enough",
+    "bodyZh": "开训才会改权重。先跑通一次极短跑即可，不必一开始就训很久。「推进一步」仍然只讲解，不会替你开训。只看着按钮，还不能算做过。损失越低不一定越好。训练在本机 8787，不在冻结的 ONNX GPT-2 里。",
+    "bodyEn": "Weights change only when a run actually starts. A very short run is enough to see the loop work. “Take one step” still only explains; it will not start training for you. Looking at the button is not enough. Lower loss is not always better. Training stays on the local 8787 service, never inside the frozen ONNX GPT-2.",
+    "citeZh": "出处：训练监控里的极短跑/开训，不是任务区的「推进一步」。",
+    "citeEn": "Source: the short-run control in the training monitor, not “Take one step” in the task cluster.",
+    "highlightSel": "[data-te-ft=\"now\"]",
+    "nextStepHintZh": "跑通之后，用同一批提示词看前后差别。",
+    "nextStepHintEn": "After a short run works, compare the same prompts before and after."
+  },
+  {
+    "id": "ft-compare",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "compare"
+    ],
+    "intents": [
+      "finetune",
+      "what_is_this"
+    ],
+    "keywords": [
+      "对照",
+      "前后",
+      "续写"
+    ],
+    "titleZh": "要用同一批提示词看前后对照",
+    "titleEn": "Compare the same prompts before and after",
+    "bodyZh": "损失只说明数字在动。要看续写有没有跟着语料走，要用同一批提示词看前后对照。拧温度只改抽样，不是又训练一次。",
+    "bodyEn": "Loss only tells you the number is moving. To see whether the continuation followed your texts, compare the same prompts before and after. Turning temperature only changes sampling — it is not another training run.",
+    "citeZh": "出处：对照游乐场的前后续写。",
+    "citeEn": "Source: the before/after continuations in the comparison playground.",
+    "highlightSel": "[data-te-ft=\"now\"]",
+    "nextStepHintZh": "看过对照后，可以再看「损失是什么」。",
+    "nextStepHintEn": "After the comparison, you may look at “what loss is.”"
+  },
+  {
+    "id": "ft-loss",
+    "kind": "math",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "loss"
+    ],
+    "intents": [
+      "loss",
+      "what_is_this",
+      "finetune"
+    ],
+    "keywords": [
+      "损失",
+      "loss",
+      "1/25",
+      "交叉熵",
+      "示意表",
+      "4%",
+      "概率表",
+      "这张表",
+      "怎么来的",
+      "关系",
+      "示意"
+    ],
+    "titleZh": "损失是什么",
+    "titleEn": "What loss is",
+    "bodyZh": "损失就是眼前这张示意概率表上的一行：正确答案「后」只有 4%，也就是 1/25，这笔账大约是 3.2。这些数是示意，不是训练曲线上的实时平均。先看表，不必先背交叉熵三个字。",
+    "bodyEn": "Loss is a row on the sketch probability table in front of you: the correct next character has only 4%, which is 1/25, and that tally is about 3.2. These numbers are a sketch, not a live average from the training curve. Look at the table first; you do not have to memorize the name cross-entropy yet.",
+    "citeZh": "出处：损失示意表，以及表下面「损失是怎么从这张表算出来的」推演。",
+    "citeEn": "Source: the loss sketch table and the walk under it.",
+    "highlightSel": "[data-te-bridge=\"loss-table\"], [data-te-math=\"loss-walk\"], [data-te-ft=\"loss\"]",
+    "mathWalkId": "loss",
+    "nextStepHintZh": "看清损失示意后，不必一上来就上工业级平台。",
+    "nextStepHintEn": "After you can read the loss sketch, you do not need an industrial platform yet."
+  },
+  {
+    "id": "ft-mis-lower-loss",
+    "kind": "misconception",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "loss",
+      "finetune"
+    ],
+    "keywords": [
+      "越低越好",
+      "再训久一点",
+      "过拟合",
+      "lower is better"
+    ],
+    "titleZh": "损失越低不一定越好",
+    "titleEn": "Lower loss is not always better",
+    "bodyZh": "损失越低不一定越好，多训几轮也不一定更好。会背笔记原句，也不等于真的懂了那种口吻。先看对照续写有没有跟着走，再决定要不要继续训。",
+    "bodyEn": "Lower loss is not always better, and more steps are not always better. Reciting a note verbatim is not the same as learning the voice. Look at the before/after continuations first, then decide whether to keep training.",
+    "citeZh": "出处：对照续写和损失示意，而不是只看训练曲线往下。",
+    "citeEn": "Source: the before/after continuations and the loss sketch, not only a falling curve.",
+    "highlightSel": "[data-te-bridge=\"loss-table\"]",
+    "nextStepHintZh": "回到对照和损失示意，先会读数，再谈要不要多训。",
+    "nextStepHintEn": "Return to the comparison and the loss sketch before talking about a longer run."
+  },
+  {
+    "id": "ft-method-lora",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "method"
+    ],
+    "spoilerTags": [
+      "lora"
+    ],
+    "intents": [
+      "what_is_this",
+      "lora",
+      "finetune"
+    ],
+    "keywords": [
+      "这是什么",
+      "这块",
+      "一小块",
+      "旁边加",
+      "LoRA",
+      "lora",
+      "不必一次改全部",
+      "方法",
+      "同一套块",
+      "small add-on"
+    ],
+    "titleZh": "要改权重，不必一次改全部",
+    "titleEn": "You do not have to change every weight",
+    "bodyZh": "先看这张和文字课同一套块的图。要改权重，不必一次改全部。本课默认在旁边加一小块，这一小块就叫 LoRA。原权重保持灰色，亮着的是加在旁边的那一小块。看懂图，再决定要不要带上它回文字课。不必先跳到工业级平台。",
+    "bodyEn": "First look at this diagram — it uses the same blocks as the text course. You do not have to change every weight. The default here is to add a small piece beside the original; that piece is called LoRA. The original weights stay grey; the lit pieces are the add-on. Read the diagram, then decide whether to take it back to the text course. You do not need an industrial platform first.",
+    "citeZh": "出处：方法站上「同一套块」的图，默认旁边加的一小块。",
+    "citeEn": "Source: the same-block diagram on the method stop, and the small add-on that is the default.",
+    "highlightSel": "[data-te-ft=\"method\"], [data-te-bridge=\"method\"]",
+    "nextStepHintZh": "看懂图之后，再自己点「下一步：再深挖」。我不会替你点，也不会换课或开训。",
+    "nextStepHintEn": "After you have read the diagram, click “Next: go deeper” yourself. I will not click it, switch courses, or start a train."
+  },
+  {
+    "id": "ft-later-overfit",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "explore"
+    ],
+    "intents": [
+      "what_is_this",
+      "overfit",
+      "finetune"
+    ],
+    "keywords": [
+      "多训",
+      "一定更好",
+      "不一定更好",
+      "过拟合",
+      "验证",
+      "示意曲线",
+      "这是什么",
+      "overfitting",
+      "more training"
+    ],
+    "titleZh": "多训不一定更好",
+    "titleEn": "More training is not always better",
+    "bodyZh": "先看这条预置示意曲线，不是正在跑的完整训练。训练损失一直往下，验证损失在最低点之后抬头——多训不一定更好。这个现象的名字叫过拟合。示意用预置曲线，不会在这里开训。",
+    "bodyEn": "First look at this preset sketch curve; it is not a live full training run. Training loss keeps falling, then validation loss turns up after its lowest point — more steps are not always better. That phenomenon is called overfitting. The sketch uses a preset curve and does not start a train here.",
+    "citeZh": "出处：再深挖里「看过拟合」的示意曲线。",
+    "citeEn": "Source: the overfitting sketch curve in the later-lab path.",
+    "highlightSel": "[data-te-depth=\"overfit\"]",
+    "nextStepHintZh": "看清曲线之后，再自己点下一站。我不会替你点，也不会开训。",
+    "nextStepHintEn": "After you have read the curve, go to the next stop yourself. I will not click it or start a train."
+  },
+  {
+    "id": "ft-later-dpo",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "explore"
+    ],
+    "spoilerTags": [
+      "dpo"
+    ],
+    "intents": [
+      "what_is_this",
+      "dpo",
+      "finetune"
+    ],
+    "keywords": [
+      "这个对照",
+      "完整训练",
+      "完整对齐",
+      "DPO",
+      "dpo",
+      "RLHF",
+      "预计算",
+      "示意",
+      "偏好",
+      "一次完整"
+    ],
+    "titleZh": "本课 DPO 是预计算示意，不是一次完整对齐训练",
+    "titleEn": "This DPO curve is a precomputed sketch, not a full alignment run",
+    "bodyZh": "先看下面这对偏好对照和那条曲线。本课这条曲线是预计算示意，假设做了几步很小的 DPO，用来看见「损失往下、更喜欢的那句相对抬高」。这不是一次完整对齐训练，也不会在这里开训。「推进一步」只讲解。",
+    "bodyEn": "First look at the preference pair and the curve below. This course’s curve is a precomputed sketch of a few tiny hypothetical DPO steps, so you can see loss go down and the preferred sentence rise. It is not a full alignment training run, and it will not start a train here. “Take one step” only explains.",
+    "citeZh": "出处：再深挖里 DPO 的预计算示意曲线，不是完整对齐训练。",
+    "citeEn": "Source: the precomputed DPO sketch in the later lab, not a full alignment run.",
+    "highlightSel": "[data-te-dpo=\"sketch\"], [data-te-dpo=\"ready\"], [data-te-horizon=\"dpo\"]",
+    "nextStepHintZh": "看完示意之后，不必在这里做完整对齐训练。我不会替你开训。",
+    "nextStepHintEn": "After you have seen the sketch, you do not need to run full alignment here. I will not start a train."
+  },
+  {
+    "id": "ft-later-qlora",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "explore"
+    ],
+    "spoilerTags": [
+      "qlora"
+    ],
+    "intents": [
+      "what_is_this",
+      "qlora",
+      "finetune"
+    ],
+    "keywords": [
+      "这块小条",
+      "小条是什么",
+      "显存",
+      "显存条",
+      "8GB",
+      "8gb",
+      "QLoRA",
+      "qlora",
+      "量化",
+      "预算"
+    ],
+    "titleZh": "按约 8GB 预算看显存条，不是必须量化 GPT-2",
+    "titleEn": "Read the VRAM bars against an 8GB budget; you do not have to quantize GPT-2",
+    "bodyZh": "先看这张按约 8GB 预算画的显存条。同一件事，完整精度或再压缩，大概会占多少。名字叫 QLoRA 是后起的：先把大基座压到更低比特省显存，再只训练旁边的一小块。本课这台约 8GB 上的 GPT-2 其实用不到它，不必假装已经量化了 GPT-2。这些是大约数，不是精确实测，也不是完整 QLoRA 平台。",
+    "bodyEn": "First look at these memory bars, drawn against an about-8GB budget: how much room the same job takes in full precision or a tighter packing. The name QLoRA comes after: compress a large base to lower bits to save memory, then train only a small add-on. The GPT-2 on this about-8GB machine does not actually need it; this course does not pretend GPT-2 was quantized. The numbers are approximate, not a precise measurement, and this is not a full QLoRA platform.",
+    "citeZh": "出处：再深挖里按约 8GB 预算看的显存条。",
+    "citeEn": "Source: the later-lab VRAM bars read against an about-8GB budget.",
+    "highlightSel": "[data-te-qlora=\"board\"], [data-te-qlora=\"ready\"], [data-te-horizon=\"qlora\"]",
+    "nextStepHintZh": "看清量级之后，不必在本课量化 GPT-2。我不会替你开训。",
+    "nextStepHintEn": "After you have a sense of scale, you do not need to quantize GPT-2 in this course. I will not start a train."
+  },
+  {
+    "id": "ft-loss-weight",
+    "kind": "math",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "loss"
+    ],
+    "requireStation": true,
+    "intents": [
+      "weight",
+      "loss",
+      "what_is_this",
+      "finetune"
+    ],
+    "keywords": [
+      "权重动",
+      "怎么让权重",
+      "这个数怎么让",
+      "权重怎么动",
+      "示意权重",
+      "推了一下",
+      "move a weight",
+      "nudg",
+      "how does this number move",
+      "how does the loss move"
+    ],
+    "titleZh": "这个数怎么让一条权重动",
+    "titleEn": "How this number nudges a weight",
+    "bodyZh": "先看示意表：「后」只有 4%，也就是 1/25，这笔账大约是 3.2，偏高。所以表下面那条通向「后」的示意权重被轻轻推高了一点。先看见这一推。这一推的方向和大小，名字叫梯度；把这笔账往回传到权重，叫反向传播。这些都是示意，不是训练曲线上的实时平均，也不会在这里开训。",
+    "bodyEn": "First look at the sketch table: “后” has only 4%, which is 1/25, and the tally is about 3.2 — too high. So the sketch weight toward “后” under the table is nudged up a little. See that move first. The direction and size of the nudge is called the gradient; sending the tally back to the weight is backpropagation. These are a sketch, not a live average from the training curve, and this does not start a train.",
+    "citeZh": "出处：损失示意表，以及表下「一条权重被推了一下」的短条和推演。",
+    "citeEn": "Source: the loss sketch table, and the weight-nudge bar and walk under it.",
+    "highlightSel": "[data-te-ft=\"weight-move\"], [data-te-math=\"weight-walk\"], [data-te-bridge=\"loss-table\"]",
+    "mathWalkId": "weight",
+    "spoilerTags": [
+      "gradient",
+      "backprop"
+    ],
+    "nextStepHintZh": "看清这一推之后，不必先上自动求导或工业级训练器。",
+    "nextStepHintEn": "After you have seen the nudge, you do not need autograd or an industrial trainer first."
+  },
+  {
+    "id": "ft-grad-what",
+    "kind": "math",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "loss"
+    ],
+    "requireStation": true,
+    "intents": [
+      "weight",
+      "what_is_this",
+      "loss",
+      "finetune"
+    ],
+    "keywords": [
+      "梯度是什么",
+      "梯度",
+      "反向传播是什么",
+      "反向传播",
+      "gradient",
+      "what is a gradient",
+      "what is gradient",
+      "backprop",
+      "backpropagation"
+    ],
+    "titleZh": "梯度是什么",
+    "titleEn": "What a gradient is",
+    "bodyZh": "先看表下那条示意权重：因为「后」只有 4%，账大约 3.2，偏高，它被轻轻推高了一点。先看见这一推。这一推的方向和大小，名字叫梯度；把这笔账往回传到权重的过程，叫反向传播。数字是示意，不是实时训练平均，也不会在这里开训。",
+    "bodyEn": "First look at the sketch weight under the table: “后” has only 4%, the tally is about 3.2 — too high — so the bar is nudged up a little. See that move first. The direction and size of the nudge is called the gradient; sending the tally back to the weight is backpropagation. The numbers are a sketch, not a live training average, and this does not start a train.",
+    "citeZh": "出处：损失示意表下「一条权重被推了一下」的短条和推演。",
+    "citeEn": "Source: the weight-nudge bar and walk under the loss sketch table.",
+    "highlightSel": "[data-te-ft=\"weight-move\"], [data-te-math=\"weight-walk\"], [data-te-bridge=\"loss-table\"]",
+    "mathWalkId": "weight",
+    "spoilerTags": [
+      "gradient",
+      "backprop"
+    ],
+    "nextStepHintZh": "先记住「看见一推」，不必先上自动求导。",
+    "nextStepHintEn": "Keep the picture of the nudge; you do not need autograd yet."
+  },
+  {
+    "id": "ft-grad-early",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "map",
+      "pack",
+      "baseline",
+      "start",
+      "compare",
+      "explain",
+      "preview"
+    ],
+    "requireStation": true,
+    "intents": [
+      "weight",
+      "what_is_this",
+      "finetune"
+    ],
+    "keywords": [
+      "梯度是什么",
+      "梯度",
+      "反向传播是什么",
+      "反向传播",
+      "权重动",
+      "怎么让权重",
+      "gradient",
+      "what is a gradient",
+      "backprop",
+      "backpropagation",
+      "move a weight"
+    ],
+    "titleZh": "这个名字要等看到损失表以后",
+    "titleEn": "That name waits until you have seen the loss table",
+    "bodyZh": "先看清损失示意表：正确答案那一行够不够高。看清那个数之后，画面上会有一条示意权重被轻轻推一下。先看见这一推，再给它起名字。现在还不到起名字的时候。",
+    "bodyEn": "First read the loss sketch table: is the true-token row high enough? After that number, a sketch weight on the screen will be nudged a little. See the move first, then name it. It is too early to name it now.",
+    "citeZh": "出处：当前关还在损失表之前；先看对照板或分词预览。",
+    "citeEn": "Source: this station is still before the loss table; see the board or the tokenize preview first.",
+    "highlightSel": "[data-te-ft=\"first-line\"], [data-te-ft=\"tokenize\"], [data-te-ft=\"now\"]",
+    "nextStepHintZh": "先走到「损失是什么」，再看那一条示意权重怎么动。我不会替你点，也不会自动开训。",
+    "nextStepHintEn": "Go to “what loss is” first, then watch the sketch weight move. I will not click for you, and I will not start a train."
+  },
+  {
+    "id": "ft-lora-rank",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "method",
+      "explore"
+    ],
+    "requireStation": true,
+    "intents": [
+      "lora_rank",
+      "why",
+      "what_is_this"
+    ],
+    "keywords": [
+      "为什么是低秩",
+      "低秩是什么",
+      "低秩",
+      "r=4",
+      "r=16",
+      "秩是什么",
+      "为什么这么小",
+      "能省多少",
+      "why is this low-rank",
+      "why is it low-rank",
+      "low-rank",
+      "rank 4",
+      "rank 16"
+    ],
+    "titleZh": "为什么这一小块是低秩",
+    "titleEn": "Why this add-on is low-rank",
+    "bodyZh": "先看方法图上旁边那一小块的大小。把宽度 r=4 和 r=16 摆在一起：按本课 GPT-2、默认加在注意力投影旁来估，r=4 大约要训 22 万个数，r=16 大约 88 万，大约是 4 倍。这两类原权重本身大约 2830 万个数，所以小块远远更省显存。看清这些个数之后，再给它起名字：这一小块是低秩。这些是示意约数，不是训练器现场读数，也不会在这里开训。看清 r 的差别之后，再提 α：它只调节这一小块混进去的力度，不改「有多少个数在训练」。",
+    "bodyEn": "First look at the size of the small add-on on the method diagram. Put width r=4 next to r=16: for this lesson’s GPT-2, with the default add-on beside the attention projections, r=4 trains about 220 thousand numbers and r=16 about 880 thousand — about 4×. Those original matrices themselves are about 28 million numbers, so the add-on uses far less memory. After you have seen those counts, the name for this add-on is low-rank. These are sketch estimates, not a live trainer readout, and this will not start a train. After the r contrast, α only scales how strongly the add-on is mixed in; it does not change how many numbers are being trained.",
+    "citeZh": "出处：方法站上同一套块的图，r=4 与 r=16 的示意个数对照。",
+    "citeEn": "Source: the same-block diagram on the method stop, and the sketch count contrast of r=4 vs r=16.",
+    "highlightSel": "[data-te-lora=\"rank\"], [data-te-bridge=\"method\"], [data-te-ft=\"method\"]",
+    "nextStepHintZh": "看清 r 的对照后，再决定要不要往下。我不会替你开训或换课。",
+    "nextStepHintEn": "After you have seen the r contrast, decide whether to go on. I will not start a train or switch courses.",
+    "spoilerTags": [
+      "lora"
+    ]
+  },
+  {
+    "id": "ft-lora-rank-early",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "map",
+      "pack",
+      "baseline",
+      "start",
+      "compare",
+      "explain",
+      "preview",
+      "loss"
+    ],
+    "requireStation": true,
+    "intents": [
+      "lora_rank"
+    ],
+    "keywords": [
+      "为什么是低秩",
+      "低秩是什么",
+      "低秩",
+      "why is this low-rank",
+      "why is it low-rank",
+      "low-rank"
+    ],
+    "titleZh": "先看损失和对照，这一小块的宽度还没到",
+    "titleEn": "See the loss and the contrast first; the add-on width comes later",
+    "bodyZh": "现在先看对照板和损失示意表：改的是权重，不是怎么抽下一个词。走到「看改的是哪一块」那一站，再看旁边那一小块为什么可以很窄。此刻不必先记后面的宽度名。",
+    "bodyEn": "For now, look at the contrast board and the sketch loss table: what changes is the weights, not how the next word is drawn. When you reach the stop that shows which piece is being changed, you can see why that add-on can stay narrow. You do not need to memorize later width names yet.",
+    "citeZh": "出处：对照板和当前这一关的画面。",
+    "citeEn": "Source: the contrast board and the current station on the screen.",
+    "highlightSel": "[data-te-ft=\"first-line\"], [data-te-ft=\"tokenize\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先看清眼前这一关，再自己点「推进一步」。我不会替你点，也不会开训。",
+    "nextStepHintEn": "See this station clearly, then press “Take one step” yourself. I will not click it or start a train."
+  },
+  {
+    "id": "ft-dpo-pair",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "explore"
+    ],
+    "requireStation": true,
+    "intents": [
+      "dpo_pair",
+      "why",
+      "how_number",
+      "what_is_this"
+    ],
+    "keywords": [
+      "这一对偏好分数",
+      "偏好分数怎么变",
+      "偏好分数",
+      "更喜欢的那句是怎么被抬高的",
+      "怎么被抬高",
+      "偏好边际",
+      "0.08",
+      "0.74",
+      "这一对的数",
+      "preferred margin",
+      "preferred reply",
+      "how the preferred"
+    ],
+    "titleZh": "这一对偏好分数怎么变",
+    "titleEn": "How this preference pair’s scores move",
+    "bodyZh": "先看这一对对照：同一句提示，更喜欢的续写和不太喜欢的续写。再看预计算示意曲线上的数：开始时损失 0.693、偏好边际 0.08，更喜欢的那句只高出一点点；到曲线另一端，损失 0.31、边际 0.74，更喜欢的那句相对另一句被抬高了。这些数是示意，假设做了几步很小的对照，不是一次完整对齐训练，也不会在这里开训。",
+    "bodyEn": "First look at this contrast pair: the same prompt, a preferred continuation and a less preferred one. Then look at the numbers on the precomputed sketch curve: at the start the loss is 0.693 and the preferred margin is 0.08 — the preferred reply is only a little higher; at the other end of the sketch the loss is 0.31 and the margin is 0.74, so the preferred reply has been lifted relative to the other. These numbers are a sketch of a few tiny hypothetical contrasts, not a full alignment training run, and they will not start a train here.",
+    "citeZh": "出处：再深挖里这一对偏好对照，以及示意曲线上的 0.08 → 0.74。",
+    "citeEn": "Source: this preference pair in the later lab, and the sketch curve from 0.08 to 0.74.",
+    "highlightSel": "[data-te-dpo=\"pair-walk\"], [data-te-dpo=\"sketch\"], [data-te-dpo=\"chosen\"], [data-te-dpo=\"ready\"]",
+    "nextStepHintZh": "看完这一对的示意数即可。我不会替你开训。",
+    "nextStepHintEn": "Seeing this pair’s sketch numbers is enough. I will not start a train.",
+    "spoilerTags": [
+      "dpo"
+    ]
+  },
+  {
+    "id": "ft-dpo-pair-early",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "map",
+      "pack",
+      "baseline",
+      "start",
+      "compare",
+      "explain",
+      "preview",
+      "loss",
+      "method"
+    ],
+    "requireStation": true,
+    "intents": [
+      "dpo_pair"
+    ],
+    "keywords": [
+      "这一对偏好分数",
+      "偏好分数怎么变",
+      "偏好分数",
+      "更喜欢的那句是怎么被抬高的",
+      "怎么被抬高",
+      "偏好边际",
+      "preferred margin"
+    ],
+    "titleZh": "先走完眼前的对照，这一对分数还没到",
+    "titleEn": "Finish the contrast in front of you; that pair of scores comes later",
+    "bodyZh": "现在先看对照板或损失示意表。后面走进「再深挖」里的偏好对照时，再看更喜欢的那一句怎样相对另一句被抬高。此刻不必先记后面的对照名。",
+    "bodyEn": "For now, look at the contrast board or the sketch loss table. Later, in the preference contrast under “go deeper,” you can see how the preferred reply is lifted relative to the other. You do not need to memorize later contrast names yet.",
+    "citeZh": "出处：当前这一关你能看见的对照。",
+    "citeEn": "Source: the contrast you can already see at this station.",
+    "highlightSel": "[data-te-ft=\"first-line\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先看清眼前这一关。我不会替你开训或换课。",
+    "nextStepHintEn": "See this station clearly first. I will not start a train or switch courses."
+  }
+]

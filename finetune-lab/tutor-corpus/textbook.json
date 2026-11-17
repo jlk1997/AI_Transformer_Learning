@@ -1,0 +1,121 @@
+[
+  {
+    "id": "textbook-index-text",
+    "kind": "textbook",
+    "textbook": true,
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "textbook"
+    ],
+    "keywords": [
+      "教材",
+      "20 步",
+      "教科书",
+      "textbook",
+      "图书馆",
+      "书库"
+    ],
+    "titleZh": "文字课教材在书库",
+    "titleEn": "The text textbook is in the Library",
+    "bodyZh": "文字课有一份完整教材，放在顶栏「书库」里，需要时再打开，不会自动弹出，也不会在每次提问时整段倒给你。现在的主路径仍然是：先看见它猜出一个词，再看词片、亮线和残差。",
+    "bodyEn": "The text course has a full textbook in the top bar “Library”. Open it when you need it. It does not pop open by itself, and I will not dump it into every answer. The short path is still: watch it guess a word, then see pieces, lit lines, and the residual.",
+    "citeZh": "出处：顶栏「书库」。",
+    "citeEn": "Source: the top bar “Library” button.",
+    "highlightSel": "[data-te-article=\"show\"]",
+    "nextStepHintZh": "若只是要走通当前关，先回到「推进一步」。",
+    "nextStepHintEn": "If you only need this station, return to “Take one step.”"
+  },
+  {
+    "id": "textbook-index-image",
+    "kind": "textbook",
+    "textbook": true,
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "textbook"
+    ],
+    "keywords": [
+      "教材",
+      "18 步",
+      "textbook"
+    ],
+    "titleZh": "图片课教材在书库",
+    "titleEn": "The image textbook is in the Library",
+    "bodyZh": "图片课的完整教材在顶栏「书库」里，用来把「再去噪一步」后面的原理补全。它不会自动打开。当前先把画布和对照小图看清。",
+    "bodyEn": "The image course textbook is in the top bar “Library”, for going deeper after “denoise one step.” It does not auto-open. For now, map the canvas and the comparison thumbs.",
+    "citeZh": "出处：顶栏「书库」。",
+    "citeEn": "Source: the top bar “Library” button.",
+    "highlightSel": "[data-te-article=\"show\"]",
+    "nextStepHintZh": "先看画布，再决定要不要打开教材。",
+    "nextStepHintEn": "Look at the canvas first, then decide whether to open the textbook."
+  },
+  {
+    "id": "textbook-index-music",
+    "kind": "textbook",
+    "textbook": true,
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "textbook"
+    ],
+    "keywords": [
+      "教材",
+      "16 步",
+      "textbook"
+    ],
+    "titleZh": "音乐课教材在书库",
+    "titleEn": "The music textbook is in the Library",
+    "bodyZh": "音乐课的完整教材在顶栏「书库」里，不会自动打开。当前先看清三块，并写出下一个音。",
+    "bodyEn": "The music course textbook is in the top bar “Library” and does not auto-open. First map the three parts and write the next note.",
+    "citeZh": "出处：顶栏「书库」。",
+    "citeEn": "Source: the top bar “Library” button.",
+    "highlightSel": "[data-te-article=\"show\"]",
+    "nextStepHintZh": "先写出下一个音，再决定要不要打开教材。",
+    "nextStepHintEn": "Write the next note first, then decide whether to open the textbook."
+  },
+  {
+    "id": "textbook-index-ft",
+    "kind": "textbook",
+    "textbook": true,
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "textbook"
+    ],
+    "keywords": [
+      "教材",
+      "22 步",
+      "textbook"
+    ],
+    "titleZh": "微调课 22 步教材在书库",
+    "titleEn": "The 22-step fine-tune textbook is in the Library",
+    "bodyZh": "22 步教材沿同一条主线把原理补全，不另开目录，也不自动打开。「推进一步」不会替你翻开它。主线走完后再打开即可。",
+    "bodyEn": "The 22-step textbook completes the same spine; it is not a second curriculum, and it does not auto-open. “Take one step” will not open it for you. Open it after the short path, when you need it.",
+    "citeZh": "出处：顶栏「书库」，以及主线上「需要时打开教材」。",
+    "citeEn": "Source: the top bar “Library”, and “open the textbook when you need it” on the spine.",
+    "highlightSel": "[data-te-article=\"show\"]",
+    "nextStepHintZh": "先走完当前这一关，再打开教材。",
+    "nextStepHintEn": "Finish this station before opening the textbook."
+  }
+]

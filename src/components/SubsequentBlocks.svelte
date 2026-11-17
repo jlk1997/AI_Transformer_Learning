@@ -4,6 +4,9 @@
 	import { Tooltip } from 'flowbite-svelte';
 	import VectorCanvas from './common/VectorCanvas.svelte';
 	import TextbookTooltip from './common/TextbookTooltip.svelte';
+	import { messages } from '~/i18n';
+
+	$: m = $messages;
 
 	export let className: string | undefined = undefined;
 </script>
@@ -27,10 +30,9 @@
 				class="guide flex flex-col items-start gap-1"
 				class:active={$blockIdx !== $modelMeta.layer_num - 1}
 			>
-				<div class="text" class:highlight={$isBoundingBoxActive}>
+				<div class="text" class:highlight={$isBoundingBoxActive} data-te-label="more-blocks">
 					<TextbookTooltip id="blocks">
-						<span class="strong">{$modelMeta.layer_num - $blockIdx - 1}</span> more identical<br
-						/><span class="strong">Transformer<br />Blocks</span>
+						{m.moreBlocksPrefix || ''}<span class="strong">{$modelMeta.layer_num - $blockIdx - 1}</span>{m.moreBlocksSuffix}
 					</TextbookTooltip>
 				</div>
 
@@ -39,6 +41,8 @@
 					class="h-6 w-6 text-gray-300"
 					viewBox="0 0 3 5"
 					fill="none"
+					data-te-label="more-blocks-arrow"
+					aria-hidden="true"
 				>
 					<path
 						d="M1.18221 4.58047C1.23103 4.62928 1.31017 4.62928 1.35899 4.58047L2.15448 3.78497C2.2033 3.73616 2.2033 3.65701 2.15448 3.6082C2.10567 3.55938 2.02652 3.55938 1.97771 3.6082L1.2706 4.3153L0.563493 3.6082C0.514677 3.55938 0.435531 3.55938 0.386716 3.6082C0.3379 3.65701 0.3379 3.73616 0.386716 3.78497L1.18221 4.58047ZM1.1456 0.285461V4.49208H1.3956V0.285461H1.1456Z"
@@ -79,18 +83,32 @@
 			z-index: 200;
 			opacity: 0;
 			transition: opacity 0.2s;
-			white-space: pre;
+			white-space: normal;
+			/* Sit in the title-band padding just above the content: a wrapping sentence
+			   that grows left from this track's right edge, below 前馈网络 and left of
+			   the probability title, never over the collapsed bars. */
+			width: max-content;
+			max-width: 13.5rem;
+			box-sizing: border-box;
+			padding-right: 0.25rem;
+			padding-left: 0.15rem;
 			position: absolute;
 			top: 0;
-			left: calc(-50% - 0.5rem);
-			transform: translateY(-100%);
+			left: auto;
+			right: 0.15rem;
+			transform: translateY(calc(-100% - 2rem));
 			color: theme('colors.gray.400');
+			overflow: visible;
+			text-align: left;
 
 			.text {
 				transition: opacity 0.5s;
-				line-height: 1.2;
-				padding-left: 0.5rem;
-				font-size: 0.85rem;
+				line-height: 1.35;
+				padding-left: 0;
+				font-size: 0.8rem;
+				overflow-wrap: break-word;
+				word-break: normal;
+				white-space: normal;
 				.strong {
 					font-weight: 600;
 				}
@@ -108,10 +126,12 @@
 			}
 		}
 		.content {
+			position: relative;
 			display: grid;
 			grid-template-columns: repeat(4, minmax(var(--min-column-width), 1fr));
 
 			.column.final {
+				position: static;
 				grid-column-start: 2;
 
 				.label.float {

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { temperature } from '~/store';
+	import { messages } from '~/i18n';
+	$: m = $messages;
 	import HelpPopover from './common/HelpPopover.svelte';
 	import Slider from './common/Slider.svelte';
 	import TextbookTooltip from './common/TextbookTooltip.svelte';
@@ -19,7 +21,7 @@
 	$: temperature.set(temperatureTemp);
 </script>
 
-<div class="temperature-input" data-click="temperature-input">
+<div class="temperature-input" data-click="temperature-input" data-te-sampling="temp">
 	<Slider
 		{disabled}
 		className="temperature-slider"
@@ -34,7 +36,7 @@
 	>
 		<div class="temperature-text flex items-center gap-[2px]">
 			<TextbookTooltip id="temperature">
-				<div>Temperature</div></TextbookTooltip
+				<div>{m.temperature}</div></TextbookTooltip
 			>
 			<!-- <HelpPopover id="temperature-help"  goTo="article-temperature">
 				{`Changes output \nprobability distribution \nand randomness \nof next token.`}

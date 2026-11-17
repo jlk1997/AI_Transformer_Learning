@@ -11,6 +11,11 @@
 	} from '~/store';
 	import classNames from 'classnames';
 	import AttentionMatrix from '~/components/AttentionMatrix.svelte';
+	import LoraAttnLens from '~/components/LoraAttnLens.svelte';
+	import { locale, messages } from '~/i18n';
+	import { formatTokenForDisplay, midLabelForChip } from '~/utils/gpt2Tokens';
+	$: m = $messages;
+	$: zh = $locale !== 'en';
 
 	import { setContext, getContext } from 'svelte';
 	import { Tooltip } from 'flowbite-svelte';
@@ -54,7 +59,7 @@
 		data-click="attention-step-title"
 	>
 		<div class="w-max">
-			<TextbookTooltip id="self-attention">Multi-head Self Attention</TextbookTooltip>
+			<TextbookTooltip id="self-attention">{m.attention}</TextbookTooltip>
 		</div>
 	</div>
 	<div class="content relative">
@@ -71,7 +76,7 @@
 				>
 					<div class="qkv flex h-full flex-col justify-center gap-[5rem] pl-[6rem]">
 						<div class="column key">
-							<div class="head1 title"><TextbookTooltip id="qkv">Key</TextbookTooltip></div>
+							<div class="head1 title"><TextbookTooltip id="qkv">{m.key}</TextbookTooltip></div>
 
 							{#each $tokens as token, index}
 								<div
@@ -79,7 +84,7 @@
 									class:last={index === $tokens.length - 1}
 									class:active={$hoveredMatrixCell.col === index}
 								>
-									<span class="label float">{token}</span>
+									<span class="label float" data-te-mid-tok-label={index} title={formatTokenForDisplay(token, zh)}>{midLabelForChip(token, zh)}</span>
 									<div class={`vector x1-12 ${keyHeadVectorColor}`}></div>
 								</div>
 							{/each}
@@ -89,14 +94,14 @@
 							>
 						</div>
 						<div class="column query">
-							<div class="head1 title"><TextbookTooltip id="qkv">Query</TextbookTooltip></div>
+							<div class="head1 title"><TextbookTooltip id="qkv">{m.query}</TextbookTooltip></div>
 							{#each $tokens as token, index}
 								<div
 									class="head1 cell x1-12 query text-xs"
 									class:last={index === $tokens.length - 1}
 									class:active={$hoveredMatrixCell.row === index}
 								>
-									<span class="label float">{token}</span>
+									<span class="label float" data-te-mid-tok-label={index} title={formatTokenForDisplay(token, zh)}>{midLabelForChip(token, zh)}</span>
 									<div class={`vector x1-12  ${queryHeadVectorColor}`}></div>
 								</div>
 							{/each}
@@ -109,10 +114,10 @@
 							>
 						</div>
 						<div class="column value">
-							<div class="head1 title"><TextbookTooltip id="qkv">Value</TextbookTooltip></div>
+							<div class="head1 title"><TextbookTooltip id="qkv">{m.value}</TextbookTooltip></div>
 							{#each $tokens as token, index}
 								<div class="head1 cell x1-12 text-xs" class:last={index === $tokens.length - 1}>
-									<span class="label float">{token}</span>
+									<span class="label float" data-te-mid-tok-label={index} title={formatTokenForDisplay(token, zh)}>{midLabelForChip(token, zh)}</span>
 									<div class={`vector x1-12 ${valHeadVectorColor}`}></div>
 								</div>
 							{/each}
@@ -127,11 +132,12 @@
 					</div>
 					<div class="resize-watch attention-matrix flex">
 						<AttentionMatrix />
+						<LoraAttnLens />
 					</div>
 					<div class="head-out mx-[2rem]">
 						<div class="column out">
 							<div class="head1 title">
-								<TextbookTooltip id="output-concatenation">Out</TextbookTooltip>
+								<TextbookTooltip id="output-concatenation"><span data-te-label="out">{m.outLabel || (zh ? '输出（Out）' : 'Out')}</span></TextbookTooltip>
 							</div>
 							{#each $tokens as token, index}
 								<div class="head1 cell x1-12" class:last={index === $tokens.length - 1}>
@@ -180,6 +186,10 @@
 			.label {
 				font-size: 0.7rem;
 				color: theme('colors.gray.600');
+				overflow: visible;
+				max-width: none;
+				width: max-content;
+				white-space: nowrap;
 			}
 			.title {
 				z-index: $COLUMN_TITLE_INDEX;

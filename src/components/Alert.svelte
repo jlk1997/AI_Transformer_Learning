@@ -1,4 +1,6 @@
 <script>
+	import { messages } from '~/i18n';
+	$: m = $messages;
 	import { Alert } from 'flowbite-svelte';
 	import { fade } from 'svelte/transition';
 
@@ -13,13 +15,13 @@
 	<div transition:fade>
 		<Alert color="blue" dismissable>
 			<div class="alert-content">
-				We collect anonymous data for research.
+				{m.alertResearch}
 				<a
 					href="./consent-form.pdf"
 					class="font-semibold underline hover:text-blue-800 dark:hover:text-blue-900"
 					target="_blank"
 				>
-					Learn more
+					{m.alertLearnMore}
 				</a>
 			</div>
 		</Alert>

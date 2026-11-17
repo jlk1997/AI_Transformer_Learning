@@ -1,0 +1,969 @@
+[
+  {
+    "id": "text-station-generate",
+    "kind": "station",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate"
+    ],
+    "intents": [
+      "what_is_this",
+      "next_word"
+    ],
+    "keywords": [
+      "猜出一个词",
+      "生成下一个词",
+      "第一关"
+    ],
+    "titleZh": "第一关：先看见它猜出一个词",
+    "titleEn": "Station 1: watch it guess one word",
+    "bodyZh": "第一关只要看见它抽出一个词接在后面。到任务区点「生成下一个词」，看右边的表，再看那个词出现。现在还不用拧后面的旋钮，也不用先翻教材。",
+    "bodyEn": "The first station is only to watch it append one word. Click “Generate next token” in the task cluster, read the table on the right, and see the word appear. Later knobs stay locked for now, and do not open the textbook first.",
+    "citeZh": "出处：任务区「生成下一个词」和右侧概率表。",
+    "citeEn": "Source: “Generate next token” in the task cluster and the right-hand table.",
+    "highlightSel": "[data-te-path=\"generate\"], [data-te-zone=\"right\"]",
+    "nextStepHintZh": "看见抽出一个词后，再点「推进一步」。",
+    "nextStepHintEn": "After a word is drawn, press “Take one step.”"
+  },
+  {
+    "id": "text-tokens",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "tokens",
+      "generate",
+      "attention"
+    ],
+    "intents": [
+      "tokens",
+      "what_is_this"
+    ],
+    "keywords": [
+      "词片",
+      "分词",
+      "token",
+      "切开",
+      "中文",
+      "残差连接"
+    ],
+    "titleZh": "模型读的是词片，不是整句",
+    "titleEn": "The model reads token pieces, not a whole sentence",
+    "bodyZh": "模型读的不是整句汉字，而是一小片一小片。换上「残差连接把前面的信号加到后面。」之后，左边会写成「残·1/3」这样，方便你看见切法。中文一个字常被切成多片，不是界面坏了。",
+    "bodyEn": "The model does not read a whole Chinese sentence at once; it reads small pieces. After you switch to the shared sentence, the left side labels pieces like “残·1/3” so you can see the cuts. One Chinese character often becomes several pieces — that is not a bug.",
+    "citeZh": "出处：左边「词向量（嵌入）」的词片标签。",
+    "citeEn": "Source: the token-piece labels in the left embedding column.",
+    "highlightSel": "[data-te-zone=\"left\"], [data-te-tok-label], [data-te-tok=\"cut-note\"]",
+    "nextStepHintZh": "看清左边的词片后，再点「推进一步」，去看中间的亮线。",
+    "nextStepHintEn": "Once you can see the pieces on the left, press “Take one step” to look at the lit lines in the middle."
+  },
+  {
+    "id": "text-attention",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "attention",
+      "layers"
+    ],
+    "intents": [
+      "attention",
+      "what_is_this"
+    ],
+    "keywords": [
+      "注意力",
+      "亮线",
+      "看谁",
+      "attention",
+      "这根线",
+      "这条线",
+      "这根亮线",
+      "这根线是什么",
+      "lit line",
+      "this line",
+      "who it is looking"
+    ],
+    "titleZh": "中间亮线是「现在在看谁」",
+    "titleEn": "The lit lines are who it is looking at",
+    "bodyZh": "先看中间被点亮的那些线。写到「{token}」时，线更亮的前面词，就是这一步多看了一眼的地方。{attnReadyNote}\n\n现在翻到第 {layer} 层、第 {head} 个头。层和头只是把同一件事做多遍；换一层或换一个头，亮线会换一副样子。",
+    "bodyEn": "First look at the lit lines in the middle. When writing “{token}”, a brighter earlier word is the one this step looks at more. {attnReadyNote}\n\nYou are on layer {layer}, head {head}. Layers and heads just do the same job many times; switch a layer or a head, and the lit lines take on a new pattern.",
+    "citeZh": "出处：中间被点亮的注意力线，以及左边当前这个词。",
+    "citeEn": "Source: the lit attention lines in the middle, and the current word on the left.",
+    "highlightSel": "[data-te-zone=\"mid\"], [data-te-zone=\"left\"], [data-click=\"attention-step\"], .attention, .sankey",
+    "nextStepHintZh": "看过亮线后，点「推进一步」去翻一层、换一个头。",
+    "nextStepHintEn": "After you have seen a lit line, press “Take one step” to change layer and head.",
+    "mathWalkId": "attn"
+  },
+  {
+    "id": "text-layers",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "layers"
+    ],
+    "intents": [
+      "layers",
+      "what_is_this"
+    ],
+    "keywords": [
+      "层",
+      "头",
+      "layer",
+      "head",
+      "block",
+      "换一层",
+      "换一个头",
+      "换一层能看见什么",
+      "看见什么",
+      "switch a layer",
+      "change a layer",
+      "change the head"
+    ],
+    "titleZh": "不是只算一次：有很多层和头",
+    "titleEn": "It is not computed only once",
+    "bodyZh": "先看中间 Transformer Block 旁的箭头，和注意力标题旁的箭头。换一层或换一个头，中间的亮线会换一副样子——同一件事做多遍，不是只算一次。\n\n你现在在第 {layer} 层、第 {head} 个头。下面的注意力推演会用当前这一组带你看。",
+    "bodyEn": "First look at the arrows beside Transformer Block, and the arrows beside the attention title. Switch a layer or a head, and the lit lines in the middle take on a new pattern — the same job is done many times, not only once.\n\nYou are on layer {layer}, head {head}. The attention walk uses this current set.",
+    "citeZh": "出处：中间 Transformer Block 和注意力标题旁的换层、换头箭头。",
+    "citeEn": "Source: the layer and head arrows by Transformer Block and the attention title.",
+    "highlightSel": "[data-click=\"transformer-bounding-title\"], [data-click=\"attention-head\"], [data-te-zone=\"mid\"], .attention, .sankey",
+    "nextStepHintZh": "翻过层和头之后，点「推进一步」，去对残差那条旁路。",
+    "nextStepHintEn": "After you have changed layer and head, press “Take one step” to match the residual bypass.",
+    "mathWalkId": "attn"
+  },
+  {
+    "id": "text-residual",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "residual"
+    ],
+    "intents": [
+      "residual",
+      "what_is_this"
+    ],
+    "keywords": [
+      "残差",
+      "旁路",
+      "加到后面",
+      "residual",
+      "为什么要残差",
+      "加号",
+      "bypass",
+      "why residual",
+      "why is there a residual"
+    ],
+    "titleZh": "残差是一条旁路，把前面的信号加回后面",
+    "titleEn": "The residual is a bypass that adds the earlier signal back",
+    "bodyZh": "先看块图上那条旁路和加号。残差就是把前面的信号原样加到后面，不是替换。为什么要残差：走得深时，前面有用的信号容易被冲掉，这条旁路把它加回去。\n\n推演里的 2.0+0.3 只是示意，不是现场残差向量。把它和贯穿例句「残差连接把前面的信号加到后面。」对上。",
+    "bodyEn": "First look at the bypass and the plus sign on the block diagram. A residual adds the earlier signal back as-is; it does not replace it. Why a residual: in a deep stack, useful earlier signal can be washed out, and the bypass adds it back.\n\nThe 2.0+0.3 in the walk is only a sketch, not a live residual vector. Match it to the shared sentence “Residual connections add the earlier signal to what comes later.”",
+    "citeZh": "出处：图上标着残差的加号或旁路线，以及贯穿例句。",
+    "citeEn": "Source: the residual plus or bypass on the diagram, and the shared sentence.",
+    "highlightSel": "[data-click=\"residual-start\"], [data-click=\"residual-end\"], .residual, [data-te-zone=\"mid\"]",
+    "nextStepHintZh": "对上残差后，再点「推进一步」，才会出现抽词旋钮。",
+    "nextStepHintEn": "After you have matched the residual, press “Take one step.” The sampling knobs unlock after that.",
+    "mathWalkId": "residual"
+  },
+  {
+    "id": "text-temperature-early",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate",
+      "tokens",
+      "attention",
+      "layers",
+      "residual"
+    ],
+    "lockedOnly": true,
+    "requiresUnlocked": "sampling",
+    "intents": [
+      "temperature_early",
+      "knobs"
+    ],
+    "keywords": [
+      "温度",
+      "temperature",
+      "top-k",
+      "top-p",
+      "旋钮",
+      "采样"
+    ],
+    "titleZh": "温度现在还锁着：它不改模型",
+    "titleEn": "Temperature is still locked: it does not change the model",
+    "bodyZh": "温度、Top-k、Top-p 只改「怎么从右边的概率表里抽一个词」，不改模型本身，更不是在训练。它们现在还锁着，按钮在任务区而不在细顶栏。先看它怎么抽出一个词；走到「现在才拧抽词旋钮」那一关，再动手。",
+    "bodyEn": "Temperature, top-k and top-p only change how a word is drawn from the right-hand table. They do not change the model itself, and they are not training. Those knobs are still locked. They live in the task cluster, not the thin top bar. First watch how it draws a word; they unlock at “now you may turn the sampling knobs.”",
+    "citeZh": "出处：任务区里暂时锁着的「显示抽词旋钮」。",
+    "citeEn": "Source: the still-locked “Show sampling knobs” control in the task cluster.",
+    "highlightSel": "[data-te-sampling=\"show\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先把「生成下一个词」看完，再跟着「推进一步」走到旋钮那一关。",
+    "nextStepHintEn": "Finish watching Generate, then use “Take one step” until the knobs unlock.",
+    "spoilerTags": [
+      "sampling"
+    ]
+  },
+  {
+    "id": "text-knobs-unlocked",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "knobs",
+      "invite"
+    ],
+    "requiresUnlocked": "sampling",
+    "intents": [
+      "knobs",
+      "what_is_this",
+      "how_number"
+    ],
+    "keywords": [
+      "温度",
+      "temperature",
+      "top-k",
+      "top-p",
+      "旋钮",
+      "表怎么变了",
+      "表怎么变",
+      "变尖",
+      "变平",
+      "旋钮干什么",
+      "这个旋钮",
+      "怎么抽",
+      "抽样",
+      "任务区"
+    ],
+    "titleZh": "抽词旋钮解开了，只改抽样",
+    "titleEn": "The sampling knobs are unlocked; they only change sampling",
+    "bodyZh": "抽词旋钮现在解开了，在任务区里而不在细顶栏。先看右边这张已经算好的表：拧旋钮时条形会变尖或变平。温度、Top-k、Top-p 只改「怎么从这张表里抽一个词」，不改分数从哪来，也不改模型本身。温度更低时更常抽到第一名，但第一名仍然不是保证。{topList}会跟着变。下面的推演会先让你看表，再给这个旋钮起名字。",
+    "bodyEn": "The sampling knobs are unlocked now, in the task cluster rather than the thin top bar. First watch the already-computed table on the right: the bars sharpen or flatten when you turn a knob. Temperature, top-k and top-p only change how a word is drawn from that table, not where the scores come from, and not the model itself. A lower temperature more often draws the first place, but first place is still not a guarantee. The top rows {topList} will move with it. The walk below shows the table first, then names the knob.",
+    "citeZh": "出处：任务区里的抽词旋钮，以及右侧概率表和「表怎么变尖、变平」推演。",
+    "citeEn": "Source: the sampling knobs in the task cluster, the right-hand table, and the “how the table sharpens or flattens” walk.",
+    "highlightSel": "[data-te-sampling=\"panel\"], [data-te-sampling=\"show\"], [data-te-zone=\"right\"]",
+    "nextStepHintZh": "先看表变尖或变平，再点「推进一步」。教材在书库里，不会自动打开。",
+    "nextStepHintEn": "Watch the table sharpen or flatten, then press “Take one step.” The textbook stays in the Library and will not open by itself.",
+    "mathWalkId": "temp"
+  },
+  {
+    "id": "text-math-prob",
+    "kind": "math",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "tokens",
+      "attention",
+      "layers",
+      "residual",
+      "knobs",
+      "invite"
+    ],
+    "intents": [
+      "right_table"
+    ],
+    "keywords": [
+      "百分比是怎么来的",
+      "softmax",
+      "分数",
+      "怎么算",
+      "推演"
+    ],
+    "titleZh": "右边的百分比是怎么来的",
+    "titleEn": "Where the percentages on the right come from",
+    "bodyZh": "右边每个词先有一个分数，还不是百分比。把分数变成都是正的、越大越突出的数，再除以总和，就得到加起来为 100% 的百分比。这一步叫做 softmax。请对照右侧表上的数；若分数还在准备，就先读表上的百分比。推演卡在底部讲解槽附近，会用当前表上的真数一步步算。",
+    "bodyEn": "On the right-hand table, each word first has a score, not a percentage. Turn those scores into positive numbers that grow fast, then divide by the total so they add to 100%. That step is called softmax. Check this against the table; if the scores are still being prepared, read the percentages first. The walk-through near the bottom dock uses the real numbers on the current table.",
+    "citeZh": "出处：右侧概率表，以及「右边的百分比是怎么来的」推演卡。",
+    "citeEn": "Source: the right-hand table and the “Where the percentages come from” walk-through.",
+    "highlightSel": "[data-te-zone=\"right\"], [data-te-math=\"dock\"]",
+    "mathWalkId": "prob",
+    "nextStepHintZh": "对照右表看完推演卡，再回到当前这一关。",
+    "nextStepHintEn": "Finish the walk-through against the right-hand table, then return to this station."
+  },
+  {
+    "id": "text-mis-first-always",
+    "kind": "misconception",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "right_table",
+      "next_word"
+    ],
+    "keywords": [
+      "一定抽它",
+      "第一名",
+      "必然",
+      "must be drawn"
+    ],
+    "titleZh": "第一名不一定会被抽中",
+    "titleEn": "The top row is not a guarantee",
+    "bodyZh": "常见误会：右边表上第一名的分数最高，下一步就一定是它。百分比只是机会大小。温度和后面的抽词旋钮只改怎么抽，不改模型本身。",
+    "bodyEn": "A common mix-up: the top score does not mean that word must be drawn next. A percentage is only a chance. Temperature and the later sampling knobs only change how a word is drawn, not the model itself.",
+    "citeZh": "出处：右侧概率表最上面几行。",
+    "citeEn": "Source: the top rows of the right-hand probability table.",
+    "highlightSel": "[data-te-zone=\"right\"]",
+    "nextStepHintZh": "再看一眼右表，然后可以点「生成下一个词」或「推进一步」。",
+    "nextStepHintEn": "Look at the table once more, then generate a word or press “Take one step.”"
+  },
+  {
+    "id": "text-math-temp",
+    "kind": "math",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "knobs",
+      "invite"
+    ],
+    "intents": [
+      "knobs",
+      "how_number",
+      "what_is_this"
+    ],
+    "keywords": [
+      "表怎么变了",
+      "变尖",
+      "变平",
+      "温度",
+      "temperature",
+      "旋钮",
+      "怎么抽"
+    ],
+    "titleZh": "表怎么变尖、变平",
+    "titleEn": "How the table sharpens or flattens",
+    "bodyZh": "先看右边已经算好的表：拧任务区里的抽词旋钮，条形会变尖或变平。这些旋钮只改怎么从表里抽，不改分数从哪来。那个让表变尖或变平的旋钮，名字叫温度。温度更低时更常抽到第一名，但第一名仍然不是保证。推演卡会用当前表上的真数带你先看现象，再起名字。",
+    "bodyEn": "First watch the already-computed table on the right: turning the sampling knobs in the task cluster makes the bars sharper or flatter. The knobs only change how a word is drawn from the table, not where the scores come from. The knob that sharpens or flattens the table is called temperature. A lower temperature more often draws first place, but first place is not a guarantee. The walk uses the live numbers on the current table: see first, then name.",
+    "citeZh": "出处：任务区抽词旋钮、右侧概率表，以及「表怎么变尖、变平」推演。",
+    "citeEn": "Source: the task-cluster sampling knobs, the right-hand table, and the sharpen-or-flatten walk.",
+    "highlightSel": "[data-te-sampling=\"panel\"], [data-te-sampling=\"show\"], [data-te-zone=\"right\"]",
+    "mathWalkId": "temp",
+    "nextStepHintZh": "看完表如何变尖或变平，再回到当前这一关。",
+    "nextStepHintEn": "After you have seen the table sharpen or flatten, return to the current station."
+  },
+  {
+    "id": "text-lmhead-how",
+    "kind": "math",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "tokens",
+      "attention",
+      "layers",
+      "residual",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "lmhead",
+      "right_table",
+      "how_number"
+    ],
+    "keywords": [
+      "这些百分比从哪条向量来",
+      "哪条向量",
+      "从哪条向量",
+      "输出权重",
+      "最后一条向量",
+      "隐藏向量",
+      "which vector",
+      "hidden vector",
+      "output weights"
+    ],
+    "titleZh": "这些百分比从哪条向量来",
+    "titleEn": "Which vector those percentages come from",
+    "bodyZh": "右边这张表你已经见过了。眼下最上面几行是：{topList}。最后一个词的位置会留下一条隐藏向量，它和每个词一条输出权重做点积，词表里每一行都会得到一个分数。整张词表矩阵行数太多，不会画在这里，我也不会编一套假矩阵。这些分数再变成你看见的百分比。下面的推演会用当前表上的真数（若分数还在准备就先老实说，只看百分比），先让你看见这条路，再起名字。",
+    "bodyEn": "You have already seen the table on the right. The top rows right now are: {topList}. The last token position leaves a hidden vector; a dot product with one output-weight row per vocabulary entry gives each row a score. The full vocabulary matrix is too large to draw, and no fake matrix is invented. Those scores become the percentages you see. The walk below uses the real numbers on the current table (or stays honest and only reads percentages if the scores are still preparing), shows that path first, then names the layer.",
+    "citeZh": "出处：右侧概率表，以及「这些百分比从哪条向量来」推演。",
+    "citeEn": "Source: the right-hand table and the “Which vector those percentages come from” walk.",
+    "highlightSel": "[data-te-zone=\"right\"], [data-te-math=\"dock\"]",
+    "mathWalkId": "lmhead",
+    "nextStepHintZh": "对照右表看完这条推演，再回到当前这一关。",
+    "nextStepHintEn": "Finish this walk against the right-hand table, then return to this station.",
+    "spoilerTags": [
+      "lmhead"
+    ]
+  },
+  {
+    "id": "text-lmhead-what",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "tokens",
+      "attention",
+      "layers",
+      "residual",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "lmhead",
+      "what_is_this"
+    ],
+    "keywords": [
+      "输出头是什么",
+      "输出头",
+      "解嵌入",
+      "lm_head",
+      "unembedding",
+      "unembed",
+      "output head",
+      "what is the output head",
+      "what is unembedding"
+    ],
+    "titleZh": "输出头是什么",
+    "titleEn": "What the output head is",
+    "bodyZh": "先看右边已经出现的表：{topList}。最后一条隐藏向量乘上输出权重，词表里每一行得到一个分数，再变成这些百分比。这最后一层的名字叫输出头（也叫解嵌入；英文里常写成 unembedding 或 lm_head）。不是先讲一整张嵌入矩阵。下面的推演会先让你看见这条路，再记住这个名字。",
+    "bodyEn": "First look at the table already on the right: {topList}. The last hidden vector is multiplied with the output weights, each vocabulary row gets a score, and those scores become these percentages. That last layer is called the output head (also unembedding, or lm_head). This is not an embedding-matrix lecture. The walk below shows the path first, then keeps that name.",
+    "citeZh": "出处：右侧概率表，以及「这些百分比从哪条向量来」推演。",
+    "citeEn": "Source: the right-hand table and the “Which vector those percentages come from” walk.",
+    "highlightSel": "[data-te-zone=\"right\"], [data-te-math=\"dock\"]",
+    "mathWalkId": "lmhead",
+    "nextStepHintZh": "看清「向量 → 分数 → 百分比」后，再回到当前这一关。",
+    "nextStepHintEn": "Once you have seen vector → scores → percentages, return to this station.",
+    "spoilerTags": [
+      "lmhead"
+    ]
+  },
+  {
+    "id": "text-lmhead-early",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate"
+    ],
+    "requireStation": true,
+    "intents": [
+      "lmhead"
+    ],
+    "keywords": [
+      "输出头是什么",
+      "输出头",
+      "解嵌入",
+      "lm_head",
+      "unembedding",
+      "unembed",
+      "output head",
+      "which vector",
+      "哪条向量"
+    ],
+    "titleZh": "先看表，这些名字还没到",
+    "titleEn": "Look at the table first; those names come later",
+    "bodyZh": "现在先看右边的表，以及它怎样抽出一个词。后面走到词片那一关，再看这些百分比是从哪条向量变成的分数。此刻不必先记后面的层名。",
+    "bodyEn": "For now, look at the table on the right and how a word is drawn. After you reach the token-piece station, you can see how those percentages come from a vector of scores. You do not need to memorize later layer names yet.",
+    "citeZh": "出处：任务区「生成下一个词」和右侧概率表。",
+    "citeEn": "Source: “Generate the next word” in the task cluster and the right-hand table.",
+    "highlightSel": "[data-te-path=\"generate\"], [data-te-zone=\"right\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先看它抽出一个词，再点「推进一步」。",
+    "nextStepHintEn": "Watch it draw a word, then press “Take one step.”"
+  },
+  {
+    "id": "text-cutoff-set",
+    "kind": "math",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "requiresUnlocked": "sampling",
+    "intents": [
+      "cutoff",
+      "knobs",
+      "how_number"
+    ],
+    "keywords": [
+      "候选怎么变少了",
+      "候选怎么变少",
+      "候选怎么变多",
+      "候选集合",
+      "Top-k是什么",
+      "Top-p是什么",
+      "top-k",
+      "top-p",
+      "topk",
+      "topp",
+      "截断着抽",
+      "还能抽哪些",
+      "candidate set",
+      "how the candidate"
+    ],
+    "titleZh": "候选怎么变少、变多",
+    "titleEn": "How the candidate set shrinks or grows",
+    "bodyZh": "先看右边这张已经算好的表：哪些行还留在抽取集合里。眼下还留着的是：{keptList}。现在旋钮在 {samplingKnob}。把这个值拧小，还能抽的行会变少；拧大，集合会变大。先看见集合变短或变长，再记住名字：留下最高的 k 行叫 Top-k，按百分比往下加到 p 叫 Top-p。它们只改怎么从表里抽一个词，不改分数从哪来，也不改模型本身。下面的推演会用当前表上的真数带你先看集合，再起名字。",
+    "bodyEn": "First look at the already-computed table on the right: which rows are still in the candidate set. The rows still in the set right now are: {keptList}. The knob is at {samplingKnob}. A smaller value shrinks the drawable set; a larger value grows it. See the set shrink or grow first, then keep the names: keeping the highest k rows is Top-k; adding percentages down to p is Top-p. They only change how a word is drawn from the table, not where the scores come from, and not the model itself. The walk below uses the real numbers on the current table, shows the set first, then names the cutoff.",
+    "citeZh": "出处：任务区里的抽词旋钮，以及右侧概率表和「候选怎么变少、变多」推演。",
+    "citeEn": "Source: the sampling knobs in the task cluster, the right-hand table, and the “how the candidate set shrinks or grows” walk.",
+    "highlightSel": "[data-te-sampling=\"panel\"], [data-te-sampling=\"show\"], [data-te-zone=\"right\"], .sampling-input",
+    "mathWalkId": "cutoff",
+    "nextStepHintZh": "先看集合变少或变多，再点「推进一步」。教材在书库里，不会自动打开。",
+    "nextStepHintEn": "Watch the set shrink or grow, then press “Take one step.” The textbook stays in the Library and will not open by itself.",
+    "spoilerTags": [
+      "cutoff"
+    ]
+  },
+  {
+    "id": "text-cutoff-early",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate",
+      "tokens",
+      "attention",
+      "layers",
+      "residual"
+    ],
+    "lockedOnly": true,
+    "requiresUnlocked": "sampling",
+    "intents": [
+      "cutoff",
+      "temperature_early"
+    ],
+    "keywords": [
+      "Top-k是什么",
+      "Top-p是什么",
+      "候选怎么变少",
+      "截断着抽",
+      "还能抽哪些",
+      "candidate set",
+      "top-k",
+      "top-p",
+      "Top-k",
+      "Top-p",
+      "topk",
+      "topp",
+      "nucleus"
+    ],
+    "titleZh": "这种抽法现在还锁着",
+    "titleEn": "That way of drawing is still locked",
+    "bodyZh": "这种「先缩小还能抽的集合，再从表里抽一个词」的做法，现在还锁着。按钮在任务区而不在细顶栏。先看它怎么抽出一个词；走到拧旋钮那一关，再看集合怎么变少或变多。",
+    "bodyEn": "The idea of shrinking the drawable set before drawing a word from the table is still locked. The control lives in the task cluster, not the thin top bar. First watch how a word is drawn; when you reach the knobs station, you can see the set shrink or grow.",
+    "citeZh": "出处：任务区里暂时锁着的「显示抽词旋钮」。",
+    "citeEn": "Source: the still-locked “Show sampling knobs” control in the task cluster.",
+    "highlightSel": "[data-te-sampling=\"show\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先把「生成下一个词」看完，再跟着「推进一步」走到旋钮那一关。",
+    "nextStepHintEn": "Finish watching Generate, then use “Take one step” until the knobs unlock.",
+    "spoilerTags": [
+      "sampling"
+    ]
+  },
+  {
+    "id": "text-qkv-mag",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "attention",
+      "layers",
+      "residual",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "qkv_mag",
+      "what_is_this"
+    ],
+    "keywords": [
+      "我点开了放大镜",
+      "点开了放大镜",
+      "放大镜，这是什么",
+      "放大镜是什么",
+      "这个放大镜",
+      "magnifier",
+      "I opened the magnifier",
+      "opened the magnifier"
+    ],
+    "titleZh": "放大镜里先看已经亮着的线",
+    "titleEn": "In the magnifier, start from the line already lit",
+    "bodyZh": "先看你在中间已经看见的那些亮线和圆点：写到当前这个词时，它在回头看已经出现的词。点开放大镜，是把「同一个位置在干三种活」展开来看：既在问该看谁，又当作可被检索的标签，还带着要被混走的内容。这三种用法再分别叫提问 Q、标签 K、内容 V。放大镜里的色块矩阵是示意，不是现场完整权重；公式可以先不看。",
+    "bodyEn": "First look at the lit lines and dots you already saw in the middle: when writing the current word, it looks back at words that are already there. Opening the magnifier unfolds how one position does three jobs: asking who to look at, serving as a retrievable label, and carrying the content that gets mixed in. Those three uses are then called Query (Q), Key (K), and Value (V). The colored matrices in the magnifier are a sketch, not the live full weight matrix; the formula can wait.",
+    "citeZh": "出处：中间已经亮着的注意力线，以及点开的放大镜（色块为示意）。",
+    "citeEn": "Source: the already-lit attention lines in the middle, and the open magnifier (the colored blocks are a sketch).",
+    "highlightSel": "[data-te-zone=\"mid\"], [data-click=\"attention-step\"], [data-te-popover=\"qkv\"], .attention, .sankey",
+    "nextStepHintZh": "先把亮线看清，再决定要不要读放大镜里后面的公式。",
+    "nextStepHintEn": "See the lit lines first, then decide whether to read the formula later in the magnifier.",
+    "spoilerTags": [
+      "qkv"
+    ]
+  },
+  {
+    "id": "text-mask-see",
+    "kind": "math",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "attention",
+      "layers",
+      "residual",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "mask",
+      "what_is_this",
+      "why"
+    ],
+    "keywords": [
+      "右上为什么是暗的",
+      "右上是暗的",
+      "不能偷看未来",
+      "能看见未来吗",
+      "看见未来",
+      "因果掩码是什么",
+      "因果掩码",
+      "causal mask",
+      "peek into the future",
+      "look at the future",
+      "why is the upper right"
+    ],
+    "titleZh": "右上为什么是暗的",
+    "titleEn": "Why the upper-right is dark",
+    "bodyZh": "先看中间这张注意力表（或那些连线）：写到已经出现的词时，右上还没写出来的位置是暗的、连不过去。模型在猜下一个词时，不能看右边的未来。这个挡住未来的规则，名字叫因果掩码，也就是「不能偷看未来」。它不是把词从句子里删掉。下面的短推演会先让你看被挡住的那一块，再起名字；没有真数时不会编一套假矩阵。",
+    "bodyEn": "First look at the attention table in the middle (or the links): when writing a word that is already there, the upper-right future positions stay dark and cannot connect. While guessing the next word, the model must not look at the future on the right. That block is called a causal mask, or “no peeking at the future.” It does not delete words from the sentence. The short walk below shows the blocked region first, then names it, and will not invent a fake matrix if live weights are not ready.",
+    "citeZh": "出处：中间注意力矩阵右上被挡住的区域，以及「右上为什么是暗的」短推演。",
+    "citeEn": "Source: the blocked upper-right region of the attention matrix, and the short “why the upper-right is dark” walk.",
+    "highlightSel": "[data-te-zone=\"mid\"], [data-click=\"attention-step\"], .attention, .sankey",
+    "mathWalkId": "mask",
+    "nextStepHintZh": "看清右上是暗的之后，再回到当前这一关。",
+    "nextStepHintEn": "Once you have seen that the upper-right is dark, return to this station.",
+    "spoilerTags": [
+      "mask"
+    ]
+  },
+  {
+    "id": "text-mask-early",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate",
+      "tokens"
+    ],
+    "requireStation": true,
+    "intents": [
+      "mask"
+    ],
+    "keywords": [
+      "因果掩码是什么",
+      "因果掩码",
+      "不能偷看未来",
+      "能看见未来吗",
+      "causal mask",
+      "peek into the future"
+    ],
+    "titleZh": "先看它怎么猜词，这个规则还没到",
+    "titleEn": "Watch it guess a word first; that rule comes later",
+    "bodyZh": "现在先看右边的表，以及它怎样抽出一个词。走到中间出现亮线和矩阵的那一关，再看右上为什么是暗的。此刻不必先记后面的规则名。",
+    "bodyEn": "For now, look at the table on the right and how a word is drawn. When you reach the station with lit lines and a matrix in the middle, you can see why the upper-right is dark. You do not need to memorize later rule names yet.",
+    "citeZh": "出处：任务区和右侧概率表。",
+    "citeEn": "Source: the task cluster and the right-hand table.",
+    "highlightSel": "[data-te-path=\"generate\"], [data-te-zone=\"right\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先看它抽出一个词，再点「推进一步」。",
+    "nextStepHintEn": "Watch it draw a word, then press “Take one step.”"
+  },
+  {
+    "id": "text-ln-what",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "residual",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "ln",
+      "what_is_this"
+    ],
+    "keywords": [
+      "层归一化是什么",
+      "层归一化",
+      "LayerNorm",
+      "layer normalization",
+      "layer norm",
+      "LN 是什么"
+    ],
+    "titleZh": "层归一化是什么",
+    "titleEn": "What layer normalization is",
+    "bodyZh": "先看块里 operation 列的 LN 标记：它把同一个位置上的数调到相近的尺度，别让后面的计算爆掉或塌掉。这个稳住尺度的步骤，名字叫层归一化。它不改句子意思。均值和方差的公式在书库该页的后面，先不必背。",
+    "bodyEn": "First look at the LN mark in the block’s operation column: it rescales the numbers at one position so later math stays stable. That stabilizing step is called layer normalization. It does not rewrite the sentence’s meaning. The mean-and-variance formula stays later on the Library page; you do not need to memorize it first.",
+    "citeZh": "出处：块里的 LN 标记，以及书库「层归一化」那一页（先看现象）。",
+    "citeEn": "Source: the LN mark in the block, and the Library page on layer normalization (phenomenon first).",
+    "highlightSel": "[data-te-zone=\"mid\"], [data-click=\"residual\"], .residual",
+    "nextStepHintZh": "看清「稳住尺度」后，再回到当前这一关。",
+    "nextStepHintEn": "Once you have seen that it steadies the scale, return to this station.",
+    "spoilerTags": [
+      "layernorm"
+    ]
+  },
+  {
+    "id": "text-ln-early",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate",
+      "tokens"
+    ],
+    "requireStation": true,
+    "intents": [
+      "ln"
+    ],
+    "keywords": [
+      "层归一化是什么",
+      "层归一化",
+      "LayerNorm",
+      "layer normalization",
+      "layer norm"
+    ],
+    "titleZh": "先走完眼前这一关，这个零件还没到",
+    "titleEn": "Finish this station first; that part comes later",
+    "bodyZh": "现在先看它怎样抽出一个词，以及左边的词片。后面走到块里的标记和旁路时，再看那些把数调到相近尺度的步骤。此刻不必先记零件名。",
+    "bodyEn": "For now, watch how a word is drawn, and the pieces on the left. Later, when you reach the marks and the bypass in a block, you can see the step that steadies the scale. You do not need to memorize part names yet.",
+    "citeZh": "出处：任务区和当前这一关的画面。",
+    "citeEn": "Source: the task cluster and the current station on the screen.",
+    "highlightSel": "[data-te-task=\"cluster\"], [data-te-zone=\"right\"]",
+    "nextStepHintZh": "先看清眼前这一关，再点「推进一步」。",
+    "nextStepHintEn": "See this station clearly, then press “Take one step.”"
+  },
+  {
+    "id": "text-pe-what",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "tokens",
+      "attention",
+      "layers",
+      "residual",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "pe",
+      "what_is_this"
+    ],
+    "keywords": [
+      "位置编码是什么",
+      "位置编码",
+      "positional encoding",
+      "positional embedding",
+      "position embedding",
+      "RoPE"
+    ],
+    "titleZh": "位置编码是什么",
+    "titleEn": "What positional encoding is",
+    "bodyZh": "先看左边嵌入展开里那一列位置条，或放大镜里每种位置不一样的条纹：同一句话换个顺序，这一列就会变。「猫吃鱼」和「鱼吃猫」要靠它分清先后。这就是位置编码。本课的 GPT-2 用的是学来的位置嵌入（按位置查表）。条纹只是示意「每个位置长得不一样」，不是现场权重，也没有 RoPE 动画；有的模型会用 RoPE，本课不演示它。",
+    "bodyEn": "First look at the position column in the left embedding view, or the stripes in the magnifier: each position has its own pattern, and swapping word order changes that column. That is how “the cat ate the fish” stays different from the reverse. This is positional encoding. This lesson’s GPT-2 uses learned position embeddings (a lookup by index). The stripes are only a sketch that positions look different — not live weights, and there is no RoPE animation. Some models use RoPE; this lesson does not animate it.",
+    "citeZh": "出处：左边位置嵌入列，以及位置编码放大镜里的条纹（示意）。",
+    "citeEn": "Source: the left position-embedding column, and the stripes in the positional-encoding magnifier (a sketch).",
+    "highlightSel": "[data-te-zone=\"left\"], .token-column, .position-embedding, .emb_pos",
+    "nextStepHintZh": "看清「每个位置长得不一样」后，再回到当前这一关。",
+    "nextStepHintEn": "Once you have seen that each position looks different, return to this station.",
+    "spoilerTags": [
+      "positional"
+    ]
+  },
+  {
+    "id": "text-ffn-what",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "layers",
+      "residual",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "ffn",
+      "what_is_this"
+    ],
+    "keywords": [
+      "前馈是什么",
+      "前馈网络",
+      "前馈",
+      "MLP 是什么",
+      "feedforward",
+      "feed-forward",
+      "the MLP"
+    ],
+    "titleZh": "前馈网络是什么",
+    "titleEn": "What the feed-forward network is",
+    "bodyZh": "先看块里注意力后面那一段升维、弯曲、再降维的示意：跟别人交流之后，每个位置还要自己再炼一遍。这段的名字叫前馈网络（也叫 MLP）。弯曲的那一截叫 GELU。矩阵乘如果出现在放大镜里，是示意，公式可以先不看。",
+    "bodyEn": "First look at the expand–bend–compress sketch after attention in the block: after mixing with other words, each position is refined on its own. That stage is called the feed-forward network, or MLP. The bend is GELU. Matrix multiplies in the magnifier are a sketch; the formula can wait.",
+    "citeZh": "出处：块里注意力后面的 MLP / 前馈区域（示意）。",
+    "citeEn": "Source: the MLP / feed-forward region after attention in the block (a sketch).",
+    "highlightSel": "[data-te-zone=\"mid\"], .step.mlp, .mlp",
+    "spoilerTags": [
+      "ffn"
+    ]
+  },
+  {
+    "id": "text-embed-what",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "tokens",
+      "attention",
+      "layers",
+      "residual",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "embed",
+      "what_is_this"
+    ],
+    "keywords": [
+      "嵌入是什么",
+      "词元嵌入",
+      "embedding 是什么",
+      "what is embedding",
+      "token embedding"
+    ],
+    "titleZh": "嵌入是什么",
+    "titleEn": "What embedding is",
+    "bodyZh": "先看左边那些向量条：字已经变成一排数，不是单个分数。嵌入就是把离散的文字符号变成数字名片；用 ID 去表里取出的那一条，叫词元嵌入。竖条是形状示意。先不必把整张嵌入矩阵背下来。",
+    "bodyEn": "First look at the vector bars on the left: the text is already a row of numbers, not a single score. Embedding turns discrete symbols into numeric name-cards; the row looked up by id is the token embedding. The bars are a sketch of shape. You do not need to memorize a full embedding matrix.",
+    "citeZh": "出处：左边嵌入区的向量条（示意）。",
+    "citeEn": "Source: the vector bars in the left embedding area (a sketch).",
+    "highlightSel": "[data-te-zone=\"left\"], .step.embedding, .token-column",
+    "spoilerTags": [
+      "embed"
+    ]
+  },
+  {
+    "id": "text-pe-early",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate"
+    ],
+    "requireStation": true,
+    "intents": [
+      "pe"
+    ],
+    "keywords": [
+      "位置编码是什么",
+      "位置编码",
+      "positional encoding",
+      "positional embedding",
+      "RoPE"
+    ],
+    "titleZh": "先看它怎么猜词，位置这一列还没到",
+    "titleEn": "Watch it guess a word first; position comes later",
+    "bodyZh": "现在先看右边的表，以及它怎样抽出一个词。走到左边出现词片和位置条时，再看每个位置为什么长得不一样。此刻不必先记零件名。",
+    "bodyEn": "For now, look at the table on the right and how a word is drawn. When the pieces and the position column appear on the left, you can see why each position looks different. You do not need to memorize part names yet.",
+    "citeZh": "出处：任务区和右侧概率表。",
+    "citeEn": "Source: the task cluster and the right-hand table.",
+    "highlightSel": "[data-te-path=\"generate\"], [data-te-zone=\"right\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先看它抽出一个词，再点「推进一步」。",
+    "nextStepHintEn": "Watch it draw a word, then press “Take one step.”"
+  },
+  {
+    "id": "text-embed-early",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate"
+    ],
+    "requireStation": true,
+    "intents": [
+      "embed"
+    ],
+    "keywords": [
+      "嵌入是什么",
+      "词元嵌入",
+      "embedding 是什么",
+      "what is embedding",
+      "token embedding"
+    ],
+    "titleZh": "先看它怎么猜词，左边的条还没到",
+    "titleEn": "Watch it guess a word first; the left-hand bars come later",
+    "bodyZh": "现在先看右边的表，以及它怎样抽出一个词。走到左边出现向量条时，再看字是怎样变成一排数的。此刻不必先把整张表背下来。",
+    "bodyEn": "For now, look at the table on the right and how a word is drawn. When the vector bars appear on the left, you can see how text becomes a row of numbers. You do not need to memorize a full table yet.",
+    "citeZh": "出处：任务区和右侧概率表。",
+    "citeEn": "Source: the task cluster and the right-hand table.",
+    "highlightSel": "[data-te-path=\"generate\"], [data-te-zone=\"right\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先看它抽出一个词，再点「推进一步」。",
+    "nextStepHintEn": "Watch it draw a word, then press “Take one step.”"
+  },
+  {
+    "id": "text-dropout-what",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "residual",
+      "knobs",
+      "invite",
+      "layers"
+    ],
+    "requireStation": true,
+    "intents": [
+      "dropout",
+      "what_is_this"
+    ],
+    "keywords": [
+      "Dropout 是什么",
+      "Dropout是什么",
+      "dropout 是什么",
+      "what is dropout"
+    ],
+    "titleZh": "Dropout 是什么",
+    "titleEn": "What Dropout is",
+    "bodyZh": "先看结构上的 Dropout 标记：生成下一个词时它通常是关掉的，所以不是此刻正在随机删边。这个名字是指训练时随机关掉一部分连接，避免死记硬背。先不必背公式。",
+    "bodyEn": "First look at the Dropout mark in the block: while generating the next word it is usually off, so this is not live random dropping. The name refers to turning some connections off during training so the model does not memorize. The formula can wait.",
+    "citeZh": "出处：块里的 Dropout 标记（生成时通常关闭）。",
+    "citeEn": "Source: the Dropout mark in the block (usually off at generation).",
+    "highlightSel": "[data-te-zone=\"mid\"]",
+    "spoilerTags": [
+      "dropout"
+    ]
+  }
+]

@@ -24,6 +24,7 @@
 		TRANSFORMER_BLOCKS
 	} from '~/constants/opacity';
 	import { textPages } from '~/utils/textbookPages';
+	import { coachLessonIdx } from '~/i18n';
 
 	const { theme } = resolveConfig(tailwindConfig);
 
@@ -35,6 +36,20 @@
 
 	$: curveFactor = Math.floor(screenWidth / 1000) || 1;
 	$: defaultCurveOffset = 40 * (curveFactor - 1) + 80;
+
+	// Path generators used to add window.scrollY/X, i.e. document coordinates.
+	// The SVG overlay is positioned in the studio (below the fixed top bar), so
+	// those document Y values sat one top-bar too low and the mid curves missed
+	// the token / QKV column. Map boxes into this SVG's user space instead.
+	const svgOffset = (svg?: { getBoundingClientRect?: () => DOMRect }) => {
+		const el = (svg || (svgEl as { getBoundingClientRect?: () => DOMRect } | undefined));
+		if (el && typeof el.getBoundingClientRect === 'function') {
+			const r = el.getBoundingClientRect();
+			return { scrollLeft: -r.left, scrollTop: -r.top };
+		}
+		return { scrollLeft: window.scrollX, scrollTop: window.scrollY };
+	};
+
 
 	type PathMap = Record<
 		string,
@@ -100,8 +115,7 @@
 			gradientId: $blockIdx === 0 ? 'gray-blue' : 'transparent-blue',
 			opacity: EMBEDDING,
 			pathGenerator: (source, target, curve: number) => {
-				const scrollTop = window.scrollY;
-				const scrollLeft = window.scrollX;
+				const { scrollTop, scrollLeft } = svgOffset();
 
 				const rightOffset = 30;
 				const { curveOffset } = pathAdjustor(source, target, curve);
@@ -173,8 +187,7 @@
 			unique: true,
 			curve: 20,
 			pathGenerator: (source, target, curve) => {
-				const scrollTop = window.scrollY;
-				const scrollLeft = window.scrollX;
+				const { scrollTop, scrollLeft } = svgOffset();
 
 				const sourceMiddleY = source.top + scrollTop + source.height / 2;
 				const targetMiddleX = target.left + scrollLeft + target.width / 2;
@@ -200,8 +213,7 @@
 			pathGenerator: (source, target, curve) => {
 				let curveOffset = curve;
 
-				const scrollTop = window.scrollY;
-				const scrollLeft = window.scrollX;
+				const { scrollTop, scrollLeft } = svgOffset();
 
 				const sourceMiddleY = source.top + scrollTop + source.height / 2;
 				const targetMiddleY = target.top + scrollTop + target.height / 2;
@@ -226,8 +238,7 @@
 			pathGenerator: (source, target, curve) => {
 				const { curveOffset } = pathAdjustor(source, target, curve);
 
-				const scrollTop = window.scrollY;
-				const scrollLeft = window.scrollX;
+				const { scrollTop, scrollLeft } = svgOffset();
 
 				return `
 			    M ${source.right + scrollLeft},${source.top + scrollTop}
@@ -269,8 +280,7 @@
 			opacity: ATTENTION_OUT,
 			curve: curveFactor * 30,
 			pathGenerator: (source, target, curve) => {
-				const scrollTop = window.scrollY;
-				const scrollLeft = window.scrollX;
+				const { scrollTop, scrollLeft } = svgOffset();
 				const { curveOffset } = pathAdjustor(source, target, curve);
 				return `
         M ${source.right + scrollLeft},${source.top + scrollTop} 
@@ -312,8 +322,7 @@
 			curve: 50 + (curveFactor - 1) * 20,
 			opacity: MLP,
 			pathGenerator: (source, target, curve: number) => {
-				const scrollTop = window.scrollY;
-				const scrollLeft = window.scrollX;
+				const { scrollTop, scrollLeft } = svgOffset();
 
 				const rightOffset = rootRem * 3;
 				const { curveOffset } = pathAdjustor(source, target, curve);
@@ -353,8 +362,7 @@
 			curve: 50 + (curveFactor - 1) * 20,
 			opacity: MLP,
 			pathGenerator: (source, target, curve: number) => {
-				const scrollTop = window.scrollY;
-				const scrollLeft = window.scrollX;
+				const { scrollTop, scrollLeft } = svgOffset();
 
 				const leftOffset = rootRem * 1.5;
 				const { curveOffset } = pathAdjustor(source, target, curve);
@@ -444,8 +452,7 @@
 				gradientId: $blockIdx === $modelMeta.layer_num - 1 ? 'blue' : 'blue-white-blue',
 				opacity: $blockIdx === $modelMeta.layer_num - 1 ? MLP : TRANSFORMER_BLOCKS,
 				pathGenerator: (source, target, curve) => {
-					const scrollTop = window.scrollY;
-					const scrollLeft = window.scrollX;
+					const { scrollTop, scrollLeft } = svgOffset();
 					const { curveOffset } = pathAdjustor(source, target, curve);
 					return `
         M ${source.right + scrollLeft},${source.top + scrollTop}
@@ -613,8 +620,7 @@
 	};
 
 	const defaultPathGenerator = (source, target, curve: number) => {
-		const scrollTop = window.scrollY;
-		const scrollLeft = window.scrollX;
+		const { scrollTop, scrollLeft } = svgOffset();
 		const { curveOffset } = pathAdjustor(source, target, curve);
 
 		return `
@@ -653,6 +659,17 @@
 
 		resizeObserver.observe(transition);
 
+		const scrollers = new Set<EventTarget>();
+		const watchScroll = (el: Element | null) => {
+			if (!el) return;
+			el.addEventListener('scroll', updateSvgs, { passive: true });
+			scrollers.add(el);
+		};
+		watchScroll(document.querySelector('[data-te-diagram="scroll"]'));
+		const sankeyHost = (svgEl as Element | undefined)?.parentElement;
+		watchScroll(sankeyHost);
+		watchScroll(sankeyHost?.parentElement || null);
+
 		// redraw when data updated
 		const unsubscribeAttnIdx = attentionHeadIdx.subscribe(async (newIdx) => {
 			drawPath();
@@ -661,47 +678,65 @@
 		return () => {
 			resizeObserver.disconnect();
 			unsubscribeAttnIdx();
+			scrollers.forEach((el) => el.removeEventListener('scroll', updateSvgs));
 		};
 	});
 
 	$: if (typeof window !== 'undefined') {
 		if ($tokens) {
+			void $coachLessonIdx;
 			drawPath();
 			drawResidualPath();
 		}
 	}
 
 	const drawResidualPath = () => {
+		if (!svgEl) return;
 		const svg = d3.select(svgEl);
+		// Phase 1 empty first-eye unmounts this machine; still drop any
+		// leftover connectors if this SVG is reused on an empty frame.
+		if (document.querySelector('[data-te-diagram="empty"]')) {
+			svg.selectAll('line.residual-connector').remove();
+			return;
+		}
 
 		const starts = d3.selectAll(`.residual-start path.head`).nodes();
 		const ends = d3.selectAll(`.residual-end path.head`).nodes();
 
-		const lineData = starts.map((start, i) => {
+		const lineData = starts.flatMap((start, i) => {
+			if (!start || !ends[i]) return [];
 			const startEl = start.getBoundingClientRect();
 			const endEl = ends[i].getBoundingClientRect();
 
-			const x1 = startEl.right;
-			const y1 = startEl.top;
-			const x2 = endEl.left;
-			const y2 = endEl.top;
+			const { scrollLeft, scrollTop } = svgOffset();
+			const x1 = startEl.right + scrollLeft;
+			const y1 = startEl.top + scrollTop;
+			const x2 = endEl.left + scrollLeft;
+			const y2 = endEl.top + scrollTop;
 
-			return { x1, y1, x2, y2, id: start.id };
+			return [{ x1, y1, x2, y2, id: start.id }];
 		});
+		const teach = !!(
+			document.querySelector('[data-te-path="residual"], [data-te-arch="residual"]') ||
+			document.querySelector('[data-te-math-current="residual"][data-te-math-open="1"]')
+		);
 		svg
 			.selectAll('line.residual-connector')
 			.data(lineData)
 			.join('line')
 			.attr('class', (d) => `residual-connector ${d.id}`)
+			.attr('data-te-residual', 'bypass')
 			.attr('x1', (d) => d.x1)
 			.attr('y1', (d) => d.y1)
 			.attr('x2', (d) => d.x2)
 			.attr('y2', (d) => d.y2)
-			.attr('stroke', theme.colors.gray[400])
-			.attr('stroke-width', 1)
-			.attr('stroke-dasharray', '8,4')
-			.style('opacity', 0);
+			.attr('stroke', teach ? '#6d28d9' : '#4b5563')
+			.attr('stroke-width', teach ? 2.5 : 2)
+			.attr('stroke-dasharray', teach ? '10,5' : '8,4')
+			.style('opacity', 1)
+			.style('pointer-events', 'none');
 	};
+
 </script>
 
 <svelte:window bind:innerWidth={screenWidth} />

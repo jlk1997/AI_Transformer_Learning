@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { messages } from '~/i18n';
+	$: m = $messages;
 	import { modelMeta, tokens, rootRem, modelData, attentionHeadIdx, blockIdx } from '~/store';
 	import * as d3 from 'd3';
 	import { gsap } from '~/utils/gsap';
@@ -257,13 +259,14 @@
 
 <WeightPopoverCard
 	id="attention"
-	title={`Attention Head ${$attentionHeadIdx + 1} Out`}
+	title={m.attentionHeadOut.replace('{n}', String($attentionHeadIdx + 1))}
+	lead={m.popovers.attnLead}
 	bind:isAnimationActive
 	{timeline}
 >
 	<div class="attention-weight-poover weight-popover-content flex items-center justify-start">
 		<div class="matrix flex flex-col items-center">
-			<div class="title">Attention</div>
+			<div class="title">{m.attentionMatrix}</div>
 			<Matrix
 				className="attention-matrix"
 				data={maskArray(softmaxed)}
@@ -287,7 +290,7 @@
 			</div>
 		</div>
 		<div class="matrix flex flex-col items-center">
-			<div class="title flex items-center gap-1">Value</div>
+			<div class="title flex items-center gap-1">{m.valueMatrix}</div>
 			<div class="flex gap-0">
 				<Matrix
 					className="value-matrix"
@@ -315,7 +318,7 @@
 			</div>
 		</div>
 		<div class="matrix flex flex-col items-center">
-			<div class="title">Out</div>
+			<div class="title">{m.outVector}</div>
 			<div class="flex">
 				<Matrix
 					className="head-out-matrix"

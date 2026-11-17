@@ -1,0 +1,330 @@
+[
+  {
+    "id": "text-ui-layout",
+    "kind": "ui",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this",
+      "ui"
+    ],
+    "keywords": [
+      "这是什么",
+      "界面",
+      "看哪里",
+      "任务区",
+      "文字课",
+      "猜词机"
+    ],
+    "titleZh": "文字课画面怎么分",
+    "titleEn": "How the text course is laid out",
+    "bodyZh": "你现在在文字课。这是一台小猜词机：上方细顶栏只用来换课、问导师、开设置和切换中英。顶栏下面的任务区里，才是「生成下一个词」。画面分三块：左边是已经有的词，中间正在计算，右边是它要猜的下一个词。底部的讲解槽是教练在说话，主按钮是「推进一步」。现在还不用管公式，后面的旋钮也先不用拧。",
+    "bodyEn": "You are on the text course. This is a small next-word machine. The thin top bar only switches courses, opens the tutor or settings, and changes language. The task cluster under that bar holds “Generate next token.” The stage has three parts: left, the words so far; middle, the computation; right, the next word it is about to guess. The bottom dock is the coach; its main button is “Take one step.” No formulas yet, and leave later knobs alone.",
+    "citeZh": "出处：任务区的「生成下一个词」，以及底部讲解槽。",
+    "citeEn": "Source: “Generate next token” in the task cluster, and the coach dock at the bottom.",
+    "highlightSel": "[data-te-task=\"cluster\"], [data-te-path=\"generate\"]",
+    "nextStepHintZh": "先在任务区点「生成下一个词」，看见它抽出一个词后，再点「推进一步」。",
+    "nextStepHintEn": "Click “Generate next token” in the task cluster first. After a word appears, press “Take one step.”"
+  },
+  {
+    "id": "text-ui-right-table",
+    "kind": "ui",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "right_table",
+      "what_is_this",
+      "next_word"
+    ],
+    "keywords": [
+      "右边",
+      "右表",
+      "概率表",
+      "百分比",
+      "候选",
+      "下一个词",
+      "probability",
+      "right table"
+    ],
+    "titleZh": "右边那张表是什么",
+    "titleEn": "What the table on the right is",
+    "bodyZh": "右边那张表是「下一个词」的候选名单。每一行是一个词，后面的百分比是它被抽中的机会。{topList}就是眼下最靠前的几行。百分比是从分数来的，但这一关先把表看清楚。第一名机会最大，并不等于下一步一定抽它。",
+    "bodyEn": "The table on the right is the shortlist for the next word. Each row is a candidate, and the percentage is its chance of being drawn. Right now the top rows are: {topList}. Those percentages come from scores, but first just read the table. The top row is the most likely, not a guarantee.",
+    "citeZh": "出处：画面右侧「要猜的下一个词」概率表。",
+    "citeEn": "Source: the “next word” probability table on the right of the stage.",
+    "highlightSel": "[data-te-zone=\"right\"], .softmax .content, .step.softmax, [data-click=\"prob-step\"]",
+    "nextStepHintZh": "先看清右表。若还没生成，就到任务区点「生成下一个词」；若已经看到词，可再点「推进一步」。",
+    "nextStepHintEn": "Read the right-hand table. If you have not generated yet, click “Generate next token” in the task cluster; otherwise you can press “Take one step.”"
+  },
+  {
+    "id": "text-ui-task-cluster",
+    "kind": "ui",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "ui",
+      "next_word"
+    ],
+    "keywords": [
+      "任务区",
+      "生成下一个词",
+      "按钮在哪",
+      "点哪里",
+      "顶栏"
+    ],
+    "titleZh": "「生成下一个词」在任务区，不在细顶栏",
+    "titleEn": "Generate lives in the task cluster, not the thin top bar",
+    "bodyZh": "换课、问导师和设置在最上方的细顶栏。「生成下一个词」「回退一步」和「显示抽词旋钮」在顶栏下面那一条任务区里。抽词旋钮在还没走到那一关时是锁着的，点了也会先提醒你看它怎么抽一个词。",
+    "bodyEn": "Course switching, Ask tutor, and Settings sit in the thin top bar. “Generate next token,” “Step back,” and “Show sampling knobs” are in the task cluster just under that bar. The knobs stay locked until that station; clicking them early only reminds you to watch a word being drawn first.",
+    "citeZh": "出处：顶栏下方的任务区。",
+    "citeEn": "Source: the task cluster under the top bar.",
+    "highlightSel": "[data-te-task=\"cluster\"], [data-te-path=\"generate\"]",
+    "nextStepHintZh": "在任务区点「生成下一个词」。",
+    "nextStepHintEn": "Click “Generate next token” in the task cluster."
+  },
+  {
+    "id": "text-ui-zones-dock",
+    "kind": "ui",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "ui",
+      "what_is_this"
+    ],
+    "keywords": [
+      "左边",
+      "中间",
+      "右边",
+      "三块",
+      "讲解槽",
+      "推进一步",
+      "你在哪"
+    ],
+    "titleZh": "三块区域、讲解槽和「你在哪」",
+    "titleEn": "Three zones, the coach dock, and You are here",
+    "bodyZh": "左、中、右三块上面有一条浅色区域标签：左边已经有的词，中间正在计算，右边要猜的下一个词。底部讲解槽是教练的位置，「推进一步」在讲解槽里，不会自动替你点。左上「你在哪」是地图胶囊，用来看当前关卡，不会盖住下面的讲解。",
+    "bodyEn": "A light zone label marks left (words so far), middle (computing), and right (the next word). The bottom dock is the coach; “Take one step” lives there and is never clicked for you. The “You are here” capsule at the top of the stage shows the current station and does not cover the coach.",
+    "citeZh": "出处：区域标签、底部讲解槽，以及「你在哪」胶囊。",
+    "citeEn": "Source: the zone labels, the bottom coach dock, and the You are here capsule.",
+    "highlightSel": "[data-te-zones=\"bar\"], [data-te-guide=\"slot\"], [data-te-tutor=\"map\"]",
+    "nextStepHintZh": "先分清左中右，再在任务区点「生成下一个词」。",
+    "nextStepHintEn": "Map left, middle, and right, then click “Generate next token” in the task cluster."
+  },
+  {
+    "id": "image-ui-layout",
+    "kind": "ui",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this",
+      "ui",
+      "denoise"
+    ],
+    "keywords": [
+      "这是什么",
+      "图片",
+      "去噪",
+      "三块",
+      "画布",
+      "开始看图"
+    ],
+    "titleZh": "图片课画面怎么分",
+    "titleEn": "How the image course is laid out",
+    "bodyZh": "你现在在图片课的第一关。这是一台小去噪机，用来看「再去噪一步」时画面怎样变清楚。左边是条件（提示词），中间是正在变清楚的画布，右边是这一步的输出与对照。主按钮「再去噪一步」在上方任务区，不在细顶栏。底部讲解槽会先请你开始看图。这是预先设计的示例轨迹，不是浏览器里跑的大模型。现在还不用拧任务区里的旋钮。",
+    "bodyEn": "You are at the first station of the image course. This is a small denoising machine: watch the canvas clear when you click “Denoise one step.” Left: the condition (the prompt). Middle: the canvas getting clearer. Right: this step’s output and comparison. “Denoise one step” is in the task cluster under the top bar, not in the thin top bar itself. The bottom dock asks you to start looking. These are pre-designed example trajectories, not a large model running in the browser. Leave the knobs in the task cluster alone for now.",
+    "citeZh": "出处：左中右三块区域，以及任务区的「再去噪一步」。",
+    "citeEn": "Source: the three stage regions, and “Denoise one step” in the task cluster.",
+    "highlightSel": "[data-te-image=\"canvas\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "看清画布后，在任务区点「再去噪一步」。",
+    "nextStepHintEn": "After you have mapped the canvas, click “Denoise one step” in the task cluster."
+  },
+  {
+    "id": "image-ui-right",
+    "kind": "ui",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "right_table",
+      "what_is_this",
+      "cfg"
+    ],
+    "keywords": [
+      "右边",
+      "对照",
+      "输出与对照",
+      "小图",
+      "缩略图",
+      "听话程度"
+    ],
+    "titleZh": "图片课右边是什么",
+    "titleEn": "What is on the right in the image course",
+    "bodyZh": "右边这一列叫「输出与对照」。上面是本步预测的噪声和 VAE 解出的清晰成品，下面一排小图是同一提示词、同一种子、三种不同对照。先看三块和大图、小图是否都在，不必先给这些小图起名字。任务区里的旋钮现在还锁着。",
+    "bodyEn": "The right column is “Output and comparison.” On top are this step’s noise prediction and the VAE’s clearer result; the thumbnail row underneath compares the same prompt and seed in three side-by-side pictures. First check that the three regions, the large canvases, and the thumbnails are visible. You do not need to name those small pictures yet. Knobs in the task cluster stay locked for now.",
+    "citeZh": "出处：右侧「输出与对照」大画布和下面的对照小图。",
+    "citeEn": "Source: the right-hand “Output and comparison” canvases and the thumbnail row.",
+    "highlightSel": "[data-te-image=\"cfg\"], [data-te-image=\"canvas\"]",
+    "nextStepHintZh": "看清右边对照后，再在任务区点「再去噪一步」。",
+    "nextStepHintEn": "After you have seen the comparison on the right, click “Denoise one step” in the task cluster."
+  },
+  {
+    "id": "music-ui-layout",
+    "kind": "ui",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this",
+      "ui",
+      "next_note"
+    ],
+    "keywords": [
+      "这是什么",
+      "音乐",
+      "三块",
+      "琴卷",
+      "音符",
+      "开始看谱"
+    ],
+    "titleZh": "音乐课画面怎么分",
+    "titleEn": "How the music course is laid out",
+    "bodyZh": "你现在在音乐课的第一关。和文字课是同一件事：一次只猜下一个音。左边是已经有的音，中间是钢琴卷帘，右边是下一个音的概率。主按钮「生成下一个音符」在上方任务区，不在细顶栏。这是预先设计的示例旋律与采样规则，试听是简易合成音，不会自动播完整首。现在还不用拧任务区里的旋钮。",
+    "bodyEn": "You are at the first station of the music course. It is the same idea as the text course: guess only the next note. Left: the notes so far. Middle: the piano roll. Right: the next-note probabilities. “Generate next note” is in the task cluster under the top bar, not in the thin top bar. These are pre-designed melodies and sampling rules; playback is a simple synth and will not auto-play a full song. Leave the knobs in the task cluster alone for now.",
+    "citeZh": "出处：左中右三块，以及任务区的「生成下一个音符」。",
+    "citeEn": "Source: the three stage regions, and “Generate next note” in the task cluster.",
+    "highlightSel": "[data-te-task=\"cluster\"]",
+    "nextStepHintZh": "看清三块之后，在任务区让它写出下一个音。",
+    "nextStepHintEn": "After you have mapped the three parts, let it write the next note from the task cluster."
+  },
+  {
+    "id": "music-ui-right",
+    "kind": "ui",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "right_table",
+      "what_is_this",
+      "next_note"
+    ],
+    "keywords": [
+      "右边",
+      "概率",
+      "下一个音",
+      "音高",
+      "百分比",
+      "候选"
+    ],
+    "titleZh": "音乐课右边是什么",
+    "titleEn": "What is on the right in the music course",
+    "bodyZh": "右边那些百分比，是「下一个音」的候选，和文字课右边「下一个词」的表是同一件事。{topList}是眼下最靠前的几个音。先看表，再听它写出的音。第一名不一定会被抽中。",
+    "bodyEn": "The percentages on the right are candidates for the next note — the same idea as the next-word table in the text course. The top rows right now are: {topList}. Read the table, then listen to the note it writes. The top pitch is not always the one that gets chosen.",
+    "citeZh": "出处：右侧「下一个音符的概率」列表。",
+    "citeEn": "Source: the next-note probability list on the right.",
+    "highlightSel": ".music-probs, [data-te-zone=\"right\"]",
+    "nextStepHintZh": "看过右边的表，可以再点「推进一步」，或在任务区让它写出下一个音。",
+    "nextStepHintEn": "After reading the table on the right, you may press “Take one step,” or generate the next note in the task cluster."
+  },
+  {
+    "id": "ft-ui-layout",
+    "kind": "ui",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this",
+      "ui",
+      "finetune"
+    ],
+    "keywords": [
+      "这是什么",
+      "微调",
+      "权重",
+      "温度",
+      "推进一步",
+      "任务区"
+    ],
+    "titleZh": "微调课画面怎么分",
+    "titleEn": "How the fine-tune course is laid out",
+    "bodyZh": "你现在在微调课的第一关。文字课只改抽样（温度），这一课才改权重。这是本机 GPT-2 小实验，不是在调 ChatGPT。主按钮「推进一步」在上方任务区，只讲解，不会开训。画面上是对照板：一边是文字课还在猜下一个词，一边是这一课要用新文本改权重。底部讲解槽用来开始这一课；若你收起了引导，会看到一个很小的「打开新手引导」，不是第二条主按钮。",
+    "bodyEn": "You are at the first station of the fine-tune course. The text course only changed sampling (temperature). This course changes weights. It is a local GPT-2 experiment, not a way to tune ChatGPT. “Take one step” sits in the task cluster; it only explains and does not start training. The board compares “still guessing the next word” with “this lesson changes weights with new text.” The bottom dock starts the lesson; if you hide the coach, a compact “Open the beginner guide” control appears — not a second primary button.",
+    "citeZh": "出处：任务区的「推进一步」，以及工作室里的对照板。",
+    "citeEn": "Source: “Take one step” in the task cluster, and the comparison board in the studio.",
+    "highlightSel": "[data-te-ft=\"first-line\"], [data-te-ft=\"now\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先分清抽样和训练，再在任务区点「推进一步」去看分词。",
+    "nextStepHintEn": "First separate sampling from training, then press “Take one step” in the task cluster to see tokenization."
+  },
+  {
+    "id": "ft-ui-right-board",
+    "kind": "ui",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "right_table",
+      "what_is_this",
+      "finetune"
+    ],
+    "keywords": [
+      "右边",
+      "对照板",
+      "这一课",
+      "猜词机还在",
+      "先分清"
+    ],
+    "titleZh": "微调课右边对照的是什么",
+    "titleEn": "What the fine-tune board on the right is comparing",
+    "bodyZh": "这里没有文字课那种「下一个词」概率表占满右边。你看见的是对照板：左边提醒刚才那台猜词机还在，右边说这一课要用新文本改权重。先把这一条线看清。真正开训不在「推进一步」上，而在后面的工作室里。",
+    "bodyEn": "There is no full next-word probability table filling the right side here. You are looking at a comparison board: one side reminds you the next-word machine is still there; the other says this lesson changes weights with new text. Read that line first. Starting a run is not on “Take one step”; it lives later in the workshop.",
+    "citeZh": "出处：微调工作室里的左右对照板。",
+    "citeEn": "Source: the left/right comparison board in the fine-tune studio.",
+    "highlightSel": "[data-te-ft=\"first-line\"], [data-te-ft=\"now\"]",
+    "nextStepHintZh": "看清对照板后，再点「推进一步」去看分词。",
+    "nextStepHintEn": "After you have read the board, press “Take one step” to see tokenization."
+  }
+]

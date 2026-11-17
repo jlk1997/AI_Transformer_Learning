@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { messages } from '~/i18n';
+	$: m = $messages;
 	import type { PopoverProps } from 'flowbite-svelte/Popover.svelte';
 	import CommonPopover from './CommonPopover.svelte';
 
@@ -11,7 +13,7 @@
 
 <CommonPopover
 	className="dropout-popover"
-	title="Dropout"
+	title={m.popovers.dropoutTitle}
 	{offset}
 	{triggeredBy}
 	{trigger}
@@ -19,7 +21,7 @@
 	goTo="article-dropout"
 >
 	<div class="dropout-content">
-		Disables randomly selected neurons. Used only during training.
+		{m.popovers.dropoutBody}
 	</div></CommonPopover
 >
 

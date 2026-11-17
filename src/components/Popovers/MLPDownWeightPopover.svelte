@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { messages } from '~/i18n';
+	$: m = $messages;
 	import { modelMeta, tokens, rootRem } from '~/store';
 	import * as d3 from 'd3';
 	import { gsap } from '~/utils/gsap';
@@ -304,7 +306,7 @@
 	};
 </script>
 
-<WeightPopoverCard id="mlp-down" title={'MLP Compression'} bind:isAnimationActive {timeline}>
+<WeightPopoverCard id="mlp-down" title={m.mlpCompression} bind:isAnimationActive {timeline} lead={m.popovers.mlpDownLead}>
 	<div class="mlp-weight-popover weight-popover-content flex items-center justify-start">
 		<div class="matrix flex flex-col items-center">
 			<div class="tokens" style={`gap:${tokenGap}px`}>
@@ -315,8 +317,8 @@
 		</div>
 		<div class="matrix flex flex-col items-center">
 			<div class="title flex items-center gap-1">
-				Expanded Embeddings <HelpPopover id="mlp-down-emgeddings" 
-					>{`Expanded latent vectors through MLP expansion layer.`}</HelpPopover
+				{m.expandedEmbeddings} <HelpPopover id="mlp-down-emgeddings" 
+					>{m.popovers.mlpDownEmb}</HelpPopover
 				>
 			</div>
 			<div class="flex">
@@ -339,8 +341,8 @@
 		</div>
 		<div class="matrix flex flex-col items-center">
 			<div class="title flex items-center gap-1">
-				Compression Weights <HelpPopover id="mlp-down-weights" 
-					>{`Projects expanded latent vectors back to original space. \nParameters that learned in training, fixed in prediction.`}</HelpPopover
+				{m.compressionWeights} <HelpPopover id="mlp-down-weights" 
+					>{m.popovers.mlpDownWeights}</HelpPopover
 				>
 			</div>
 			<div class="flex gap-0">
@@ -362,8 +364,8 @@
 		<div class="operator"><div class="symbol plus px-3">+</div></div>
 		<div class="matrix flex flex-col items-center">
 			<div class="title flex items-center gap-1">
-				Compression Bias <HelpPopover id="mlp-down-bias" 
-					>{`Offsets added after compression. \nParameters that learned in training, fixed in prediction.`}</HelpPopover
+				{m.compressionBias} <HelpPopover id="mlp-down-bias" 
+					>{m.popovers.mlpDownBias}</HelpPopover
 				>
 			</div>
 			<Matrix
@@ -383,7 +385,7 @@
 			<div class="symbol equal px-4">=</div>
 		</div>
 		<div class="matrix flex flex-col items-center">
-			<div class="title">Compressed <br />Embeddings</div>
+			<div class="title">{m.compressedEmbeddings}</div>
 			<div class="flex">
 				<Matrix
 					className="mlp-down-out"

@@ -17,3 +17,35 @@ __pycache__
 params_output
 
 static/consent-form.pdf
+
+# Local teaching-tutor secrets live under the user profile; never commit a copy.
+tutor-secrets.json
+
+# Agent backup siblings are not product source. They live in
+# C:\Users\10552\agent-tools\transformer-explainer-backups\ (relative paths preserved).
+*.uxbak
+*.uxbak[0-9]
+*.depthbak
+*.depthbak[0-9]
+*.theorybak
+*.theorybak[0-9]
+*.uibak
+*.uibak[0-9]
+*.auditbak
+*.auditbak[0-9]
+*.agentbak
+*.agentbak[0-9]
+transformer-explainer-backups/
+# Local agent backup siblings next to source files
+*.*bak
+*.*bak[0-9]
+*.*bak[0-9][0-9]
+*.*bak.after
+*.*bak[0-9].after
+*.*bak[0-9][0-9].after
+**/_bak_*
+
+# Local training checkpoints and virtualenvs
+finetune-lab/runs/
+.venv/
+venv/

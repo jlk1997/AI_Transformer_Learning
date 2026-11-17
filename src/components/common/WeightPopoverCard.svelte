@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { Card } from 'flowbite-svelte';
-	import { CloseOutline } from 'flowbite-svelte-icons';
+	import { CloseOutline } from '~/components/icons';
 	import { onDestroy, onMount } from 'svelte';
 	import { userId, weightPopover } from '~/store';
+	import { locale } from '~/i18n';
+
+	$: zh = $locale !== 'en';
 
 	export let id: string;
 	export let title: string;
@@ -10,6 +13,8 @@
 	export let isAnimationActive: boolean = false;
 	export let timeline;
 	export let isOpen: boolean = true;
+	export let lead: string | undefined = undefined;
+	export let sketchNote: string | undefined = undefined;
 
 	let startTime;
 
@@ -39,6 +44,7 @@
 <Card
 	class={`weight-popover-card popover bg-white text-sm font-light text-gray-500 ${className}`}
 	data-click="weight-popover"
+	data-te-popover={id}
 	on:click={(e) => {
 		e.stopPropagation();
 	}}
@@ -50,8 +56,10 @@
 		<div class="controls">
 			{#if isAnimationActive}
 				<button
+					type="button"
 					class="play-control forward"
 					data-click="matrix-calc-forward-btn"
+					aria-label={zh ? '跳到动画末尾' : 'Skip to the end of the animation'}
 					on:click={(e) => {
 						e.stopPropagation();
 						timeline.progress(1);
@@ -75,8 +83,10 @@
 				</button>
 			{:else}
 				<button
+					type="button"
 					class="play-control restart"
 					data-click="matrix-calc-restart-btn"
+					aria-label={zh ? '重放动画' : 'Replay the animation'}
 					on:click={(e) => {
 						e.stopPropagation();
 						isAnimationActive = true;
@@ -103,8 +113,10 @@
 				>
 			{/if}
 			<button
+				type="button"
 				class="close"
 				data-click="matrix-calc-close-btn"
+				aria-label={zh ? '关闭' : 'Close'}
 				on:click={(e) => {
 					e.stopPropagation();
 					weightPopover.set(null);
@@ -113,6 +125,12 @@
 			>
 		</div>
 	</div>
+	{#if lead || sketchNote}
+		<div class="weight-popover-lead" data-te-popover-lead>
+			{#if lead}<p class="lead">{lead}</p>{/if}
+			{#if sketchNote}<p class="sketch-note">{sketchNote}</p>{/if}
+		</div>
+	{/if}
 	<div class="content">
 		<slot />
 	</div>
@@ -133,6 +151,20 @@
 		align-items: center;
 		gap: 1rem;
 		justify-content: space-between;
+	}
+	.weight-popover-lead {
+		padding: 0.55rem 0.9rem 0.15rem;
+		max-width: 46rem;
+		color: theme('colors.gray.700');
+		font-size: 0.8rem;
+		line-height: 1.45;
+	}
+	.weight-popover-lead .lead {
+		margin: 0;
+	}
+	.weight-popover-lead .sketch-note {
+		margin: 0.25rem 0 0;
+		color: theme('colors.gray.500');
 	}
 	.content {
 		width: 100%;

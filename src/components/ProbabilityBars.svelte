@@ -10,6 +10,7 @@
 	export let rowHeight;
 	export let rowGap;
 	export let hoveredIndex: number | null = null;
+	export let displayRows: { probability: number; rank?: number; token?: string }[] | undefined = undefined;
 
 	const barHeight = 4;
 
@@ -21,7 +22,12 @@
 	let hoverColor = theme.colors.purple[400];
 
 	export let drawBars = () => {
-		const data = $modelData?.probabilities;
+		const data = (displayRows != null ? displayRows : $modelData?.probabilities) || [];
+		if (!svgEl) return;
+		if (!data.length) {
+			d3.select(svgEl).selectAll('g.probability').remove();
+			return;
+		}
 
 		const svg = d3.select(svgEl);
 
@@ -112,7 +118,10 @@
 		drawBars();
 	});
 
-	$: if ($modelData && svgEl) {
+	$: if (($modelData || displayRows) && svgEl) {
+		drawBars();
+	}
+	$: if (displayRows && svgEl) {
 		drawBars();
 	}
 

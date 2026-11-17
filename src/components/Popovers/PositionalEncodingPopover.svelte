@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { locale, messages } from '~/i18n';
+	$: m = $messages;
+	$: zh = $locale !== 'en';
 	import classNames from 'classnames';
 	import { Popover } from 'flowbite-svelte';
 	import * as d3 from 'd3';
@@ -60,20 +63,22 @@
 
 <!-- <Popover
 	class={classNames('popover positional-encoding-popover text-sm', className)}
-	title="Positional Encoding"
+	title={m.positionalEncodingTitle}
 	{offset}
 	{triggeredBy}
 	{trigger}
 	{placement}
 	{open}
 > -->
-<div class="popover-container emb_pos">
+<div class="popover-container emb_pos" data-te-popover="positional">
 	<!-- <div class="title">Positional Encoding</div> -->
 
 	<div class="content">
+		<p class="see-first">{zh ? '先看这些条纹：同一个位置是一行一种纹路。这就是位置编码，用来让模型分清词的先后。条纹只是示意「每个位置长得不一样」，不是本课 GPT-2 的现场权重。' : 'First look at these stripes: each position has its own pattern. That is positional encoding, which lets the model tell word order apart. The stripes are only a sketch that positions look different, not this lesson’s live GPT-2 weights.'}</p>
+		<p class="pe-honest">{zh ? '本课的 GPT-2 用的是学来的位置嵌入（按位置查表）。下面的正弦 / 余弦公式是一种常见示意，不是把这条公式当成现场权重，也没有 RoPE 动画；有的模型会用 RoPE，本课不演示它。' : 'This lesson’s GPT-2 uses learned position embeddings (a lookup by index). The sine / cosine formula below is a common sketch — not this model’s live weights — and there is no RoPE animation. Some models use RoPE; this lesson does not animate it.'}</p>
 		<div class="token-container">
 			<div class="tokens">
-				<div class="subtitle">Token</div>
+				<div class="subtitle">{m.tokenLabel}</div>
 				<div class="subcontent flex flex-col">
 					{#each $tokens as token, token_idx}
 						<div
@@ -105,7 +110,7 @@
 				</div>
 			</div>
 			<div class="embs">
-				<div class="subtitle">Embedding</div>
+				<div class="subtitle">{m.embeddings}</div>
 				<div class="subcontent flex flex-col">
 					{#each $tokens as token, token_idx}
 						<div
@@ -132,7 +137,7 @@
 			</div>
 		</div>
 		<div class="viz-container">
-			<div class="subtitle">Encoding Matrix</div>
+			<div class="subtitle">{m.encodingMatrix}</div>
 			<div class="subcontent viz-subcontent">
 				<div class="chart-container mx-auto">
 					<div class="embed-dim-axis">
@@ -236,6 +241,7 @@
 <!-- </Popover> -->
 
 <style lang="scss">
+	.see-first { margin: 0 0 0.6rem; font-size: 0.82rem; line-height: 1.4; color: #374151; max-width: 28rem; }
 	.highlight {
 		cursor: pointer !important;
 		border: 2px solid theme('colors.gray.500') !important;
@@ -464,4 +470,5 @@
 	.legend-labels span {
 		font-size: 0.55rem; /* Adjust the font size as needed */
 	}
+	.pe-honest { margin: 0.35rem 0 0.6rem; max-width: 36rem; color: #4b5563; font-size: 0.8rem; line-height: 1.45; }
 </style>

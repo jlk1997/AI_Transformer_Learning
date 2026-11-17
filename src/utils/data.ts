@@ -7,28 +7,56 @@ import {
 	isModelRunning,
 	predictedToken,
 	modelSession,
-	modelMetaMap
+	modelMetaMap,
+	textHasDrawnWord,
+	textProbOrigin,
+	textProbLiveHandoff,
+	scoredInputText
 } from '~/store';
+import { displayLabelsFromIds, displayDecodedToken } from '~/utils/gpt2Tokens';
 import { get } from 'svelte/store';
 import { reshapeArray } from './array';
 import { showFlowAnimation } from './animation';
+
+/** Honest empty board: do not score a blank box as a space, and do not leave the previous sentence's frame. */
+export const clearTextVisualization = () => {
+	tokens.set([]);
+	tokenIds.set([]);
+	predictedToken.set(undefined);
+	scoredInputText.set('');
+	isModelRunning.set(false);
+	modelData.update((d) => {
+		if (!d) return d;
+		return { ...d, probabilities: [], sampled: undefined };
+	});
+};
 
 export const fakeRunWithCachedData = async ({
 	cachedData,
 	tokenizer,
 	temperature,
-	sampling
+	sampling,
+	reason = 'user',
+	input
 }: {
 	cachedData: any;
 	tokenizer: PreTrainedTokenizer;
 	temperature: number;
 	sampling: Sampling;
+	reason?: 'user' | 'autoload';
+	input?: string;
 }) => {
 	isModelRunning.set(true);
+	if (get(textHasDrawnWord)) {
+		textProbOrigin.set('cached');
+	}
 
 	modelData.set(cachedData);
 	tokens.set(cachedData.tokens);
 	tokenIds.set(cachedData.tokenIds);
+	if (typeof input === 'string') {
+		scoredInputText.set(input);
+	}
 
 	setTimeout(async () => {
 		await showFlowAnimation(cachedData.tokens.length, true);
@@ -46,14 +74,21 @@ export const runModel = async ({
 	tokenizer,
 	input,
 	temperature,
-	sampling
+	sampling,
+	reason = 'user'
 }: {
 	tokenizer: PreTrainedTokenizer;
 	input: string;
 	temperature: number;
 	sampling: Sampling;
+	reason?: 'user' | 'autoload';
 }) => {
 	isModelRunning.set(true);
+	const prevOrigin = get(textProbOrigin);
+	if (reason === 'autoload' && prevOrigin !== 'live') {
+		textProbLiveHandoff.set(true);
+	}
+	textProbOrigin.set('live');
 
 	const { token_ids, input_tokens } = await getTokenization(tokenizer, input === '' ? ' ' : input);
 
@@ -70,6 +105,8 @@ export const runModel = async ({
 	const { probabilities, sampled } = getProbabilities({ tokenizer, logits, sampling, temperature });
 
 	modelData.set({ logits, outputs, probabilities, sampled });
+	predictedToken.set(sampled);
+	scoredInputText.set(input);
 
 	// To ensure the animation starts after all elements have been rendered
 	setTimeout(async () => {
@@ -115,7 +152,7 @@ export const adjustTemperature = async ({
 
 export const getTokenization = async (tokenizer: PreTrainedTokenizer, input: string) => {
 	const token_ids = tokenizer.encode(input);
-	const input_tokens = token_ids.map((id) => tokenizer.decode([id])).flat();
+	const input_tokens = displayLabelsFromIds(token_ids, tokenizer);
 
 	return {
 		token_ids,
@@ -220,7 +257,7 @@ function topKSampling(
 	const output = filteredLogits.map((item, i) => ({
 		...item,
 		rank: i,
-		token: formatTokenForDisplay(tokenizer.decode([item.tokenId])),
+		token: displayDecodedToken(tokenizer, item.tokenId),
 		expLogit: expLogits[i],
 		probability: probabilities[i]
 	}));
@@ -277,7 +314,7 @@ function topPSampling(
 	const output = scaledLogits.map((item, i) => ({
 		...item,
 		rank: i,
-		token: formatTokenForDisplay(tokenizer.decode([item.tokenId])),
+		token: displayDecodedToken(tokenizer, item.tokenId),
 		expLogit: expLogits[i],
 		probability: newProbabilities[i] || 0,
 		topPProbability: probabilities[i], //original
@@ -300,12 +337,15 @@ function softmax(logits: number[]): { expLogits: number[]; probabilities: number
 
 // Helper function to format tokens for display
 function formatTokenForDisplay(token: string): string {
-	// Replace special whitespace characters with readable labels
+	// Keep in sync with ~/utils/gpt2Tokens formatTokenForDisplay (zh default).
 	return token
-		.replace(/\n/g, '[NEWLINE]')
-		.replace(/\t/g, '[TAB]')
-		.replace(/\r/g, '[CR]')
-		.replace(/\s{2,}/g, (match) => `[${match.length} SPACES]`); // Multiple spaces
+		.replace(/\[NEWLINE\]/g, '换行')
+		.replace(/\n/g, '换行')
+		.replace(/\[TAB\]/g, '制表符')
+		.replace(/\t/g, '制表符')
+		.replace(/\[CR\]/g, '回车')
+		.replace(/\r/g, '回车')
+		.replace(/\s{2,}/g, (match) => `${match.length} 个空格`);
 }
 
 // Simulates the np.random.choice function in Python.

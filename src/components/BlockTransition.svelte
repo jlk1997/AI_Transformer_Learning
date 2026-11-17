@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { AngleLeftOutline, AngleRightOutline } from 'flowbite-svelte-icons';
-	import { onMount, tick } from 'svelte';
+	import { AngleLeftOutline, AngleRightOutline } from '~/components/icons';
+	import { onMount, onDestroy, tick } from 'svelte';
 	import {
 		blockIdx,
 		blockIdxTemp,
@@ -14,6 +14,11 @@
 		userId
 	} from '~/store';
 	import { textPages } from '~/utils/textbookPages';
+	import { locale, messages } from '~/i18n';
+
+	$: zh = $locale !== 'en';
+	$: m = $messages;
+	$: blockTitle = (m.blockTitle || (zh ? '第 {n} 个 Transformer 块' : 'Transformer Block {n}')).replace('{n}', String($blockIdxTemp + 1));
 	import TextbookTooltip from './common/TextbookTooltip.svelte';
 
 	let resizeObserver: ResizeObserver;
@@ -30,6 +35,10 @@
 	const animateForwardTransition = async ({ asyncTime } = {}) => {
 		const container = document.querySelector('.steps .blocks');
 		await tick();
+		if (!container) {
+			asyncUpdateBlockIdx(asyncTime);
+			return;
+		}
 
 		isOnBlockTransition.set(true);
 		await tick();
@@ -48,6 +57,10 @@
 	const animateBackwardTransition = async ({ asyncTime } = {}) => {
 		const container = document.querySelector('.steps .blocks');
 		await tick();
+		if (!container) {
+			asyncUpdateBlockIdx(asyncTime);
+			return;
+		}
 
 		isOnBlockTransition.set(true);
 		await tick();
@@ -111,13 +124,16 @@
 	onMount(() => {
 		const setPosition = () => {
 			const scrollLeft = window.scrollX;
-			const topbarHeight = document.querySelector('.top-bar')?.offsetHeight;
+			const topbarHeight = document.querySelector('.top-bar')?.offsetHeight ?? 0;
 
 			const embedding = document.querySelector('.step.qkv .content .block-start-column');
 			const block =
 				$blockIdx === $modelMeta.layer_num - 1
 					? document.querySelector('.step.transformer-blocks .content .column.final')
 					: document.querySelector('.step.transformer-blocks .content');
+
+			// Sankey may be unmounted on other courses (or mid-transition). Skip quietly.
+			if (!embedding || !block) return;
 
 			const embeddingRect = embedding.getBoundingClientRect();
 			const blockRect = block.getBoundingClientRect();
@@ -130,11 +146,15 @@
 		};
 		setPosition();
 
-		resizeObserver = new ResizeObserver((entries) => {
+		resizeObserver = new ResizeObserver(() => {
 			setPosition();
 		});
 		const elements = document?.querySelectorAll('.resize-watch');
 		elements.forEach((el) => resizeObserver.observe(el));
+	});
+
+	onDestroy(() => {
+		if (resizeObserver) resizeObserver.disconnect();
 	});
 
 	const onClickNext = (e) => {
@@ -186,16 +206,20 @@
 	class:active={$isBoundingBoxActive}
 >
 	<TextbookTooltip id="blocks">
-		<span class="title-text">Transformer Block {$blockIdxTemp + 1}</span>
+		<span class="title-text" data-te-label="block-title">{blockTitle}</span>
 	</TextbookTooltip>
 	<button
+		type="button"
 		data-click="transformer-block-prev-btn"
+		aria-label={zh ? '上一层 Transformer 块' : 'Previous Transformer block'}
 		on:click={onClickPrev}
 		disabled={$isOnAnimation || $isOnBlockTransition || $blockIdxTemp === 0}
 		><AngleLeftOutline size="sm" /></button
 	>
 	<button
+		type="button"
 		data-click="transformer-block-next-btn"
+		aria-label={zh ? '下一层 Transformer 块' : 'Next Transformer block'}
 		on:click={onClickNext}
 		disabled={$isOnAnimation || $isOnBlockTransition || $blockIdxTemp === $modelMeta.layer_num - 1}
 		><AngleRightOutline size="sm" /></button

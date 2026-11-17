@@ -8,7 +8,7 @@
 	import MLPDownWeightPopover from './popovers/MLPDownWeightPopover.svelte';
 
 	import LogitWeightPopover from './popovers/LogitWeightPopover.svelte';
-	import { ArrowUpRightDownLeftOutline } from 'flowbite-svelte-icons';
+	import { ArrowUpRightDownLeftOutline } from '~/components/icons';
 	import {
 		highlightAttentionPath,
 		highlightLogitPath,

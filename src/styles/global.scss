@@ -14,10 +14,50 @@ button {
 }
 :root {
 	font-size: 17px;
+	--te-ease: 180ms ease;
+}
+button,
+[role='button'],
+a,
+input,
+textarea,
+select,
+.tutor-btn,
+.locale-toggle {
+	transition:
+		background-color var(--te-ease),
+		color var(--te-ease),
+		border-color var(--te-ease),
+		box-shadow var(--te-ease),
+		filter var(--te-ease);
+}
+*:focus-visible {
+	outline: 2px solid #7c3aed;
+	outline-offset: 2px;
 }
 
 @media (min-width: 2560px) {
 	:root {
 		font-size: 18px;
 	}
+}
+
+
+@keyframes te-lab-flash-pulse {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.0);
+	}
+	50% {
+		box-shadow: 0 0 0 6px rgba(124, 58, 237, 0.35);
+	}
+}
+
+.te-lab-flash {
+	animation: te-lab-flash-pulse 0.9s ease-in-out 2;
+	border-radius: 0.45rem;
+	outline: 2px solid #7c3aed;
+	outline-offset: 2px;
+	position: relative;
+	z-index: 30;
 }

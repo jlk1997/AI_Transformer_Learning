@@ -1,0 +1,602 @@
+[
+  {
+    "id": "text-after-generate",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate",
+      "tokens",
+      "attention"
+    ],
+    "intents": [
+      "next_word",
+      "right_table",
+      "followup"
+    ],
+    "keywords": [
+      "刚抽出",
+      "生成下一个词",
+      "刚才",
+      "然后呢",
+      "再往下",
+      "百分比",
+      "概率"
+    ],
+    "titleZh": "抽出一个词之后，先看右边的数有没有动",
+    "titleEn": "After a word is drawn, watch the numbers on the right",
+    "bodyZh": "你已经点过任务区的「生成下一个词」吗？先看它接在后面的那个词，再看右边表。眼下最靠前的是{topList}。这些百分比是这一步的机会，不是固定答案。一次只看这一处。",
+    "bodyEn": "If you already tapped “Generate the next word”, look at the word that was appended, then at the table on the right. The leading rows right now are {topList}. Those percentages are chances for this step, not a fixed answer.",
+    "citeZh": "出处：任务区「生成下一个词」和右侧概率表上的数。",
+    "citeEn": "Source: “Generate the next word” in the task cluster, and the live numbers in the right-hand table.",
+    "highlightSel": "[data-te-zone=\"right\"], [data-te-path=\"generate\"]",
+    "nextStepHintZh": "看完表上的数，再点底部讲解槽里的「推进一步」。",
+    "nextStepHintEn": "After you see the numbers, tap “Take one step” in the docked guide.",
+    "requiresGenerated": true
+  },
+  {
+    "id": "image-after-step",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "map",
+      "step",
+      "again",
+      "knobs"
+    ],
+    "intents": [
+      "denoise",
+      "followup"
+    ],
+    "keywords": [
+      "再去噪",
+      "刚走一步",
+      "然后呢",
+      "画布",
+      "第几步"
+    ],
+    "titleZh": "去噪一步之后，先看画布变了没有",
+    "titleEn": "After one denoise step, watch the canvas",
+    "bodyZh": "你如果已经点过任务区的「再去噪一步」，先看中间画布，不要急着给这一步起公式名字。一次只看画面有没有更清楚一点点。",
+    "bodyEn": "If you already tapped “Denoise one more step”, watch the middle canvas first. Do not rush to name a formula. Just see whether the picture got a little clearer.",
+    "citeZh": "出处：中间画布，以及任务区的「再去噪一步」。",
+    "citeEn": "Source: the middle canvas, and “Denoise one more step” in the task cluster.",
+    "highlightSel": "[data-te-image=\"canvas\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "看完这一步的画布，再决定要不要再去噪一步。",
+    "nextStepHintEn": "After you see this step’s canvas, decide whether to denoise once more.",
+    "requiresGenerated": true
+  },
+  {
+    "id": "music-after-note",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "map",
+      "step",
+      "listen"
+    ],
+    "intents": [
+      "next_note",
+      "right_table",
+      "followup"
+    ],
+    "keywords": [
+      "下一个音符",
+      "刚写出",
+      "然后呢",
+      "概率",
+      "候选"
+    ],
+    "titleZh": "写出一个音之后，对照右边的候选",
+    "titleEn": "After a note is written, compare it with the candidates on the right",
+    "bodyZh": "如果已经点过「生成下一个音符」，先听（或看）它写出的那一个音，再对照右边的候选：{topList}。第一名不一定就是被写下的那一个。",
+    "bodyEn": "If you already tapped “Generate the next note”, look at the note that was written, then compare it with the candidates on the right: {topList}. The top row is not always the one that was written.",
+    "citeZh": "出处：任务区「生成下一个音符」，以及右侧下一个音的概率。",
+    "citeEn": "Source: “Generate the next note” in the task cluster, and the next-note probabilities on the right.",
+    "highlightSel": ".music-probs, [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "对照完右边的表，再考虑要不要再写一个音。",
+    "nextStepHintEn": "After you compare the table, decide whether to write one more note.",
+    "requiresGenerated": true
+  },
+  {
+    "id": "ft-after-start",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "pack",
+      "preview",
+      "see",
+      "map"
+    ],
+    "intents": [
+      "tokens",
+      "finetune",
+      "followup"
+    ],
+    "keywords": [
+      "开始微调课",
+      "词片",
+      "分词",
+      "预览",
+      "然后呢",
+      "数据台"
+    ],
+    "titleZh": "开课后先看这句会被切成多少词片",
+    "titleEn": "After the course starts, see how the sentence is cut into tokens",
+    "bodyZh": "「推进一步」仍然只讲解，不会开训。先看数据台里的分词预览：这句示例会被切成哪些词片。把片数和片子看清楚就够了。",
+    "bodyEn": "“Take one step” still only teaches; it does not start training. Look at the tokenize preview: how the example sentence is cut into pieces. Seeing the pieces is enough for this turn.",
+    "citeZh": "出处：数据台的分词预览，以及任务区的「推进一步」。",
+    "citeEn": "Source: the tokenize preview, and “Take one step” in the task cluster.",
+    "highlightSel": ".ft-tok-panel, [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "看完词片，再点「推进一步」听下一句讲解，不要去开训。",
+    "nextStepHintEn": "After you see the tokens, tap “Take one step” for the next beat. Do not start a train."
+  },
+  {
+    "id": "text-workbench",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "workbench"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui"
+    ],
+    "keywords": [
+      "学习工作台",
+      "工作台",
+      "实验室清单",
+      "自测",
+      "词语对照",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这是学习工作台，不是另一门课",
+    "titleEn": "This is the learning workbench, not a second course",
+    "bodyZh": "你现在打开的是文字课的学习工作台。短路走完后，这里是实验室清单、词语对照和自测，用来把刚才看见的现象再练一遍，不是另一门课，也不会自动换课或打开书库。先看当前标签页里写了什么，再自己勾一项实验。完整教材仍在顶栏「书库」里。",
+    "bodyEn": "You have the text-course learning workbench open. After the short path, this is the lab list, glossary, and self-check — a place to practice what you just saw, not a second course. It will not switch courses or open the Library by itself. Read the current tab, then check off a lab yourself. The full textbook stays in the top bar “Library.”",
+    "citeZh": "出处：左下角打开的学习工作台。",
+    "citeEn": "Source: the learning workbench opened from the lower left.",
+    "highlightSel": "[data-te-wb=\"panel\"], [data-te-wb=\"title\"], [data-te-wb=\"tabs\"]",
+    "nextStepHintZh": "先看清单，再自己勾一项。我不会替你点，也不会打开书库。",
+    "nextStepHintEn": "Read the list, then check one item yourself. I will not click, and I will not open the Library.",
+    "requireStation": true
+  },
+  {
+    "id": "image-workbench",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "workbench"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui"
+    ],
+    "keywords": [
+      "学习工作台",
+      "工作台",
+      "实验室清单",
+      "自测",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "图片课的学习工作台",
+    "titleEn": "The image-course learning workbench",
+    "bodyZh": "你现在打开的是图片课的学习工作台。短路走完后，这里是实验室清单、词语对照和自测，用来对着画布再做几项对照，不是另一门课，也不会在浏览器里再下一份大模型。先看当前标签页里写了什么，再自己勾一项实验。教材仍在顶栏书库里。",
+    "bodyEn": "You have the image-course learning workbench open. After the short path, this is the lab list, glossary, and self-check, for a few more contrasts against the canvas. It is not a second course, and it will not download a large model into the browser. Read the current tab, then check off a lab yourself. The textbook stays in the top-bar Library.",
+    "citeZh": "出处：左下角打开的学习工作台。",
+    "citeEn": "Source: the learning workbench opened from the lower left.",
+    "highlightSel": "[data-te-wb=\"panel\"], [data-te-wb=\"title\"], [data-te-wb=\"tabs\"]",
+    "nextStepHintZh": "先看清单，再自己勾一项。我不会替你点。",
+    "nextStepHintEn": "Read the list, then check one item yourself. I will not click it.",
+    "requireStation": true
+  },
+  {
+    "id": "music-workbench",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "workbench"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui"
+    ],
+    "keywords": [
+      "学习工作台",
+      "工作台",
+      "实验室清单",
+      "自测",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "音乐课的学习工作台",
+    "titleEn": "The music-course learning workbench",
+    "bodyZh": "你现在打开的是音乐课的学习工作台。短路走完后，这里是实验室清单、词语对照和自测，用来对着琴卷和排行再练一遍，不是另一门课，也不会自动把整首播完。先看当前标签页里写了什么，再自己勾一项实验。教材仍在顶栏书库里。",
+    "bodyEn": "You have the music-course learning workbench open. After the short path, this is the lab list, glossary, and self-check, for more practice against the piano roll and the ranking. It is not a second course, and it will not auto-play a full song. Read the current tab, then check off a lab yourself. The textbook stays in the top-bar Library.",
+    "citeZh": "出处：左下角打开的学习工作台。",
+    "citeEn": "Source: the learning workbench opened from the lower left.",
+    "highlightSel": "[data-te-wb=\"panel\"], [data-te-wb=\"title\"], [data-te-wb=\"tabs\"]",
+    "nextStepHintZh": "先看清单，再自己勾一项。我不会替你点。",
+    "nextStepHintEn": "Read the list, then check one item yourself. I will not click it.",
+    "requireStation": true
+  },
+  {
+    "id": "ft-workbench",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "workbench"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "finetune"
+    ],
+    "keywords": [
+      "学习工作台",
+      "工作台",
+      "实验室清单",
+      "自测",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "微调课的学习工作台，不会替你开训",
+    "titleEn": "The fine-tune workbench will not start a train for you",
+    "bodyZh": "你现在打开的是微调课的学习工作台。这里是实验室清单和自测，用来把「抽样」和「训练」再分清一遍，不是工业级训练平台，也不会替你开训或换课。先看当前标签页里写了什么，再自己勾一项。「推进一步」仍然只讲解。",
+    "bodyEn": "You have the fine-tune learning workbench open. This is the lab list and self-check, for separating sampling from training again. It is not an industrial training platform, and it will not start a train or switch courses for you. Read the current tab, then check off a lab yourself. “Take one step” still only explains.",
+    "citeZh": "出处：左下角打开的学习工作台。",
+    "citeEn": "Source: the learning workbench opened from the lower left.",
+    "highlightSel": "[data-te-wb=\"panel\"], [data-te-wb=\"title\"], [data-te-wb=\"tabs\"]",
+    "nextStepHintZh": "先看清单。我不会替你开训，也不会替你点。",
+    "nextStepHintEn": "Read the list first. I will not start a train, and I will not click for you.",
+    "requireStation": true
+  },
+  {
+    "id": "image-research",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "research"
+    ],
+    "intents": [
+      "what_is_this",
+      "textbook",
+      "ui"
+    ],
+    "keywords": [
+      "走向研究",
+      "研究门口",
+      "进一步研究",
+      "further-reading",
+      "further reading",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这是书库里的「走向研究」页",
+    "titleEn": "This is the Library page Toward research",
+    "bodyZh": "你现在在书库的「走向研究」这一页。它把有动机的人送到研究门口：会做对照、会讲「再去噪一步」的过程，再去读更靠近论文的材料。这不是另一门课，也不必一上来就追最新模型名字。先守住眼前已经看见的：条件、噪声、一步更新、对照。看完可以回到画布，或去做工作台里还没勾的实验。我不会替你换课。",
+    "bodyEn": "You are on the Library page “Toward research.” It walks a motivated learner to the research door: you can already run a contrast and explain “denoise one step,” then read material closer to the papers. This is not a second course, and you do not need to chase the newest model names first. Keep what you have already seen: condition, noise, one-step update, contrast. Then return to the canvas, or do a workbench lab you have not checked. I will not switch courses.",
+    "citeZh": "出处：书库里标题为「走向研究」的这一页。",
+    "citeEn": "Source: the Library page titled “Toward research.”",
+    "highlightSel": "[data-te-article=\"show\"], .textbook",
+    "nextStepHintZh": "看完这一页，可以回到画布，或打开学习工作台。我不会替你点。",
+    "nextStepHintEn": "After this page, you may return to the canvas or open the workbench. I will not click.",
+    "requireStation": true
+  },
+  {
+    "id": "music-research",
+    "kind": "teach",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "research"
+    ],
+    "intents": [
+      "what_is_this",
+      "textbook",
+      "ui"
+    ],
+    "keywords": [
+      "走向研究",
+      "研究门口",
+      "进一步研究",
+      "further-reading",
+      "further reading",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这是书库里的「走向研究」页",
+    "titleEn": "This is the Library page Toward research",
+    "bodyZh": "你现在在书库的「走向研究」这一页。它把有动机的人送到研究门口：会指着琴卷和排行讲「下一个音」，再去读更靠近论文的材料。这不是另一门课，也不必先把所有模型跑起来。先能讲过程，再决定要不要上真模型。看完可以回到琴卷，或去做工作台里还没勾的实验。我不会替你换课。",
+    "bodyEn": "You are on the Library page “Toward research.” It walks a motivated learner to the research door: you can already point at the piano roll and the ranking and explain “the next note,” then read material closer to the papers. This is not a second course, and you do not need to run every model first. Be able to tell the process, then decide whether to use a real model. Then return to the roll, or do a workbench lab you have not checked. I will not switch courses.",
+    "citeZh": "出处：书库里标题为「走向研究」的这一页。",
+    "citeEn": "Source: the Library page titled “Toward research.”",
+    "highlightSel": "[data-te-article=\"show\"], .textbook",
+    "nextStepHintZh": "看完这一页，可以回到琴卷，或打开学习工作台。我不会替你点。",
+    "nextStepHintEn": "After this page, you may return to the piano roll or open the workbench. I will not click.",
+    "requireStation": true
+  },
+  {
+    "id": "text-research",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "research"
+    ],
+    "intents": [
+      "what_is_this",
+      "textbook",
+      "ui"
+    ],
+    "keywords": [
+      "走向研究",
+      "研究门口",
+      "进一步研究",
+      "further-reading",
+      "further reading",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这是把你送到研究门口的一页",
+    "titleEn": "This page walks you to the research door",
+    "bodyZh": "你现在在书库里更靠后的一页，用来把有动机的人送到研究门口：会讲「下一个词」是怎么抽出来的，再去读更靠近论文的材料。这不是另一门课。看完可以回到猜词机，或去做工作台里还没勾的实验。我不会替你换课或自动打开别的页。",
+    "bodyEn": "You are on a later Library page that walks a motivated learner to the research door: you can already explain how the next word is drawn, then read material closer to the papers. This is not a second course. Then return to the next-word machine, or do a workbench lab you have not checked. I will not switch courses or turn pages for you.",
+    "citeZh": "出处：书库里当前打开的这一页。",
+    "citeEn": "Source: the Library page that is open now.",
+    "highlightSel": "[data-te-article=\"show\"], .textbook",
+    "nextStepHintZh": "看完可以回到画面，或打开学习工作台。我不会替你点。",
+    "nextStepHintEn": "Then you may return to the stage or open the workbench. I will not click.",
+    "requireStation": true
+  },
+  {
+    "id": "ft-research",
+    "kind": "teach",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "research"
+    ],
+    "intents": [
+      "what_is_this",
+      "textbook",
+      "ui",
+      "finetune"
+    ],
+    "keywords": [
+      "走向研究",
+      "研究门口",
+      "进一步研究",
+      "further-reading",
+      "further reading",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这是把你送到研究门口的一页，不是工业平台",
+    "titleEn": "This page walks you to the research door, not an industrial platform",
+    "bodyZh": "你现在在书库里更靠后的一页，用来把有动机的人送到研究门口：会分清抽样和训练，会看损失示意，再去读更靠近论文的材料。这不是工业级训练平台，也不会替你开训。看完可以回到工作室，或去做工作台里还没勾的实验。",
+    "bodyEn": "You are on a later Library page that walks a motivated learner to the research door: you can already separate sampling from training and read the sketch loss table, then read material closer to the papers. This is not an industrial training platform, and it will not start a train. Then return to the studio, or do a workbench lab you have not checked.",
+    "citeZh": "出处：书库里当前打开的这一页。",
+    "citeEn": "Source: the Library page that is open now.",
+    "highlightSel": "[data-te-article=\"show\"], .textbook",
+    "nextStepHintZh": "看完可以回到工作室。我不会替你开训。",
+    "nextStepHintEn": "Then you may return to the studio. I will not start a train.",
+    "requireStation": true
+  },
+  {
+    "id": "image-contrast",
+    "kind": "ui",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "contrast"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "denoise"
+    ],
+    "keywords": [
+      "对照帘",
+      "开始看图",
+      "先看这一眼",
+      "换课",
+      "这层帘",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这是刚换到图片课时的对照帘",
+    "titleEn": "This is the contrast curtain when you switch to the image course",
+    "bodyZh": "你现在看到的是刚换到图片课时的对照帘。它在说明：文字课一次猜一个词，图片课的主路是一次「再去噪一步」，先看中间画布怎么变。先点「开始看图」，关掉这层帘，再看左中右三块。我不会替你点。",
+    "bodyEn": "You are looking at the contrast curtain that appears when you switch to the image course. It says: the text course guesses one word at a time; the image course’s main path is “Denoise one step,” and you should watch the middle canvas change first. Click “Start the image course” to dismiss the curtain, then look at the three regions. I will not click it.",
+    "citeZh": "出处：换课对照帘，以及帘上的「开始看图」。",
+    "citeEn": "Source: the course-contrast curtain, and “Start the image course” on it.",
+    "highlightSel": "[data-te-contrast=\"overlay\"], [data-te-contrast=\"start\"]",
+    "nextStepHintZh": "先点「开始看图」，再看中间画布。我不会替你点。",
+    "nextStepHintEn": "Click “Start the image course,” then look at the middle canvas. I will not click it.",
+    "requireStation": true
+  },
+  {
+    "id": "music-contrast",
+    "kind": "ui",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "contrast"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "next_note"
+    ],
+    "keywords": [
+      "对照帘",
+      "开始看谱",
+      "先看这一眼",
+      "换课",
+      "这层帘",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这是刚换到音乐课时的对照帘",
+    "titleEn": "This is the contrast curtain when you switch to the music course",
+    "bodyZh": "你现在看到的是刚换到音乐课时的对照帘。它在说明：音乐课和文字课几乎同构，一次只写出下一个音。中间是钢琴卷帘，右边是下一个音的排行。先点「开始看谱」，关掉这层帘，再看这三块。我不会替你点。",
+    "bodyEn": "You are looking at the contrast curtain that appears when you switch to the music course. It says the music course has almost the same shape as the text course: it writes only the next note. The middle is a piano roll; the right side ranks the next note. Click “Start the music course” to dismiss the curtain, then look at the three regions. I will not click it.",
+    "citeZh": "出处：换课对照帘，以及帘上的「开始看谱」。",
+    "citeEn": "Source: the course-contrast curtain, and “Start the music course” on it.",
+    "highlightSel": "[data-te-contrast=\"overlay\"], [data-te-contrast=\"start\"]",
+    "nextStepHintZh": "先点「开始看谱」，再看琴卷和排行。我不会替你点。",
+    "nextStepHintEn": "Click “Start the music course,” then look at the roll and the ranking. I will not click it.",
+    "requireStation": true
+  },
+  {
+    "id": "ft-contrast",
+    "kind": "ui",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "contrast"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "finetune"
+    ],
+    "keywords": [
+      "对照帘",
+      "开始微调课",
+      "先看这一眼",
+      "换课",
+      "这层帘",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这是刚换到微调课时的对照帘",
+    "titleEn": "This is the contrast curtain when you switch to the fine-tune course",
+    "bodyZh": "你现在看到的是刚换到微调课时的对照帘。它先让你分清：文字课改的是怎么抽下一个词，这一课才改权重。「推进一步」只讲解，不开训。先点「开始微调课」，关掉这层帘，再看对照板。我不会替你点，也不会开训。",
+    "bodyEn": "You are looking at the contrast curtain that appears when you switch to the fine-tune course. It first separates two ideas: the text course changes how the next word is drawn; this course changes weights. “Take one step” only explains; it does not start training. Click “Start the fine-tune course” to dismiss the curtain, then look at the comparison board. I will not click it, and I will not start a train.",
+    "citeZh": "出处：换课对照帘，以及帘上的「开始微调课」。",
+    "citeEn": "Source: the course-contrast curtain, and “Start the fine-tune course” on it.",
+    "highlightSel": "[data-te-contrast=\"overlay\"], [data-te-contrast=\"start\"]",
+    "nextStepHintZh": "先点「开始微调课」，再看对照板。我不会替你开训。",
+    "nextStepHintEn": "Click “Start the fine-tune course,” then look at the board. I will not start a train.",
+    "requireStation": true
+  },
+  {
+    "id": "text-station-invite",
+    "kind": "teach",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "invite"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "textbook"
+    ],
+    "keywords": [
+      "书库里有什么",
+      "短路",
+      "最后一关",
+      "教材在书库",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "文字课短路走到书库门口",
+    "titleEn": "The text short path ends at the Library door",
+    "bodyZh": "你现在在文字课短路的最后一关。完整教材在顶栏「书库」里，不会自动打开。当前先把猜词机和已经看见的词片、亮线、残差看清；想再往下，可以自己打开书库，或打开左下角的学习工作台。我不会替你打开书库，也不会换课。",
+    "bodyEn": "You are on the last station of the text short path. The full textbook lives in the top bar “Library” and does not auto-open. For now, keep the next-word machine and the pieces, lit lines, and residual you have already seen; if you want to go further, open the Library yourself, or the learning workbench at the lower left. I will not open the Library or switch courses.",
+    "citeZh": "出处：顶栏「书库」，以及左下角的学习工作台。",
+    "citeEn": "Source: the top bar “Library”, and the learning workbench at the lower left.",
+    "highlightSel": "[data-te-article=\"show\"], [data-te-wb=\"open\"]",
+    "nextStepHintZh": "想再往下时，自己打开书库或学习工作台。我不会替你点。",
+    "nextStepHintEn": "When you want to go further, open the Library or the workbench yourself. I will not click them."
+  }
+]

@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { tokens, modelMeta, blockIdx, attentionHeadIdx, vectorHeight } from '~/store';
+	import { messages, locale } from '~/i18n';
+	import { midLabelForChip } from '~/utils/gpt2Tokens';
+	$: m = $messages;
+	$: zh = $locale !== 'en';
 	import classNames from 'classnames';
 	import { onMount, setContext } from 'svelte';
 	import OperationGroup from './OperationGroup.svelte';
@@ -55,7 +59,7 @@
 		data-click="mlp-step-title"
 	>
 		<div class="w-max">
-			<TextbookTooltip id="mlp">MLP</TextbookTooltip>
+			<TextbookTooltip id="mlp">{m.mlp}</TextbookTooltip>
 		</div>
 	</div>
 
@@ -75,7 +79,7 @@
 						}}
 						role="group"
 					>
-						<span class="label float">{token}</span>
+						<span class="label float" title={token}>{midLabelForChip(token, zh)}</span>
 						<div class={`vector flex flex-col  ${firstLayerlColor}`}>
 							<VectorCanvas colorScale="purple" active={vectorHoverIdx === index} />
 							<div
@@ -120,7 +124,7 @@
 				<div class="column out-label">
 					{#each $tokens as token, index}
 						<div class="cell" class:last={index === $tokens.length - 1}>
-							<span class="label float">{token}</span>
+							<span class="label float" title={token}>{midLabelForChip(token, zh)}</span>
 						</div>
 					{/each}
 				</div>

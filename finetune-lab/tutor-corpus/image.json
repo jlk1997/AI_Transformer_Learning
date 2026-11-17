@@ -1,0 +1,375 @@
+[
+  {
+    "id": "image-denoise-step",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "step",
+      "again",
+      "knobs",
+      "invite",
+      "map"
+    ],
+    "intents": [
+      "denoise",
+      "what_is_this"
+    ],
+    "keywords": [
+      "去噪",
+      "再去噪一步",
+      "噪声",
+      "denoise"
+    ],
+    "titleZh": "「再去噪一步」在算什么",
+    "titleEn": "What “Denoise one step” is doing",
+    "bodyZh": "任务区里的「再去噪一步」在算的是：根据当前这张还比较吵的图，估计噪声在哪里，再把那一部分减掉一点。多点几次，中间画布会一点点清楚。先看画布上的变化；算式在你至少点过一次之后，才会在推演卡里用这一步的数展开。",
+    "bodyEn": "“Denoise one step” in the task cluster estimates where the noise is in the current noisy picture, then subtracts a bit of it. Click again and the middle canvas gets clearer. Watch the canvas first; the walk-through uses this step’s numbers only after you have denoised at least once.",
+    "citeZh": "出处：中间画布，以及任务区的「再去噪一步」。",
+    "citeEn": "Source: the middle canvas, and “Denoise one step” in the task cluster.",
+    "highlightSel": "[data-te-image=\"canvas\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "至少在任务区点一次「再去噪一步」，再看推演卡或继续「推进一步」。",
+    "nextStepHintEn": "Click “Denoise one step” at least once, then open the walk-through or press “Take one step.”"
+  },
+  {
+    "id": "image-cfg-later",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "knobs",
+      "invite"
+    ],
+    "requiresUnlocked": "imageKnobs",
+    "intents": [
+      "cfg",
+      "what_is_this",
+      "how_number"
+    ],
+    "keywords": [
+      "对照",
+      "对照小图",
+      "cfg",
+      "CFG",
+      "引导",
+      "听话程度",
+      "两张",
+      "三张",
+      "1 / 7 / 15",
+      "这是温度吗",
+      "是温度吗",
+      "guidance",
+      "contrast",
+      "这个旋钮"
+    ],
+    "titleZh": "先看 1 / 7 / 15，再给旋钮起名字",
+    "titleEn": "First compare 1 / 7 / 15, then name the knob",
+    "bodyZh": "先看右边 1 / 7 / 15 三张对照小图，再看任务区里的听话程度旋钮。这三张是同一提示词、同一种子、不同听话程度：1 更淡更泛，7 通常更贴题，15 可能过饱和。模型会想两遍（听提示 / 权当没看见提示），再按听话程度合成。\n\n这个旋钮的名字叫听话程度，也叫 CFG。它不是文字课里的温度：温度改的是抽词时表的尖或平，这里改的是有多听提示词。画布仍是预先设计的示例轨迹，不是浏览器里跑的大模型。下面的推演会先让你看对照，再起名字。",
+    "bodyEn": "First look at the 1 / 7 / 15 contrast thumbnails on the right, then at the guidance knob in the task cluster. The three pictures share the same prompt and seed, with different guidance: 1 is flatter and vaguer, 7 usually follows the prompt, 15 can oversaturate. The model thinks twice (with the prompt / as if it had not seen the prompt), then combines the two paths by guidance.\n\nThe knob is called guidance, or CFG. It is not temperature from the text course: temperature sharpens or flattens a sampling table; this knob changes how closely the picture follows the prompt. The canvas is still a pre-designed example trajectory, not a live large model in the browser. The walk lets you see the contrast first, then names the knob.",
+    "citeZh": "出处：右边 1 / 7 / 15 对照小图，以及任务区的听话程度旋钮。",
+    "citeEn": "Source: the 1 / 7 / 15 contrast thumbnails on the right, and the guidance knob in the task cluster.",
+    "highlightSel": ".cfg-compare, [data-te-image=\"cfg\"], [data-te-image=\"knobs\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "看过三张对照后，再点「推进一步」。",
+    "nextStepHintEn": "After you have compared the three thumbnails, press “Take one step.”",
+    "spoilerTags": [
+      "cfg"
+    ],
+    "mathWalkId": "cfg"
+  },
+  {
+    "id": "image-not-live-model",
+    "kind": "misconception",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this"
+    ],
+    "keywords": [
+      "大模型",
+      "浏览器里跑",
+      "600",
+      "直播",
+      "live model"
+    ],
+    "titleZh": "这不是浏览器里跑的大模型",
+    "titleEn": "This is not a large live model in the browser",
+    "bodyZh": "图片课用的是预先设计的示例轨迹，用来把「再去噪一步」看懂。它不会在浏览器里再下一份很大的模型，也不会在本机 4070 上另开一轮训练。先把画布看清楚就够了。",
+    "bodyEn": "The image course replays a designed trajectory so you can see “denoise one step.” It does not download another huge model into the browser, and it does not start a training run on the 4070. Mapping the canvas is enough for now.",
+    "citeZh": "出处：图片课舞台上的说明，以及中间画布。",
+    "citeEn": "Source: the image-course disclaimer and the middle canvas.",
+    "highlightSel": "[data-te-image=\"canvas\"]",
+    "nextStepHintZh": "看清画布后，在任务区点「再去噪一步」。",
+    "nextStepHintEn": "After mapping the canvas, click “Denoise one step” in the task cluster."
+  },
+  {
+    "id": "image-math-denoise",
+    "kind": "math",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "step",
+      "again",
+      "knobs",
+      "invite"
+    ],
+    "intents": [
+      "denoise"
+    ],
+    "keywords": [
+      "怎么算",
+      "减掉",
+      "这一步",
+      "推演"
+    ],
+    "titleZh": "去噪一步的数怎么走",
+    "titleEn": "How one denoise step is walked",
+    "bodyZh": "你至少点过一次「再去噪一步」之后，推演卡会用这一步的画面把「估计噪声，再减掉一点」走完。先看中间画布变清楚了没有，再打开推演卡。",
+    "bodyEn": "After you have denoised at least once, the walk-through uses this step’s picture to go through “estimate the noise, then subtract a little.” Watch whether the middle canvas got clearer, then open the card.",
+    "citeZh": "出处：中间画布，以及去噪推演卡。",
+    "citeEn": "Source: the middle canvas and the denoise walk-through.",
+    "highlightSel": "[data-te-image=\"canvas\"], [data-te-math=\"dock\"]",
+    "mathWalkId": "denoise",
+    "nextStepHintZh": "看完这一步行进，可以再点一次「再去噪一步」。",
+    "nextStepHintEn": "After this step’s walk-through, you may denoise one more time."
+  },
+  {
+    "id": "image-forward-see",
+    "kind": "math",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "step",
+      "again",
+      "knobs",
+      "invite"
+    ],
+    "requireStation": true,
+    "intents": [
+      "forward",
+      "what_is_this",
+      "why",
+      "how_number"
+    ],
+    "keywords": [
+      "图是怎么一步步变吵的",
+      "一步步变吵",
+      "怎么变吵",
+      "变吵的",
+      "变吵",
+      "正向加噪",
+      "怎么变吵的",
+      "get noisier",
+      "gets noisier",
+      "become noisy",
+      "becoming noisier",
+      "forward process",
+      "add noise step by step"
+    ],
+    "titleZh": "图是怎么一步步变吵的",
+    "titleEn": "How the picture gets noisier, step by step",
+    "bodyZh": "先看中间你已经走过的那几步：越靠后通常越清楚。再把同一条预先设计的示例轨迹反过来看——往第 0 步走，颗粒变多，图一步步变吵。这不是另画一套假图，也不是浏览器里跑的大模型。看见变吵之后，再记住：去噪是把吵减掉，这是它的反方向。主路仍然是「再去噪一步」，这里没有新的必做关卡。",
+    "bodyEn": "First look at the steps you have already taken in the middle: later ones are usually clearer. Then read the same pre-designed example trajectory the other way — toward step 0, grain increases and the picture gets noisier. This is not a second fake sequence, and not a large model running in the browser. After you have seen it get noisier, remember: denoise subtracts that noise; this is the reverse direction. The main path is still “Denoise one step.” This is not a new required station.",
+    "citeZh": "出处：中间画布的时间轴，以及「反过来看」的示意小图（同一条示例轨迹）。",
+    "citeEn": "Source: the timeline on the middle canvas, and the “read the other way” sketch thumbnails (the same example trajectory).",
+    "highlightSel": "[data-te-image=\"forward\"], [data-te-image=\"canvas\"], .image-timeline, [data-te-image=\"step\"]",
+    "mathWalkId": "forward",
+    "nextStepHintZh": "看清变吵之后，再回到「再去噪一步」。我不会替你点，也不会换课。",
+    "nextStepHintEn": "After you have seen it get noisier, return to “Denoise one step.” I will not click it or switch courses.",
+    "spoilerTags": [
+      "forward"
+    ]
+  },
+  {
+    "id": "image-forward-early",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "map"
+    ],
+    "requireStation": true,
+    "intents": [
+      "forward"
+    ],
+    "keywords": [
+      "图是怎么一步步变吵的",
+      "一步步变吵",
+      "怎么变吵",
+      "变吵",
+      "正向加噪",
+      "get noisier",
+      "gets noisier",
+      "become noisy",
+      "forward process"
+    ],
+    "titleZh": "先看它怎么变清一点，再反过来看",
+    "titleEn": "Watch it get a little clearer first, then look the other way",
+    "bodyZh": "现在先点任务区的「再去噪一步」，看中间画布有没有更清楚一点点。走完这一步之后，才能把同一条示例轨迹倒过来，看图怎样一步步变吵。此刻不必先记后面的方向名。",
+    "bodyEn": "For now, click “Denoise one step” in the task cluster and see whether the middle canvas gets a little clearer. After that step, you can read the same example trajectory the other way and watch the picture get noisier. You do not need to memorize later direction names yet.",
+    "citeZh": "出处：任务区的「再去噪一步」和中间画布。",
+    "citeEn": "Source: “Denoise one step” in the task cluster, and the middle canvas.",
+    "highlightSel": "[data-te-image=\"denoise\"], [data-te-image=\"canvas\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先自己点「再去噪一步」。我不会替你点。",
+    "nextStepHintEn": "Click “Denoise one step” yourself. I will not click it."
+  },
+  {
+    "id": "image-station-step",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "step"
+    ],
+    "intents": [
+      "what_is_this",
+      "denoise",
+      "ui"
+    ],
+    "keywords": [
+      "再去噪一步",
+      "去噪",
+      "画布",
+      "这一关",
+      "中间这张图",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这一关是再去噪一步",
+    "titleEn": "This station is Denoise one step",
+    "bodyZh": "你现在在图片课的「再去噪一步」这一关。先看中间画布，再点任务区的「再去噪一步」：它会按当前这张还比较吵的图，估计噪声在哪里，再减掉一点。画布会更清楚一点点。这是预先设计的示例轨迹，不是浏览器里跑的大模型。现在还不用给后面的旋钮起名字。",
+    "bodyEn": "You are on the image course’s “Denoise one step” station. Look at the middle canvas, then click “Denoise one step” in the task cluster: it estimates where the noise is in this still-noisy picture, then subtracts a little. The canvas gets a bit clearer. This is a pre-designed example trajectory, not a large model running in the browser. Leave later knobs unnamed for now.",
+    "citeZh": "出处：中间画布，以及任务区的「再去噪一步」。",
+    "citeEn": "Source: the middle canvas, and “Denoise one step” in the task cluster.",
+    "highlightSel": "[data-te-image=\"canvas\"], [data-te-image=\"denoise\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "自己点一次「再去噪一步」，先看画布变了没有。我不会替你点。",
+    "nextStepHintEn": "Click “Denoise one step” yourself and watch the canvas. I will not click it."
+  },
+  {
+    "id": "image-station-again",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "again"
+    ],
+    "intents": [
+      "what_is_this",
+      "denoise",
+      "ui"
+    ],
+    "keywords": [
+      "再走几步",
+      "再去噪",
+      "画布",
+      "第几步",
+      "更清楚",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这一关是再走几步",
+    "titleEn": "This station is Take a few more steps",
+    "bodyZh": "你现在在图片课的「再走几步」这一关。中间画布已经比刚进来时清楚一些。可以再点几次「再去噪一步」，一次只看这一步有没有更清楚。先看画布，不必先记公式。这仍是预先设计的示例轨迹，不是现场大模型。",
+    "bodyEn": "You are on the image course’s “Take a few more steps” station. The middle canvas is already clearer than when you arrived. You may click “Denoise one step” a few more times, and only watch whether this step got clearer. Look at the canvas first; you do not need a formula yet. This is still a pre-designed example trajectory, not a live large model.",
+    "citeZh": "出处：中间画布，以及任务区的「再去噪一步」。",
+    "citeEn": "Source: the middle canvas, and “Denoise one step” in the task cluster.",
+    "highlightSel": "[data-te-image=\"canvas\"], [data-te-image=\"denoise\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "看完这一步的画布，再决定要不要再走一步，或点「推进一步」。",
+    "nextStepHintEn": "After you see this step’s canvas, decide whether to denoise once more or press “Take one step.”"
+  },
+  {
+    "id": "image-station-knobs",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "knobs"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui"
+    ],
+    "keywords": [
+      "对照小图",
+      "听话程度",
+      "这些旋钮",
+      "1 / 7 / 15",
+      "引导",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "先看 1 / 7 / 15 对照，再给旋钮起名字",
+    "titleEn": "Compare 1 / 7 / 15 first, then name the knob",
+    "bodyZh": "你现在在图片课的「再拧引导」这一关。先看右边 1 / 7 / 15 三张对照小图，再看任务区里那个听话程度旋钮。三张是同一提示词、同一种子、不同听话程度：有的更淡更泛，有的更贴题，有的可能过饱和。先看差别，再给旋钮起名字。画布仍是预先设计的示例轨迹，不是浏览器里跑的大模型。",
+    "bodyEn": "You are on the image course’s guidance station. First look at the 1 / 7 / 15 contrast thumbnails on the right, then at the guidance knob in the task cluster. The three pictures share the same prompt and seed, with different guidance: some flatter, some closer to the prompt, some oversaturated. See the difference first, then name the knob. The canvas is still a pre-designed example trajectory, not a large model in the browser.",
+    "citeZh": "出处：右边 1 / 7 / 15 对照小图，以及任务区的听话程度旋钮。",
+    "citeEn": "Source: the 1 / 7 / 15 contrast thumbnails on the right, and the guidance knob in the task cluster.",
+    "highlightSel": ".cfg-compare, [data-te-image=\"cfg\"], [data-te-image=\"knobs\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "看过三张对照后，再点「推进一步」。",
+    "nextStepHintEn": "After you have compared the three thumbnails, press “Take one step.”"
+  },
+  {
+    "id": "image-station-invite",
+    "kind": "teach",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "invite"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "textbook"
+    ],
+    "keywords": [
+      "书库里有什么",
+      "短路",
+      "最后一关",
+      "教材在书库",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "图片课短路走到书库门口",
+    "titleEn": "The image short path ends at the Library door",
+    "bodyZh": "你现在在图片课短路的最后一关。完整教材在顶栏「书库」里，不会自动打开。当前先把画布和对照看清；想再往下，可以自己打开书库，或打开左下角的学习工作台。我不会替你打开书库，也不会换课。",
+    "bodyEn": "You are on the last station of the image short path. The full textbook lives in the top bar “Library” and does not auto-open. For now, keep the canvas and contrast in view; if you want to go further, open the Library yourself, or the learning workbench at the lower left. I will not open the Library or switch courses.",
+    "citeZh": "出处：顶栏「书库」，以及左下角的学习工作台。",
+    "citeEn": "Source: the top bar “Library”, and the learning workbench at the lower left.",
+    "highlightSel": "[data-te-article=\"show\"], [data-te-wb=\"open\"]",
+    "nextStepHintZh": "想再往下时，自己打开书库或学习工作台。我不会替你点。",
+    "nextStepHintEn": "When you want to go further, open the Library or the workbench yourself. I will not click them."
+  }
+]

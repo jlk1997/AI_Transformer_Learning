@@ -20,9 +20,44 @@
 	import resolveConfig from 'tailwindcss/resolveConfig';
 	import { ga } from '~/utils/event';
 	import { Tooltip } from 'flowbite-svelte';
-	import { ZoomInOutline } from 'flowbite-svelte-icons';
+	import { ZoomInOutline } from '~/components/icons';
 
 	import TextbookTooltip from './common/TextbookTooltip.svelte';
+	import { messages, showEmbeddingLessonHint, coachLessonIdx, locale } from '~/i18n';
+	import {
+		TOKEN_CUT_NOTE_ZH,
+		TOKEN_CUT_NOTE_EN,
+		groupDisplayLabels,
+		labelsHaveSplitGroups
+	} from '~/utils/gpt2Tokens';
+	$: m = $messages;
+	$: zhTok = $locale !== 'en';
+	$: tokenGroups = groupDisplayLabels($tokens || []);
+	$: cutNote = labelsHaveSplitGroups($tokens || []);
+	$: cutNoteText = (m as any).tokenCutNote || (zhTok ? TOKEN_CUT_NOTE_ZH : TOKEN_CUT_NOTE_EN);
+	let openTokGroup: string | null = null;
+	$: if (!cutNote) openTokGroup = null;
+	const groupHint = (ch: string, n: number) => {
+		const tmpl =
+			(m as any).tokenCutGroupHint ||
+			(zhTok
+				? `「{ch}」被切成 {n} 个更小的片，点开看说明`
+				: `“{ch}” was split into {n} smaller pieces. Click to see why.`);
+		return String(tmpl).replaceAll('{ch}', ch).replaceAll('{n}', String(n));
+	};
+	const groupNote = (ch: string, n: number) => {
+		const tmpl =
+			(m as any).tokenCutGroupNote ||
+			(zhTok
+				? `「{ch}」被切成 {n} 个更小的片，拼起来才是这个字。单独看每一小片往往不成字，所以这里把同一个字收成一枚。`
+				: `“{ch}” was split into {n} smaller pieces that only make this character when put together. Each piece alone is usually unreadable, so the chip shows the assembled character.`);
+		return String(tmpl).replaceAll('{ch}', ch).replaceAll('{n}', String(n));
+	};
+	const toggleTokGroup = (ch: string, ev?: Event) => {
+		ev?.stopPropagation?.();
+		openTokGroup = openTokGroup === ch ? null : ch;
+	};
+
 	import { textPages } from '~/utils/textbookPages';
 
 	const { theme } = resolveConfig(tailwindConfig);
@@ -84,6 +119,7 @@
 	let startTime = null;
 
 	const expandEmbedding = async () => {
+		if ($coachLessonIdx <= 2) showEmbeddingLessonHint.set(true);
 		containerState = Flip.getState('.embedding .token-column');
 		isEmbeddingExpanded = true;
 
@@ -174,7 +210,7 @@
 		data-click="embedding-step-title"
 	>
 		<div class="title-text flex w-max items-center gap-1">
-			Embedding
+			{m.embedding}
 			<ZoomInOutline></ZoomInOutline>
 		</div>
 	</div>
@@ -184,19 +220,66 @@
 			<!-- token -->
 			<div class="column token-string relative">
 				{#if isEmbeddingExpanded}<div class="subtitle embedding-detail">
-						<TextbookTooltip id="token-embedding">Tokenization</TextbookTooltip>
+						<TextbookTooltip id="token-embedding">{m.tokenization}</TextbookTooltip>
 					</div>{/if}
-				{#each $tokens as token, index}
-					<div class="cell" class:last={index === $tokens.length - 1}>
-						<span class="label">{token}</span>
-					</div>
+				{#each tokenGroups as g}
+					{#if g.group && g.items.length > 1}
+						{#each g.items as item, k}
+							{@const index = item.index}
+							{@const token = $tokens[index]}
+							<div
+								class="cell in-group"
+								class:last={index === $tokens.length - 1}
+								class:group-start={k === 0}
+								class:group-end={k === g.items.length - 1}
+								class:group-open={openTokGroup === g.group}
+								style={k === 0 ? `--te-tok-n: ${g.items.length}` : undefined}
+								data-te-tok-group={g.group}
+								data-te-tok-pieces={g.items.length}
+							>
+								{#if k === 0}
+									<button
+										type="button"
+										class="tok-group-chip"
+										class:on={openTokGroup === g.group}
+										data-te-tok="group-chip"
+										title={groupHint(g.group, g.items.length)}
+										on:click={(e) => toggleTokGroup(g.group, e)}
+									>
+										<span class="ch">{g.group}</span>
+										<sup>{g.items.length}</sup>
+									</button>
+								{/if}
+								<span
+									class="label piece-idx"
+									title={token}
+									data-te-tok-label={index}
+									data-te-tok-piece={`${item.pieceIndex}/${item.pieceCount}`}
+								>{item.pieceIndex}/{item.pieceCount}</span>
+							</div>
+						{/each}
+					{:else}
+						{#each g.items as item}
+							{@const index = item.index}
+							{@const token = $tokens[index]}
+							<div class="cell" class:last={index === $tokens.length - 1}>
+								<span class="label" title={token} data-te-tok-label={index}>{token}</span>
+							</div>
+						{/each}
+					{/if}
 				{/each}
+				{#if cutNote}
+					<p class="cut-note" data-te-tok="cut-note">{cutNoteText}</p>
+				{/if}
+				{#if openTokGroup}
+					<p class="cut-group-note" data-te-tok="group-note">{groupNote(openTokGroup, tokenGroups.find((x) => x.group === openTokGroup)?.items.length || 0)}</p>
+				{/if}
 			</div>
 			{#if isEmbeddingExpanded}
 				<!-- token id and embedding -->
 				<div class="column token-embedding embedding-detail">
 					<div class="subtitle flex items-center gap-1">
-						<TextbookTooltip id="token-embedding"><span>Token<br />Embedding</span></TextbookTooltip
+						<TextbookTooltip id="token-embedding"><span>{m.tokenEmbeddingLine1}<br />{m.tokenEmbeddingLine2}</span></TextbookTooltip
 						>
 						<!-- <HelpPopover
 							id="token-embedding"
@@ -244,7 +327,7 @@
 				<div class="column embedding-detail position-embedding">
 					<div class="subtitle flex gap-1">
 						<TextbookTooltip id="positional-encoding">
-							<span>Positional<br />Encoding</span>
+							<span>{m.positionalLine1}<br />{m.positionalLine2}</span>
 						</TextbookTooltip>
 						<!-- <HelpPopover
 							id="position-embedding"
@@ -350,8 +433,92 @@
 			}
 
 			.token-string {
-				width: 7rem;
+				width: 8.2rem;
 				flex-shrink: 0;
+			}
+			.token-string .label {
+				overflow: visible;
+				text-overflow: clip;
+				white-space: nowrap;
+				font-size: 0.82rem;
+			}
+			.token-string {
+				position: relative;
+			}
+			.cut-note,
+			.cut-group-note {
+				position: absolute;
+				left: 0;
+				margin: 0;
+				font-size: 0.68rem;
+				line-height: 1.35;
+				color: #6d28d9;
+				max-width: 16.5rem;
+				z-index: 5;
+			}
+			.cut-note {
+				bottom: calc(100% + 0.2rem);
+			}
+			.cut-group-note {
+				bottom: calc(100% + 2.55rem);
+				background: #f5f3ff;
+				border-radius: 0.35rem;
+				padding: 0.3rem 0.4rem;
+			}
+			.cell.in-group {
+				position: relative;
+			}
+			.cell.group-start::before {
+				content: '';
+				position: absolute;
+				left: 0.1rem;
+				right: -0.15rem;
+				top: -0.12rem;
+				height: calc(
+					var(--te-tok-n) * var(--vector-height) + (var(--te-tok-n) - 1) * 0.5rem + 0.24rem
+				);
+				border: 1.5px solid #7c3aed;
+				background: #f5f3ff;
+				border-radius: 0.4rem;
+				z-index: 0;
+				pointer-events: none;
+			}
+			.tok-group-chip {
+				position: absolute;
+				left: 0.22rem;
+				top: calc((var(--te-tok-n) * var(--vector-height) + (var(--te-tok-n) - 1) * 0.5rem) / 2);
+				transform: translateY(-50%);
+				z-index: 1;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.05rem;
+				margin: 0;
+				padding: 0.05rem 0.22rem 0.05rem 0.28rem;
+				border: none;
+				background: transparent;
+				color: #1f1633;
+				font: inherit;
+				font-weight: 700;
+				font-size: 0.9rem;
+				line-height: 1.1;
+				cursor: pointer;
+			}
+			.tok-group-chip:hover,
+			.tok-group-chip.on {
+				color: #5b21b6;
+			}
+			.tok-group-chip sup {
+				font-size: 0.62rem;
+				font-weight: 700;
+				color: #6d28d9;
+				line-height: 1;
+			}
+			.token-string .label.piece-idx {
+				position: relative;
+				z-index: 1;
+				font-size: 0.72rem;
+				color: #6d28d9;
+				min-width: 1.8rem;
 			}
 
 			.subtitle {

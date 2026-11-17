@@ -1,0 +1,213 @@
+[
+  {
+    "id": "mis-temp-is-training",
+    "kind": "misconception",
+    "courses": [
+      "text",
+      "finetune"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "temperature_early",
+      "knobs",
+      "finetune"
+    ],
+    "keywords": [
+      "改模型",
+      "训练温度",
+      "温度就是训练",
+      "temperature trains"
+    ],
+    "titleZh": "拧温度并不是在训练",
+    "titleEn": "Turning temperature is not training",
+    "bodyZh": "这是一个常见误会：拧温度并不是在训练，也不会改权重。温度只改从右边表里怎么抽一个词。只有微调课里真正开训，才会改权重。「推进一步」不会替你开训。",
+    "bodyEn": "A common mix-up: turning temperature is not training, and it does not change weights. Temperature only changes how a token is drawn from the right-hand table. Weights change only when you actually start a run in the fine-tune course. “Take one step” will not start a run for you.",
+    "citeZh": "出处：文字课右侧概率表，或微调课「先分清」对照板。",
+    "citeEn": "Source: the text-course probability table, or the fine-tune “separate these two” board.",
+    "highlightSel": "[data-te-zone=\"right\"], [data-te-ft=\"first-line\"]",
+    "nextStepHintZh": "分清「抽样」和「训练」后，再回到当前这一关继续走。",
+    "nextStepHintEn": "After you have separated sampling from training, continue the current station."
+  },
+  {
+    "id": "mis-need-textbook-first",
+    "kind": "misconception",
+    "courses": [
+      "text",
+      "finetune",
+      "image",
+      "music"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "textbook": false,
+    "intents": [
+      "textbook",
+      "what_is_this"
+    ],
+    "keywords": [
+      "教材",
+      "20 步",
+      "22 步",
+      "textbook",
+      "先看书",
+      "图书馆",
+      "书库"
+    ],
+    "titleZh": "教材在书库里，不会自动打开",
+    "titleEn": "The textbook lives in the Library and does not auto-open",
+    "bodyZh": "完整教材在顶栏「书库」里，给想再往下走的人准备，不会自动打开，也不会代替当前这一关。现在先跟着画面和「推进一步」走，看见现象就够了。只有你问教材时，我才把它指给你。",
+    "bodyEn": "The full textbook lives in the top bar “Library” for later. It does not auto-open, and it does not replace this station. For now, follow the screen and “Take one step,” and watch what appears. I will point at the textbook only when you ask for it.",
+    "citeZh": "出处：顶栏「书库」。",
+    "citeEn": "Source: the top bar “Library” button.",
+    "highlightSel": "[data-te-article=\"show\"]",
+    "nextStepHintZh": "继续走当前这一关即可，不必先翻开教材。",
+    "nextStepHintEn": "Stay on this station; you do not need to open the textbook first."
+  },
+  {
+    "id": "shared-cross-text",
+    "kind": "cross",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this",
+      "cross_course"
+    ],
+    "keywords": [
+      "这和文字课",
+      "和音乐课",
+      "和图片课",
+      "和微调课",
+      "是一件事",
+      "同一件事",
+      "四门课",
+      "same as the text",
+      "same thing",
+      "is this the same",
+      "same idea"
+    ],
+    "titleZh": "四门课是同一台猜词机的不同看见",
+    "titleEn": "The four courses are the same guessing machine, seen differently",
+    "bodyZh": "四门课是同一台猜词机的不同看见方式，不是四套无关公式。文字课一次猜下一个词，音乐课一次猜下一个音，图片课一次再去噪一步，微调课里损失就是那张示意概率表上的一行。\n\n你现在在文字课，先看右边这张「下一个词」的表。这就是眼前这一处。",
+    "bodyEn": "The four courses are the same guessing machine seen in different ways, not four unrelated formulas. The text course guesses the next word, music guesses the next note, the image course denoises one step, and in fine-tune, loss is a row on that sketch probability table.\n\nYou are on the text course now, so first look at the next-word table on the right. That is the phenomenon on this screen.",
+    "citeZh": "出处：右边「下一个词」的表。",
+    "citeEn": "Source: the next-word table on the right.",
+    "highlightSel": "[data-te-zone=\"right\"]",
+    "nextStepHintZh": "对上这一处之后，再点「推进一步」。",
+    "nextStepHintEn": "After you have matched this region, press “Take one step.”"
+  },
+  {
+    "id": "shared-cross-music",
+    "kind": "cross",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this",
+      "cross_course"
+    ],
+    "keywords": [
+      "这和文字课",
+      "和文字课是一件事",
+      "同一件事",
+      "是一件事",
+      "四门课",
+      "same as the text",
+      "same thing",
+      "is this the same",
+      "same idea"
+    ],
+    "titleZh": "猜下一个音，和猜下一个词是同一件事",
+    "titleEn": "Guessing the next note is the same idea as guessing the next word",
+    "bodyZh": "四门课是同一台猜词机的不同看见方式，不是四套无关公式。文字课一次猜下一个词，音乐课一次猜下一个音，图片课一次再去噪一步，微调课里损失就是那张示意概率表上的一行。\n\n你现在在音乐课，先看右边「下一个音」的排行，再看中间多出来的那一格。这就是眼前这一处。",
+    "bodyEn": "The four courses are the same guessing machine seen in different ways, not four unrelated formulas. The text course guesses the next word, music guesses the next note, the image course denoises one step, and in fine-tune, loss is a row on that sketch probability table.\n\nYou are on the music course now, so first look at the next-note ranking on the right, then the new cell in the middle. That is the phenomenon on this screen.",
+    "citeZh": "出处：右边下一个音的排行，以及中间琴卷新接上的那一格。",
+    "citeEn": "Source: the next-note ranking on the right, and the new cell on the piano roll.",
+    "highlightSel": ".music-probs, [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "对上排行之后，再点「生成下一个音符」或「推进一步」。",
+    "nextStepHintEn": "After you have matched the ranking, click “Generate the next note” or “Take one step.”"
+  },
+  {
+    "id": "shared-cross-image",
+    "kind": "cross",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this",
+      "cross_course"
+    ],
+    "keywords": [
+      "这和文字课",
+      "和文字课是一件事",
+      "同一件事",
+      "是一件事",
+      "四门课",
+      "same as the text",
+      "same thing",
+      "is this the same",
+      "same idea"
+    ],
+    "titleZh": "再去噪一步，也是同一台猜词机的看见",
+    "titleEn": "Denoising one step is the same machine, seen in pictures",
+    "bodyZh": "四门课是同一台猜词机的不同看见方式，不是四套无关公式。文字课一次猜下一个词，音乐课一次猜下一个音，图片课一次再去噪一步，微调课里损失就是那张示意概率表上的一行。\n\n你现在在图片课，先看中间画布和任务区的「再去噪一步」。这就是眼前这一处。",
+    "bodyEn": "The four courses are the same guessing machine seen in different ways, not four unrelated formulas. The text course guesses the next word, music guesses the next note, the image course denoises one step, and in fine-tune, loss is a row on that sketch probability table.\n\nYou are on the image course now, so first look at the middle canvas and “Denoise one step” in the task cluster. That is the phenomenon on this screen.",
+    "citeZh": "出处：中间正在去噪的画布，以及任务区的「再去噪一步」。",
+    "citeEn": "Source: the denoising canvas in the middle, and “Denoise one step” in the task cluster.",
+    "highlightSel": "[data-te-image=\"canvas\"], [data-te-image=\"denoise\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "看过画布之后，再自己点「再去噪一步」或「推进一步」。",
+    "nextStepHintEn": "After you have watched the canvas, click “Denoise one step” or “Take one step” yourself."
+  },
+  {
+    "id": "shared-cross-finetune",
+    "kind": "cross",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "what_is_this",
+      "cross_course"
+    ],
+    "keywords": [
+      "这和文字课",
+      "和文字课是一件事",
+      "同一件事",
+      "是一件事",
+      "四门课",
+      "same as the text",
+      "same thing",
+      "is this the same",
+      "same idea"
+    ],
+    "titleZh": "损失就是那张表，还是同一台猜词机",
+    "titleEn": "Loss is that table — still the same guessing machine",
+    "bodyZh": "四门课是同一台猜词机的不同看见方式，不是四套无关公式。文字课一次猜下一个词，音乐课一次猜下一个音，图片课一次再去噪一步，微调课里损失就是那张示意概率表上的一行。\n\n你现在在微调课。若损失表示意表已经在眼前，先看那一行；还没有走到那一关时，先看对照板上「改的是权重」这一处。这些数若是示意，我会标明。",
+    "bodyEn": "The four courses are the same guessing machine seen in different ways, not four unrelated formulas. The text course guesses the next word, music guesses the next note, the image course denoises one step, and in fine-tune, loss is a row on that sketch probability table.\n\nYou are on the fine-tune course. If the sketch loss table is already on screen, look at that row first; if you have not reached that station yet, look at the contrast board that says this lesson changes weights. If the numbers are a sketch, they are labeled that way.",
+    "citeZh": "出处：损失示意表（若已打开），或对照板上「改的是权重」这一处。",
+    "citeEn": "Source: the sketch loss table if it is open, or the contrast board that says this lesson changes weights.",
+    "highlightSel": "[data-te-bridge=\"loss-table\"], [data-te-ft=\"first-line\"], [data-te-ft=\"loss\"]",
+    "nextStepHintZh": "对上这一处之后，再点「推进一步」。它只讲解，不会开训。",
+    "nextStepHintEn": "After you have matched this region, press “Take one step.” It only explains; it does not start a train."
+  }
+]

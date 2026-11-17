@@ -1,56 +1,82 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
+		<style>
+			@font-face {
+				font-family: 'Jersey 10';
+				font-style: normal;
+				font-weight: 400;
+				font-display: swap;
+				src: url('%sveltekit.assets%/fonts/jersey-10.woff2') format('woff2');
+			}
+			#te-opening-cover {
+				position: fixed;
+				inset: 0;
+				z-index: 2147483000;
+				background: #faf8ff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin: 0;
+				color: #5b21b6;
+				font: 600 1.05rem/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif;
+				letter-spacing: 0.02em;
+			}
+			html[data-te-classroom='ready'] #te-opening-cover,
+			#te-opening-cover[data-te-opening='done'] {
+				display: none !important;
+			}
+		</style>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Transformer Explainer: LLM Transformer Model Visually Explained</title>
+		<title>蚁算Transformer</title>
 
 		<!-- Primary Meta Tags -->
-		<meta name="title" content="Transformer Explainer: LLM Transformer Model Visually Explained" />
+		<meta name="title" content="蚁算Transformer" />
 		<meta
 			name="description"
-			content="An interactive visualization tool showing you how transformer models work in large language models (LLM) like GPT."
+			content="看见 Transformer 怎么猜下一个词。文字、图像、音乐与微调四门可交互的课，在同一间教室里学完。"
 		/>
 
-		<!-- Open Graph / Facebook -->
+		<!-- Open Graph -->
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://poloclub.github.io/transformer-explainer/" />
-		<meta
-			property="og:title"
-			content="Transformer Explainer: LLM Transformer Model Visually Explained"
-		/>
+		<meta property="og:locale" content="zh_CN" />
+		<meta property="og:site_name" content="蚁算Transformer" />
+		<meta property="og:title" content="蚁算Transformer" />
 		<meta
 			property="og:description"
-			content="An interactive visualization tool showing you how transformer models work in large language models (LLM) like GPT."
+			content="看见 Transformer 怎么猜下一个词。文字、图像、音乐与微调四门可交互的课，在同一间教室里学完。"
 		/>
-		<meta
-			property="og:image"
-			content="https://poloclub.github.io/transformer-explainer/preview/summary.png"
-		/>
+		<meta property="og:image" content="%sveltekit.assets%/preview/summary.png" />
+		<meta property="og:image:alt" content="蚁算Transformer" />
 
 		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content="https://poloclub.github.io/transformer-explainer/" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="蚁算Transformer" />
 		<meta
-			property="twitter:title"
-			content="Transformer Explainer: LLM Transformer Model Visually Explained"
+			name="twitter:description"
+			content="看见 Transformer 怎么猜下一个词。文字、图像、音乐与微调四门可交互的课，在同一间教室里学完。"
 		/>
-		<meta
-			property="twitter:description"
-			content="An interactive visualization tool showing you how transformer models work in large language models (LLM) like GPT."
-		/>
-		<meta
-			property="twitter:image"
-			content="https://poloclub.github.io/transformer-explainer/preview/summary.png"
-		/>
+		<meta name="twitter:image" content="%sveltekit.assets%/preview/summary.png" />
+		<meta name="twitter:image:alt" content="蚁算Transformer" />
 
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
+		<div id="te-opening-cover" data-te-opening="cover" role="status" aria-live="polite">
+			<p data-te-opening="label" style="margin:0">正在打开课堂</p>
+		</div>
+		<script>
+			(function () {
+				try {
+					if (localStorage.getItem('te-locale') === 'en') {
+						var el = document.querySelector('[data-te-opening="label"]');
+						if (el) el.textContent = 'Opening the classroom';
+					}
+				} catch (e) {}
+			})();
+		</script>
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>

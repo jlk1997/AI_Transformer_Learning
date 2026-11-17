@@ -205,7 +205,7 @@
 		height: fit-content;
 
 		&.residual {
-			opacity: 0.5 !important;
+			opacity: 0.92 !important;
 			&.active {
 				opacity: 1 !important;
 			}

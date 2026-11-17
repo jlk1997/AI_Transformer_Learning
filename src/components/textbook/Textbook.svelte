@@ -1,19 +1,14 @@
 <script lang="ts">
-	import { GradientButton } from 'flowbite-svelte';
-	import { BookOpenSolid } from 'flowbite-svelte-icons';
-	import { fade } from 'svelte/transition';
 	import {
 		textbookCurrentPage,
 		textbookPreviousPage,
-		isTextbookOpen,
-		expandedBlock,
-		textbookCurrentPageId,
-		userId
+		isTextbookOpen
 	} from '~/store';
-	import { textPages } from '~/utils/textbookPages';
+	import { activeTextbookPages } from '~/store/course';
 	import TextbookCard from './TextbookCard.svelte';
 
 	export let showTextCard: boolean = false;
+	$: textPages = $activeTextbookPages;
 
 	$: if (showTextCard) {
 		handlePageTransition($textbookCurrentPage, $textbookPreviousPage);
@@ -34,50 +29,11 @@
 	}
 </script>
 
-<!-- Floating Book Button -->
-{#if !showTextCard}
-	<div class="floating-container" transition:fade={{ duration: 150 }}>
-		<GradientButton
-			pill={true}
-			color="purpleToBlue"
-			class="floating-btn h-14 w-14"
-			on:click={() => {
-				isTextbookOpen.set(true);
-
-				window.dataLayer?.push({
-					event: `open-textbook`,
-					page_id: $textbookCurrentPageId,
-					open_via: 'floating-button',
-					user_id: $userId
-				});
-			}}
-		>
-			<BookOpenSolid class="h-8 w-8" />
-		</GradientButton>
-	</div>
-{/if}
-
 {#if showTextCard}
 	<TextbookCard onClose={() => isTextbookOpen.set(false)} />
 {/if}
 
 <style lang="scss">
-	.floating-container {
-		position: fixed;
-		bottom: 2rem;
-		right: 2rem;
-		z-index: $TEXTBOOK_INDEX;
-	}
-
-	.floating-btn {
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-		transition: all 0.2s ease;
-
-		&:hover {
-			transform: translateY(-2px);
-			box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-		}
-	}
 	:root {
 		--textbook-highlight-color: theme('colors.blue.600');
 		--textbook-highlight-background: linear-gradient(

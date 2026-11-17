@@ -15,16 +15,23 @@
 		textbookCurrentPageId,
 		userId
 	} from '~/store';
-	import { expandedBlock, predictedToken, highlightedIndex, modelData } from '~/store';
+	import { expandedBlock, predictedToken, highlightedIndex, modelData, textHasDrawnWord, textProbOrigin, textProbLiveHandoff } from '~/store';
+	import { locale, messages } from '~/i18n';
 	import ProbabilityBars from './ProbabilityBars.svelte';
 	import Katex from '~/utils/Katex.svelte';
 	import { ga } from '~/utils/event';
-	import { EyeOutline, ZoomInOutline } from 'flowbite-svelte-icons';
+	import { EyeOutline, ZoomInOutline } from '~/components/icons';
 	import { fade } from 'svelte/transition';
 	import SoftmaxPopover from './popovers/SoftmaxPopover.svelte';
 	import LogitWeightPopover from './popovers/LogitWeightPopover.svelte';
 	import { textPages } from '~/utils/textbookPages';
 	import TextbookTooltip from '~/components/common/TextbookTooltip.svelte';
+	import { isPunctOrBreakToken } from '~/utils/gpt2Tokens';
+
+	$: m = $messages;
+	$: zh = $locale !== 'en';
+	$: showExampleNote = !$textHasDrawnWord && $textProbOrigin === 'example';
+	$: showLiveHandoff = $textProbLiveHandoff;
 
 	export let className: string | undefined = undefined;
 
@@ -161,16 +168,37 @@
 	let hoveredIndex: number | null = null;
 
 	$: data = $modelData?.probabilities || [];
-	$: tokenIds = data?.map((d) => d.tokenId);
-	$: logits = data?.map((d) => d.logit) || [];
-	$: scaledLogits = data?.map((d) => d.scaledLogit) || [];
+	$: visibleProbRows = (data || []).filter((d) => (d?.probability ?? 0) > 0);
+	$: topProbToken = (visibleProbRows[0] && visibleProbRows[0].token) || '';
+	$: showPunctNote = !isSoftmaxExpanded && isPunctOrBreakToken(topProbToken);
+	$: visibleProbSum = visibleProbRows.reduce((s, d) => s + (d.probability ?? 0), 0);
+	$: probRemainder = Math.max(0, 1 - visibleProbSum);
+	$: showProbRemainder = probRemainder >= 0.0005;
+	$: remainderToken = m.probRemainderToken || (zh ? '其余合计' : 'All others');
+	$: collapsedRows = showProbRemainder
+		? [
+				...visibleProbRows,
+				{
+					token: remainderToken,
+					tokenId: -1,
+					probability: probRemainder,
+					rank: -1
+				}
+			]
+		: visibleProbRows;
+	// Collapsed and expanded both drop 0% placeholders (F-14 + panel scroll fix).
+	// Logit / Top-k / Softmax columns stay aligned with the same scored rows.
+	$: tableRows = collapsedRows;
+	$: tokenIds = visibleProbRows.map((d) => d.tokenId);
+	$: logits = visibleProbRows.map((d) => d.logit) || [];
+	$: scaledLogits = visibleProbRows.map((d) => d.scaledLogit) || [];
 
 	// top-k
-	$: topKLogits = data?.map((d) => d.topKLogit) || [];
+	$: topKLogits = visibleProbRows.map((d) => d.topKLogit) || [];
 
 	// top-p
-	$: topPProbabilities = data?.map((d) => d.topPProbability) || [];
-	$: cumulativeProbabilities = data?.map((d) => d.cumulativeProbability) || [];
+	$: topPProbabilities = visibleProbRows.map((d) => d.topPProbability) || [];
+	$: cumulativeProbabilities = visibleProbRows.map((d) => d.cumulativeProbability) || [];
 	$: cutoffIndex = data?.[0].cutoffIndex;
 
 	let isHovered = false;
@@ -202,28 +230,31 @@
 	data-click="prob-step"
 >
 	<div
-		class="title expandable"
+		class="title expandable prob-title"
 		role="none"
 		on:click={onClickSoftmaxTitle}
 		on:keydown={onClickSoftmaxTitle}
 		on:mouseenter={handleMouseEnter}
 		on:mouseleave={handleMouseLeave}
 		data-click="prob-step-title"
+		data-te-prob="title"
 	>
-		<div class="title-text flex w-max items-center gap-1">
-			Probabilities
+		<div class="title-text flex w-max shrink-0 items-center justify-end gap-1 whitespace-nowrap">
+			{m?.probabilities ?? '下一词概率'}
 			<ZoomInOutline></ZoomInOutline>
 		</div>
 	</div>
 
 	<div
-		class="content resize-watch relative"
+		class="content prob-content resize-watch relative"
 		style={`--softmax-row-height: ${rowHeight}px;--softmax-row-gap: ${rowGap}px`}
 	>
 		<div class="bounding softmax-bounding" class:active={isHovered && !isSoftmaxExpanded}></div>
+		<div class="prob-panel">
+		<div class="prob-scroll" data-te-prob="scroll">
 		<div class="first-column relative flex justify-end">
 			<div class="content-box token-string">
-				{#each data as item, idx}
+				{#each tableRows as item, idx}
 					<div
 						role="group"
 						class="text-box"
@@ -232,11 +263,14 @@
 						class:highlight={idx === hoveredIndex}
 						class:sample_highlight={$highlightedIndex === idx}
 						class:final_token_highlight={$predictedToken?.rank === idx}
+						data-te-prob={item.tokenId < 0 ? 'remainder' : 'token'}
 					>
 						<span>{item.token.trim() === '' ? '\u00A0' : item.token}</span>
-						<Tooltip class="softmax-tooltip" type="light">
-							Token ID: <span class="number">{tokenIds[idx]}</span>
-						</Tooltip>
+						{#if item.tokenId >= 0}
+							<Tooltip class="softmax-tooltip" type="light">
+								Token ID: <span class="number">{item.tokenId}</span>
+							</Tooltip>
+						{/if}
 					</div>
 				{/each}
 			</div>
@@ -247,7 +281,7 @@
 			{#if isSoftmaxExpanded}
 				<div class="softmax-subtitle softmax-detail flex text-center text-xs opacity-0">
 					<div class="title-box token-string !justify-end">
-						<div class="title-text">Tokens</div>
+						<div class="title-text">{m?.tokens ?? '候选词'}</div>
 					</div>
 					<div class="title-box logits">
 						<div
@@ -255,24 +289,24 @@
 							on:click={onClickLogits}
 							data-click="prob-expansion-logit-btn"
 						>
-							Logits <EyeOutline class="icon text-gray-400" size="sm" />
+							{m.logits} <EyeOutline class="icon text-gray-400" size="sm" />
 						</div>
 					</div>
 					<div class="title-box scaled">
 						<TextbookTooltip id="temperature"
-							><div class="title-text">Scaled logits</div></TextbookTooltip
+							><div class="title-text">{m?.scaledLogits ?? '缩放后的分数'}</div></TextbookTooltip
 						>
 					</div>
 					<div class="title-box sampling">
 						<TextbookTooltip id="sampling"
 							><div class="title-text">
-								{$sampling.type === 'top-k' ? 'Top-k' : 'Softmax & Top-p'}
+								{$sampling.type === 'top-k' ? m.topk : m.softmaxAndTopp}
 							</div></TextbookTooltip
 						>
 					</div>
 					<div class="title-box probability">
 						<div class="title-text mr-1">
-							{$sampling.type === 'top-k' ? 'Softmax' : 'Normalization'}
+							{$sampling.type === 'top-k' ? m.softmax : m.normalization}
 						</div>
 					</div>
 				</div>
@@ -376,11 +410,25 @@
 						</div>
 					{/if}
 				</div>
-				<ProbabilityBars bind:hoveredIndex {rowGap} {rowHeight} bind:drawBars />
+				<ProbabilityBars bind:hoveredIndex {rowGap} {rowHeight} bind:drawBars displayRows={tableRows} />
 			</div>
 		</div>
+		</div>
+		{#if !isSoftmaxExpanded && showPunctNote}
+			<p class="prob-note punct" data-te-prob="punct-note">
+				{m.probPunctNote || (zh ? '模型正在猜一个符号或换行，不是一个中文或英文词。这是正常的词元。像 go 这样很短的句子，更容易猜到符号。想看别的候选，可以点「显示抽词旋钮」。' : 'The model is guessing a symbol or a line break, not a Chinese or English word. That is a normal token. A very short sentence like “go” makes these tokens more likely. To see other candidates, open “Show sampling knobs”.')}
+			</p>
+		{:else if !isSoftmaxExpanded && showExampleNote}
+			<p class="prob-note" data-te-prob="example-note">
+				{m.probExampleNote || (zh ? '这是预先算好的示例排行，还没有抽词' : 'This is a precomputed example ranking; no word has been drawn yet')}
+			</p>
+		{:else if !isSoftmaxExpanded && showLiveHandoff}
+			<p class="prob-note live" data-te-prob="live-handoff">
+				{m.probLiveHandoff || (zh ? '示例排行已换成模型刚算出来的排行' : 'The example ranking has been replaced with one the model just computed')}
+			</p>
+		{/if}
 		{#if isSoftmaxExpanded && !!$predictedToken}
-			<div class="softmax-popover">
+			<div class="softmax-popover" data-te-prob="math-card">
 				<SoftmaxPopover bind:hoveredIndex />
 			</div>
 		{/if}
@@ -389,6 +437,7 @@
 				<LogitWeightPopover bind:isOpen={showLogitPopover}></LogitWeightPopover>
 			</div>
 		{/if}
+		</div>
 	</div>
 </div>
 
@@ -396,7 +445,9 @@
 	.softmax-popover {
 		position: absolute;
 		top: 0;
-		right: calc(100% + 6rem);
+		right: 100%;
+		margin-right: 0.75rem;
+		z-index: 1;
 	}
 	.logit-popover {
 		z-index: $POPOVER_INDEX;
@@ -436,9 +487,17 @@
 				height: 100%;
 			}
 
-			padding-right: 3rem;
-			display: grid;
-			grid-template-columns: 0 auto;
+			padding-right: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			height: 100%;
+			max-height: 100%;
+			min-height: 0;
+			min-width: 0;
+			width: 100%;
+			max-width: 100%;
+			overflow: visible;
 
 			.content-box {
 				flex-shrink: 0;
@@ -595,5 +654,72 @@
 				background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 70%);
 			}
 		}
+	}
+
+	:global(.step.softmax > .title.prob-title) {
+		/* Title stays in the upper title band, nowrap, and no longer shares that slot with the example note. */
+		justify-content: flex-end;
+		align-items: flex-end;
+		text-align: right;
+		white-space: nowrap;
+		width: 100%;
+		max-width: 100%;
+		margin-left: auto;
+		padding-top: 0.15rem;
+		padding-bottom: 0;
+		overflow: visible;
+	}
+	.prob-scroll {
+		/* Width follows the teaching table (words + bars, and when open all score columns)
+		   and hangs left over the faded graph. Vertical scroll is sized to the coach-free viewport. */
+		display: grid;
+		grid-template-columns: 5rem auto;
+		padding-right: 3rem;
+		width: 100%;
+		min-height: 0;
+		max-height: 100%;
+		overflow-x: hidden;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		-webkit-overflow-scrolling: touch;
+	}
+	.prob-panel {
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: calc(100% + 5rem);
+		min-width: calc(100% + 5rem);
+		max-height: 100%;
+		overflow: visible;
+	}
+	:global(.softmax.expanded) .prob-panel {
+		width: max-content;
+	}
+	:global(.softmax.expanded .probability-col) {
+		flex-grow: 0 !important;
+		width: 6rem;
+		max-width: 8rem;
+	}
+	.prob-note {
+		/* Below the collapsed table; use the hanging panel width so the sentence can wrap in 1–2 lines. */
+		box-sizing: border-box;
+		display: block;
+		margin: 0.35rem 0.75rem 0 auto;
+		width: fit-content;
+		max-width: calc(100% - 0.75rem);
+		font-size: 0.72rem;
+		line-height: 1.45;
+		font-weight: 600;
+		color: #6d28d9;
+		white-space: normal;
+		overflow-wrap: break-word;
+		word-break: normal;
+		text-align: right;
+	}
+	.prob-note.live {
+		color: #5b21b6;
+	}
+	.prob-note.punct {
+		color: #5b21b6;
 	}
 </style>

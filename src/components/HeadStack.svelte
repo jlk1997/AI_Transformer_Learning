@@ -9,9 +9,14 @@
 	} from '~/store';
 	import { onMount } from 'svelte';
 	import { gsap, Power1 } from '~/utils/gsap';
-	import { AngleLeftOutline, AngleRightOutline } from 'flowbite-svelte-icons';
+	import { AngleLeftOutline, AngleRightOutline } from '~/components/icons';
 	import TextbookTooltip from './common/TextbookTooltip.svelte';
 	import { textPages } from '~/utils/textbookPages';
+	import { locale, messages } from '~/i18n';
+
+	$: zh = $locale !== 'en';
+	$: m = $messages;
+	$: headTitle = (m.headTitle || (zh ? '{total} 个头里的第 {n} 个' : 'Head {n} of {total}')).replace('{n}', String($attentionHeadIdxTemp + 1)).replace('{total}', String($modelMeta.attention_head_num));
 
 	const asyncUpdateAttentionIdx = () => {
 		setTimeout(() => {
@@ -109,8 +114,8 @@
 				asyncUpdateAttentionIdx();
 			},
 			onComplete: () => {
-				container.appendChild(firstHead);
-				heads.push(heads.shift());
+				if (container && firstHead) container.appendChild(firstHead);
+				if (heads.length) heads.push(heads.shift());
 				disablePagination = false;
 			}
 		});
@@ -199,8 +204,8 @@
 				asyncUpdateAttentionIdx();
 			},
 			onComplete: () => {
-				container.prepend(lastHead);
-				heads.unshift(heads.pop());
+				if (container && lastHead) container.prepend(lastHead);
+				if (heads.length) heads.unshift(heads.pop());
 				disablePagination = false;
 			}
 		});
@@ -302,19 +307,23 @@
 <div class="multi-head flex w-full" data-click="attention-head">
 	<div class="head-title absolute bottom-2 right-3 text-right text-gray-400">
 		<TextbookTooltip id="multi-head">
-			<span class="title-text"
-				>Head {$attentionHeadIdxTemp + 1} of {$modelMeta.attention_head_num}</span
-			></TextbookTooltip
+			<span class="title-text" data-te-label="head-title">{headTitle}</span></TextbookTooltip
 		>
 		<button
+			type="button"
 			on:click={onClickPrev}
 			disabled={$isOnAnimation || disablePagination}
-			data-click="attention-head-prev-btn"><AngleLeftOutline size="sm"></AngleLeftOutline></button
+			data-click="attention-head-prev-btn"
+			aria-label={zh ? '上一个注意力头' : 'Previous attention head'}
+			><AngleLeftOutline size="sm"></AngleLeftOutline></button
 		>
 		<button
+			type="button"
 			on:click={onClickNext}
 			disabled={$isOnAnimation || disablePagination}
-			data-click="attention-head-next-btn"><AngleRightOutline size="sm"></AngleRightOutline></button
+			data-click="attention-head-next-btn"
+			aria-label={zh ? '下一个注意力头' : 'Next attention head'}
+			><AngleRightOutline size="sm"></AngleRightOutline></button
 		>
 	</div>
 	<div class={'head-content'} bind:this={headContent}>

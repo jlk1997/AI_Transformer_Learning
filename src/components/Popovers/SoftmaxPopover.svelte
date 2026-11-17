@@ -1,8 +1,11 @@
 <script lang="ts">
+	import { locale, messages } from '~/i18n';
+	$: m = $messages;
+	$: zh = $locale !== 'en';
 	import { Card } from 'flowbite-svelte';
 	import { modelData, sampling, predictedToken, temperature } from '~/store';
 	import Katex from '~/utils/Katex.svelte';
-	import { ArrowRightOutline } from 'flowbite-svelte-icons';
+	import { ArrowRightOutline } from '~/components/icons';
 	import Arrow from '../common/Arrow.svelte';
 	import TextbookTooltip from '../common/TextbookTooltip.svelte';
 
@@ -22,6 +25,11 @@
 			: !!$predictedToken
 				? data[$predictedToken?.rank]
 				: data[0];
+
+	$: selectedPct =
+		selected?.probability != null && Number.isFinite(selected.probability)
+			? (selected.probability * 100).toFixed(1)
+			: '—';
 </script>
 
 <Card class={'softmax-popover popover bg-white text-sm'}>
@@ -29,25 +37,36 @@
 		class="softmax-popover-title rounded-t-md border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
 	>
 		<h3 class="font-semibold text-gray-900">
-			Probability of <span class="highlight">"{selected?.token}"</span> token being sampled
+			{#if zh}
+				「<span class="highlight">{selected?.token}</span>」被抽中的机会
+			{:else}
+				Chance of sampling <span class="highlight">“{selected?.token}”</span>
+			{/if}
 		</h3>
 	</div>
 	<div class="softmax-popover-content">
+		<p class="see-first">
+			{#if zh}
+				先看右边表：这个词现在是 {selectedPct}%。下面再写出分数是怎么变成这个百分比的。
+			{:else}
+				Look at the table on the right first: this token is now {selectedPct}%. The steps below show how a score becomes that percentage.
+			{/if}
+		</p>
 		<div class="formula-steps">
 			<div class="formula-step scaled">
 				<TextbookTooltip id="temperature">
-					<div class="step-title">Scaled logit</div></TextbookTooltip
+					<div class="step-title">{m.scaledLogitStep}</div></TextbookTooltip
 				>
 				<div class="step-content">
 					<div class="fraction">
 						<div class="frac-top relative">
-							<span class="annotation logit"><span>logit</span><Arrow size={16} /></span>
+							<span class="annotation logit"><span>{m.logitLabel}</span><Arrow size={16} /></span>
 							<span class="highlight number">{getStringNumber(selected.logit)}</span>
 						</div>
 						<div class="frac-line"></div>
 						<div class="frac-bottom relative">
 							<span class="number">{$temperature}</span>
-							<span class="annotation temp"> <Arrow size={16} /><span>temperature</span></span>
+							<span class="annotation temp"> <Arrow size={16} /><span>{m.temperature}</span></span>
 						</div>
 					</div>
 				</div>
@@ -56,7 +75,7 @@
 			{#if $sampling.type === 'top-p'}
 				<div class="formula-step">
 					<div class="step-title">
-						<div>Softmax</div>
+						<div>{m.softmax}</div>
 					</div>
 					<div class="step-content">
 						<div class="fraction-formula">
@@ -88,7 +107,7 @@
 			<div class="formula-step sampling">
 				<TextbookTooltip id="sampling">
 					<div class="step-title">
-						<span>{$sampling.type === 'top-k' ? 'Top-k' : 'Top-p'} Filtering</span>
+						<span>{$sampling.type === 'top-k' ? m.filteringTopk : m.filteringTopp}</span>
 						<span class="sub-title"
 							>({$sampling.type === 'top-k' ? 'k' : 'p'}={$sampling.value})</span
 						>
@@ -142,7 +161,7 @@
 			<ArrowRightOutline class="step-arrow" />
 			{#if $sampling.type === 'top-k'}
 				<div class="formula-step softmax-step">
-					<div class="step-title">Softmax</div>
+					<div class="step-title">{m.softmax}</div>
 					<div class="step-content">
 						<div class="fraction">
 							<div class="frac-top">
@@ -182,7 +201,7 @@
 				</div>
 			{:else}
 				<div class="formula-step norm-step">
-					<div class="step-title">Normalization</div>
+					<div class="step-title">{m.normalization}</div>
 					<div class="step-content">
 						{#if selected?.cutoffIndex >= selected?.rank}
 							<div class="fraction">
@@ -383,6 +402,14 @@
 			color: theme('colors.purple.700');
 			font-weight: 800;
 		}
+	}
+	.see-first {
+		margin: 0 0 0.75rem;
+		max-width: 36rem;
+		font-size: 0.85rem;
+		line-height: 1.45;
+		color: theme('colors.gray.700');
+		text-align: left;
 	}
 	.softmax-popover-content {
 		height: 100%;

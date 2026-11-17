@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { messages, locale } from '~/i18n';
+	$: m = $messages;
+	$: zh = $locale !== 'en';
 	import classNames from 'classnames';
 	import { Popover } from 'flowbite-svelte';
 	import { vectorHeight, expandedBlock } from '~/store';
@@ -36,7 +39,7 @@
 				<!-- <svg>
 					<path d="M0,0 Q0,-16 30,-16"></path>
 				</svg> -->
-				<div class="guide-text gelu-text">GeLU</div>
+				<div class="guide-text gelu-text">{m.gelu}</div>
 			</div>
 		{/if}
 	</div>
@@ -55,7 +58,7 @@
 					/> -->
 					<path d="M0,50 Q0,0 24,0"></path>
 				</svg>
-				<div class="guide-text dropout-text">Dropout</div>
+				<div class="guide-text dropout-text">{m.dropout}</div>
 			</div>
 		{/if}
 	</div>
@@ -81,7 +84,7 @@
 					/> -->
 					<path d="M0,50 Q0,0 24,0"></path>
 				</svg>
-				<div class="guide-text ln-text">Layer Normalization</div>
+				<div class="guide-text ln-text">{m.layerNorm}</div>
 			</div>
 		{/if}
 	</div>
@@ -89,7 +92,7 @@
 	<div class={classNames(`residual residual-start cell`, className)} class:active>
 		<div class="cursor"></div>
 		{#if head}
-			<div class="guide-text residual-text">Residual</div>
+			<div class="guide-text residual-text">{m.residual}</div>
 		{/if}
 		<svg class="main">
 			{#if head}<path {id} class="head" d="M0,0 Q0,-16 30,-16"></path>{/if}
@@ -97,7 +100,7 @@
 		</svg>
 	</div>
 {:else if type === 'residual-end'}
-	<div class={classNames(`residual residual-end cell`, className)} class:active>
+	<div class={classNames(`residual residual-end cell`, className)} class:active data-te-residual="end">
 		<div class="cursor"></div>
 		<svg class="main">
 			{#if head}<path {id} class="head" d="M0,0 Q0,-16 -30,-16"></path>
@@ -105,6 +108,17 @@
 			{/if}
 			<path d={`M0,0 L0,${$vectorHeight}`}></path>
 		</svg>
+		{#if head}
+			<div class="residual-plus" data-te-residual="plus" aria-hidden="true">+</div>
+			{#if id === 'embedding-residual'}
+				<div class="residual-sketch" data-te-residual="sketch">
+					<div class="eq">2.0 + 0.3 = 2.3</div>
+					<div class="note">
+						{zh ? '示意，不是现场残差向量' : 'A sketch, not live residual vectors'}
+					</div>
+				</div>
+			{/if}
+		{/if}
 	</div>
 {/if}
 
@@ -170,22 +184,75 @@
 		width: 0.5rem;
 
 		path {
-			stroke: theme('colors.gray.400');
+			stroke: #4b5563;
 			fill: none;
-			stroke-width: 1;
+			stroke-width: 2;
 		}
 		.head {
-			stroke: theme('colors.gray.400');
+			stroke: #4b5563;
 		}
 		.residual-text {
 			position: absolute;
 			top: -2.2rem;
 			left: 4rem;
 			transform: translateX(-50%);
-			font-size: 0.9rem;
-			color: theme('colors.gray.400');
+			font-size: 0.95rem;
+			font-weight: 600;
+			color: #6d28d9;
 			white-space: nowrap;
 		}
+		.residual-plus {
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 6;
+			width: 1.2rem;
+			height: 1.2rem;
+			border-radius: 999px;
+			border: 2px solid #6d28d9;
+			background: #fff;
+			color: #6d28d9;
+			font-weight: 700;
+			font-size: 1rem;
+			line-height: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			pointer-events: none;
+			box-shadow: 0 0 0 2px #fff;
+		}
+		.residual-sketch {
+			display: none;
+			position: absolute;
+			top: -1.55rem;
+			left: auto;
+			right: 1.35rem;
+			z-index: 30;
+			background: rgba(255, 255, 255, 0.96);
+			border: 1px solid #ddd6fe;
+			border-radius: 0.4rem;
+			padding: 0.22rem 0.4rem 0.28rem;
+			white-space: nowrap;
+			box-shadow: 0 4px 12px rgba(76, 29, 149, 0.12);
+			pointer-events: none;
+		}
+		.residual-sketch .eq {
+			font-weight: 700;
+			color: #4c1d95;
+			font-size: 0.82rem;
+			font-variant-numeric: tabular-nums;
+		}
+		.residual-sketch .note {
+			font-size: 0.68rem;
+			color: #6b7280;
+			margin-top: 0.06rem;
+		}
+	}
+	:global(.text-studio[data-te-path='residual']) .residual-sketch,
+	:global(.text-studio[data-te-arch='residual']) .residual-sketch,
+	:global(body:has([data-te-math-current='residual'][data-te-math-open='1'])) .residual-sketch {
+		display: block;
 	}
 	.ln {
 		path {

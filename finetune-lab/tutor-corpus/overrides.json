@@ -1,0 +1,188 @@
+[
+  {
+    "id": "text-first-what",
+    "kind": "ui",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "generate"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "next_word"
+    ],
+    "keywords": [
+      "这是什么",
+      "这是啥",
+      "what is this",
+      "猜词机",
+      "首屏",
+      "任务区",
+      "画面",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "这个画面现在是在干什么",
+      "我刚进来",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "这是一台小猜词机",
+    "titleEn": "This is a small next-word machine",
+    "bodyZh": "你现在在文字课的第一关。这是一台小猜词机：左边是已经有的词，中间正在计算，右边是它要猜的下一个词。先点任务区的「生成下一个词」，看它抽出一个词接在后面。现在还不用管公式，也不用先去拧后面才出现的控件。",
+    "bodyEn": "You are on the first station of the text course. This is a small next-word machine: words already chosen on the left, the calculation in the middle, and the word it is about to guess on the right. Tap “Generate the next word” in the task cluster first. You do not need formulas or later controls yet.",
+    "citeZh": "出处：任务区的「生成下一个词」，以及底部讲解槽。",
+    "citeEn": "Source: “Generate the next word” in the task cluster, and the docked guide slot.",
+    "highlightSel": "[data-te-task=\"cluster\"], [data-te-path=\"generate\"]",
+    "nextStepHintZh": "先点任务区的「生成下一个词」，看右边的表会不会动。",
+    "nextStepHintEn": "Tap “Generate the next word” in the task cluster and watch the table on the right."
+  },
+  {
+    "id": "text-right-table",
+    "kind": "ui",
+    "courses": [
+      "text"
+    ],
+    "stations": [
+      "*"
+    ],
+    "anyStation": true,
+    "intents": [
+      "right_table",
+      "next_word"
+    ],
+    "keywords": [
+      "右边",
+      "右边是什么",
+      "右表",
+      "概率",
+      "百分比",
+      "probability",
+      "table",
+      "候选"
+    ],
+    "titleZh": "右边是下一词的概率表",
+    "titleEn": "The right side is the next-word table",
+    "bodyZh": "右边那张表是「下一个词」的候选名单。每一行是一个词，后面的百分比是它被抽中的机会。先把表看清楚：最上面几行是眼下比较靠前的候选。百分比是从分数来的，这一关先看表，不必先背公式。",
+    "bodyEn": "The table on the right is the candidate list for the next word. Each row is a word, and the percentage is its chance of being drawn. Read the table first; the formula can wait.",
+    "citeZh": "出处：画面右侧「要猜的下一个词」概率表。",
+    "citeEn": "Source: the next-word probability table on the right of the stage.",
+    "highlightSel": "[data-te-zone=\"right\"], .softmax .content, .step.softmax, [data-click=\"prob-step\"]",
+    "nextStepHintZh": "看一眼最上面几行，再点「生成下一个词」。",
+    "nextStepHintEn": "Look at the top rows, then tap “Generate the next word”."
+  },
+  {
+    "id": "image-map",
+    "kind": "ui",
+    "courses": [
+      "image"
+    ],
+    "stations": [
+      "map"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "denoise"
+    ],
+    "keywords": [
+      "图片",
+      "这是什么",
+      "去噪",
+      "画布",
+      "首屏",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么"
+    ],
+    "titleZh": "图片课先看三块和画布",
+    "titleEn": "Start the image course by seeing the three regions",
+    "bodyZh": "你现在在图片课的第一关。左边是条件，中间是正在去噪的画布，右边是输出与对照。先看清这三块，再点任务区的「再去噪一步」。现在还不用拧高阶旋钮，这里也不是在本机现场跑一个大模型。",
+    "bodyEn": "You are on the first station of the image course. Conditions on the left, the canvas being denoised in the middle, and output plus comparisons on the right. See the three regions, then tap “Denoise one more step” in the task cluster. This is not a live large model on this machine.",
+    "citeZh": "出处：左中右三块区域，以及任务区的「再去噪一步」。",
+    "citeEn": "Source: the three stage regions, and “Denoise one more step” in the task cluster.",
+    "highlightSel": "[data-te-image=\"canvas\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先看中间画布，再点任务区的「再去噪一步」。",
+    "nextStepHintEn": "Look at the canvas, then tap “Denoise one more step” in the task cluster."
+  },
+  {
+    "id": "music-map",
+    "kind": "ui",
+    "courses": [
+      "music"
+    ],
+    "stations": [
+      "map"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "next_note"
+    ],
+    "keywords": [
+      "音乐",
+      "这是什么",
+      "音符",
+      "琴卷",
+      "首屏",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "虚线",
+      "这个画面现在是在干什么"
+    ],
+    "titleZh": "音乐课先看三块和琴卷",
+    "titleEn": "Start the music course by seeing the three regions",
+    "bodyZh": "你现在在音乐课的第一关。左边是已经有的音，中间是琴卷，右边是下一个音的概率。先看清这三块，再点任务区的「生成下一个音符」。现在还不用拧旋钮，这里也不是在本机现场跑一个大模型。",
+    "bodyEn": "You are on the first station of the music course. Notes already chosen on the left, the piano roll in the middle, and next-note probabilities on the right. See the three regions, then tap “Generate the next note” in the task cluster. This is not a live large model on this machine.",
+    "citeZh": "出处：左中右三块，以及任务区的「生成下一个音符」。",
+    "citeEn": "Source: the three stage regions, and “Generate the next note” in the task cluster.",
+    "highlightSel": "[data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先看清三块，再让它写出下一个音。",
+    "nextStepHintEn": "See the three regions, then let it write the next note."
+  },
+  {
+    "id": "ft-map",
+    "kind": "ui",
+    "courses": [
+      "finetune"
+    ],
+    "stations": [
+      "map"
+    ],
+    "intents": [
+      "what_is_this",
+      "ui",
+      "finetune"
+    ],
+    "keywords": [
+      "微调",
+      "权重",
+      "温度",
+      "这是什么",
+      "对照板",
+      "首屏",
+      "这个画面",
+      "画面现在",
+      "在干什么",
+      "我刚进来",
+      "这个画面现在是在干什么",
+      "what is this screen",
+      "what is the screen doing"
+    ],
+    "titleZh": "微调课先分清抽样和训练",
+    "titleEn": "Fine-tune starts by separating sampling from training",
+    "bodyZh": "你现在在微调课的第一关。先分清抽样和训练：文字课改的是怎么抽下一个词，这一课才改权重。拧抽样旋钮不是在训练，也不会改模型里的数。这是本机 GPT-2 小实验，不是在调 ChatGPT。任务区的「推进一步」只讲解，不开训。温度只是抽样旋钮的一个名字，现在先分清这两件事。先看工作室里的对照板，再看这句示例会被切成哪些词片。",
+    "bodyEn": "You are on the first station of the fine-tune course. First separate sampling from training: the text course changes how the next word is drawn; this course is the one that changes weights. Turning a sampling knob is not training, and it does not change the numbers in the model. This is a local GPT-2 lab, not ChatGPT. “Take one step” in the task cluster only teaches; it does not start training. Temperature is only one name for a sampling knob; separate these two ideas first. Start with the comparison board and how the example sentence is cut into tokens.",
+    "citeZh": "出处：任务区的「推进一步」，以及工作室里的对照板。",
+    "citeEn": "Source: “Take one step” in the task cluster, and the comparison board in the studio.",
+    "highlightSel": "[data-te-ft=\"first-line\"], [data-te-ft=\"now\"], [data-te-task=\"cluster\"]",
+    "nextStepHintZh": "先把对照板上「改的是权重」看清，再点「推进一步」。",
+    "nextStepHintEn": "Read “this lesson changes weights” on the board, then tap “Take one step.”"
+  }
+]

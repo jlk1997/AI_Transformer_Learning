@@ -1,9 +1,7 @@
 import { writable, derived, readable } from 'svelte/store';
-import * as ort from 'onnxruntime-web';
 import tailwindConfig from '../../tailwind.config';
 import resolveConfig from 'tailwindcss/resolveConfig';
-import { ex0 } from '~/constants/examples';
-import { textPages } from '~/utils/textbookPages';
+import { ex0 } from '~/constants/examples/ex0';
 
 const { theme } = resolveConfig(tailwindConfig);
 
@@ -18,31 +16,61 @@ export const isOnAnimation = writable(false);
 // Textbook state management
 export const textbookCurrentPage = writable<number>(0);
 export const textbookPreviousPage = writable<number>(-1);
-export const textbookCurrentPageId = writable<string>(textPages[0].id);
+export const textbookCurrentPageId = writable<string>('what-is-transformer');
 export const textbookPreviousPageId = writable<string>('');
-export const isTextbookOpen = writable<boolean>(true);
+export const isTextbookOpen = writable<boolean>(false);
 
 // is transformer running?
 export const isModelRunning = writable(false);
-export const isFetchingModel = writable(true);
+export const isFetchingModel = writable(false);
 export const isLoaded = writable(false);
+
+export type ModelFetchProgress = {
+	active: boolean;
+	partsDone: number;
+	partsTotal: number;
+	receivedBytes: number;
+	totalBytes: number;
+	percent: number;
+};
+
+export const modelFetchProgress = writable<ModelFetchProgress>({
+	active: false,
+	partsDone: 0,
+	partsTotal: 63,
+	receivedBytes: 0,
+	totalBytes: 650117544,
+	percent: 0
+});
+
+
 
 export const inputTextExample = [
 	'Data visualization empowers users to',
 	'Artificial Intelligence is transforming the',
 	'As the spaceship was approaching the',
 	'On the deserted planet they discovered a',
-	'IEEE VIS conference highlights the'
+	'IEEE VIS conference highlights the',
+	'残差连接把前面的信号加到后面。'
 ];
 
 const initialExIdx = 0;
 export const selectedExampleIdx = writable<number>(initialExIdx);
 
-export const modelSession = writable<ort.InferenceSession>();
+export const modelSession = writable<any>(null);
 
 // transformer model output
 export const modelData = writable<ModelData>(ex0);
-export const predictedToken = writable<Probability>();
+// First paint uses the precomputed example ranking (F-09). predictedToken may
+// already hold the example's sampled word, but the input line must not show it
+// as if it had already been drawn (F-12).
+export const predictedToken = writable<Probability | undefined>(ex0?.sampled);
+export const textHasDrawnWord = writable(false);
+// The token actually appended by the last Generate click. Kept during
+// rescoring so the optional door does not name the previous last token.
+export const textLastDrawnWord = writable('');
+export const textProbOrigin = writable<'example' | 'cached' | 'live'>('example');
+export const textProbLiveHandoff = writable(false);
 export const tokens = writable<string[]>(ex0?.tokens);
 export const tokenIds = writable<number[]>(ex0?.tokenIds);
 
@@ -71,6 +99,19 @@ export const isExpandOrCollapseRunning = writable(false);
 
 // user input text
 export const inputText = writable(inputTextExample[initialExIdx]);
+// The sentence the current tokens / probabilities / predictedToken were scored for.
+export const scoredInputText = writable(inputTextExample[initialExIdx]);
+// What the input box currently shows, including keystrokes not yet published to inputText.
+export const draftInputText = writable(inputTextExample[initialExIdx]);
+// True as soon as the visible / committed sentence differs from the last scored one.
+export const inputScoreStale = derived(
+	[draftInputText, inputText, scoredInputText],
+	([$draft, $input, $scored]) => {
+		const live = String($draft ?? $input ?? '').trim();
+		const scored = String($scored ?? '').trim();
+		return live !== scored;
+	}
+);
 // export const tokens = derived(inputText, ($inputText) => $inputText.trim().split(' '));
 
 // selected model and meta data

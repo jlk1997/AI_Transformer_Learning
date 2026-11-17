@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { messages } from '~/i18n';
+	$: m = $messages;
 	import {
 		expandedBlock,
 		tokens,
@@ -22,10 +24,11 @@
 	import { Tooltip } from 'flowbite-svelte';
 	import { ATTENTION_OUT } from '~/constants/opacity';
 	import { ga } from '~/utils/event';
-	import { ZoomInOutline } from 'flowbite-svelte-icons';
+	import { ZoomInOutline } from '~/components/icons';
 	import TextbookTooltip from '~/components/common/TextbookTooltip.svelte';
 	import { textPages } from '~/utils/textbookPages';
 	import { highlightAttentionPath, removeAttentionPathHighlight } from '~/utils/textbook';
+	import { loraContrast } from '~/courses/loraContrast';
 
 	const { theme } = resolveConfig(tailwindConfig);
 
@@ -115,9 +118,14 @@
 		const outPaths = document.querySelectorAll('div.sankey g.attention path.to-attention-out');
 
 		[...keyPaths, ...queryPaths].forEach((path) => {
-			const length = path.getTotalLength();
-			path.style.strokeDasharray = length;
-			path.style.strokeDashoffset = length;
+			if (!path || typeof path.getTotalLength !== 'function') return;
+			try {
+				const length = path.getTotalLength();
+				path.style.strokeDasharray = String(length);
+				path.style.strokeDashoffset = String(length);
+			} catch {
+				/* ignore a missing or detached path rather than throw getAttribute */
+			}
 		});
 
 		const QKDuration = 1.2;
@@ -283,17 +291,19 @@
 
 	// color scale
 	$: qkColorScaleDomain = d3.extent(queryKey.flat());
+	$: contrastSide = $loraContrast.active ? $loraContrast.side : null;
+	$: contrastEnd =
+		contrastSide === 'base'
+			? (theme.colors['slate'] && theme.colors['slate'][700]) || '#334155'
+			: theme.colors['purple'][700];
 	$: qkColorScale = (d, i) => {
-		return d3
-			.scaleLinear()
-			.domain(qkColorScaleDomain)
-			.range(['white', theme.colors['purple'][700]])(d);
+		return d3.scaleLinear().domain(qkColorScaleDomain).range(['white', contrastEnd])(d);
 	};
-	const maskedColorScale = (d, i) => {
-		return d3.scaleLinear().domain([-3, 3]).range(['white', theme.colors['purple'][700]])(d);
+	$: maskedColorScale = (d, i) => {
+		return d3.scaleLinear().domain([-3, 3]).range(['white', contrastEnd])(d);
 	};
-	const softmaxColorScale = (d, i) => {
-		return d3.interpolate('white', theme.colors['purple'][700])(d);
+	$: softmaxColorScale = (d, i) => {
+		return d3.interpolate('white', contrastEnd)(d);
 	};
 
 	const onMouseOverCell = (e, d, el) => {
@@ -353,7 +363,7 @@
 				{showTooltip}
 			/>
 			<TextbookTooltip id="masked-self-attention">
-				<div class="matrix-label">Dot product</div>
+				<div class="matrix-label">{m.dotProduct}</div>
 			</TextbookTooltip>
 
 			<Tooltip class="popover tooltip">
@@ -419,7 +429,7 @@
 				/>
 			</div>
 			<TextbookTooltip id="masked-self-attention">
-				<div class="matrix-label">Scaling · Mask</div>
+				<div class="matrix-label">{m.scalingMask}</div>
 			</TextbookTooltip>
 
 			<Tooltip class="popover tooltip">
@@ -488,7 +498,7 @@
 			</div>
 
 			<TextbookTooltip id="masked-self-attention">
-				<div class="matrix-label">Softmax</div>
+				<div class="matrix-label">{m.softmax}</div>
 			</TextbookTooltip>
 			<Tooltip class="popover tooltip">
 				<Katex math={'\\text{softmax}(\\frac{QK^T}{\\sqrt{d_k}} + M)'}></Katex>
@@ -523,7 +533,7 @@
 			/>
 
 			<div class="matrix-label flex items-center gap-1">
-				Attention <ZoomInOutline></ZoomInOutline>
+				{m.attentionMatrix} <ZoomInOutline></ZoomInOutline>
 			</div>
 		</div>
 	</div>

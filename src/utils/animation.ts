@@ -27,9 +27,12 @@ const generateGradientAnimation = (
 
 	const { from = '0%', to = '100%' } = offset;
 
+	const stops = (Array.isArray(gradStop) ? gradStop : [gradStop]).filter(Boolean) as SVGStopElement[];
+	if (!stops.length) return tl;
 	const initialColor = Array.isArray(gradStop)
-		? gradStop.map((d) => d.getAttribute('stop-color'))
-		: gradStop.getAttribute('stop-color');
+		? gradStop.map((d) => d?.getAttribute?.('stop-color'))
+		: gradStop?.getAttribute?.('stop-color');
+	gradStop = Array.isArray(gradStop) ? stops : stops[0];
 
 	tl.fromTo(
 		gradStop,
@@ -148,7 +151,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 				{
 					opacity: (i, d) => {
 						if (isNextTokenOnly) {
-							return d.classList.contains('last') ? 0 : 1;
+							return d?.classList?.contains('last') ? 0 : 1;
 						}
 						return 0;
 					}
@@ -191,7 +194,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 			{
 				opacity: (i, d) => {
 					if (isNextTokenOnly) {
-						return d.classList.contains('last') ? 0 : 1;
+						return d?.classList?.contains('last') ? 0 : 1;
 					}
 					return 0;
 				}
@@ -261,7 +264,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 			{
 				opacity: (i, d) => {
 					if (isNextTokenOnly) {
-						return d.classList.contains('last') ? 0 : 1;
+						return d?.classList?.contains('last') ? 0 : 1;
 					}
 					return 0;
 				}
@@ -290,9 +293,10 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 			const lastQueryPath = queryPaths[queryPaths.length - 1];
 
 			[lastKeyPath, lastQueryPath].forEach((path) => {
+				if (!path || typeof path.getTotalLength !== 'function') return;
 				const length = path.getTotalLength();
-				path.style.strokeDasharray = length;
-				path.style.strokeDashoffset = length;
+				path.style.strokeDasharray = String(length);
+				path.style.strokeDashoffset = String(length);
 			});
 
 			tl.to(lastKeyPath, {
@@ -313,7 +317,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 					'<'
 				)
 				.from(
-					attentionMatrix.querySelectorAll('svg circle.last'),
+					(attentionMatrix && attentionMatrix.querySelectorAll('svg circle.last')) || [],
 					{
 						scale: 0,
 						transformOrigin: '50% 50%',
@@ -331,9 +335,10 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 			const stagger = Number((QKDuration / tokenLength).toFixed(2));
 
 			[...keyPaths, ...queryPaths].forEach((path) => {
+				if (!path || typeof path.getTotalLength !== 'function') return;
 				const length = path.getTotalLength();
-				path.style.strokeDasharray = length;
-				path.style.strokeDashoffset = length;
+				path.style.strokeDasharray = String(length);
+				path.style.strokeDashoffset = String(length);
 			});
 
 			tl.to(keyPaths, {
@@ -354,7 +359,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 					'<'
 				)
 				.from(
-					attentionMatrix.querySelectorAll('svg circle'),
+					(attentionMatrix && attentionMatrix.querySelectorAll('svg circle')) || [],
 					{
 						scale: 0,
 						transformOrigin: '50% 50%',
@@ -391,7 +396,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 			{
 				opacity: (i, d) => {
 					if (isNextTokenOnly) {
-						return d.classList.contains('last') ? 0 : 1;
+						return d?.classList?.contains('last') ? 0 : 1;
 					}
 					return 0;
 				}
@@ -424,7 +429,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 			{
 				opacity: (i, d) => {
 					if (isNextTokenOnly) {
-						return d.classList.contains('last') ? 0 : 1;
+						return d?.classList?.contains('last') ? 0 : 1;
 					}
 					return 0;
 				}
@@ -458,7 +463,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 			{
 				opacity: (i, d) => {
 					if (isNextTokenOnly) {
-						return d.classList.contains('last') ? 0 : 1;
+						return d?.classList?.contains('last') ? 0 : 1;
 					}
 					return 0;
 				}
@@ -489,7 +494,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 			{
 				opacity: (i, d) => {
 					if (isNextTokenOnly) {
-						return d.classList.contains('last') ? 0 : 1;
+						return d?.classList?.contains('last') ? 0 : 1;
 					}
 					return 0;
 				}
@@ -558,7 +563,7 @@ export const showFlowAnimation = async (tokenLength: number, isNextTokenOnly = t
 			{
 				opacity: (i, d) => {
 					if (isNextTokenOnly) {
-						return d.classList.contains('last') ? 0 : 1;
+						return d?.classList?.contains('last') ? 0 : 1;
 					}
 					return 0;
 				}
@@ -633,7 +638,12 @@ export const drawResidualLine = (id?: string) => {
 			connector = d3.selectAll(`.residual-connector.${id}`);
 		}
 
-		connector.style('opacity', 0);
+		// Keep the bypass visible after hover; only hide it on an empty frame.
+		const keep =
+			typeof document !== 'undefined' &&
+			!document.querySelector('[data-te-diagram="empty"]') &&
+			!!document.querySelector('.residual-start, .residual-end');
+		connector.style('opacity', keep ? 1 : 0);
 		if (residualAnimation) {
 			residualAnimation.kill();
 			connector.style('stroke-dashoffset', 0);

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AngleLeftOutline, AngleRightOutline } from 'flowbite-svelte-icons';
+	import { AngleLeftOutline, AngleRightOutline } from '~/components/icons';
 	import {
 		textbookCurrentPage,
 		textbookPreviousPage,
@@ -8,6 +8,9 @@
 		userId
 	} from '~/store';
 	import type { TextbookPage } from '~/utils/textbookPages';
+	import { locale } from '~/i18n';
+
+	$: zh = $locale !== 'en';
 
 	export let textPages: TextbookPage[];
 	export let isMouseInCard: boolean = false;
@@ -116,13 +119,14 @@
 <!-- Navigation Footer -->
 <div class="navigation-footer">
 	<!-- Left navigation area -->
-	<div class="nav-section left" on:click={handleLeftClick} role="button" tabindex="0">
+	<button type="button" class="nav-section left textbook-prev-btn" on:click={handleLeftClick} aria-label={zh ? '上一页' : 'Previous page'}>
 		{#if showLeftArrow}
-			<div class="nav-arrow-circle">
+			<span class="nav-arrow-circle">
 				<AngleLeftOutline size="sm" />
-			</div>
+			</span>
+			<span class="nav-label">{zh ? '上一页' : 'Previous'}</span>
 		{/if}
-	</div>
+	</button>
 
 	<!-- Center section with progress and page counter -->
 	<div class="nav-section center">
@@ -185,13 +189,14 @@
 	</div>
 
 	<!-- Right navigation area -->
-	<div class="nav-section right" on:click={handleRightClick} role="button" tabindex="0">
+	<button type="button" class="nav-section right textbook-next-btn" on:click={handleRightClick} aria-label={zh ? '下一页' : 'Next page'}>
 		{#if showRightArrow}
-			<div class="nav-arrow-circle">
+			<span class="nav-label">{zh ? '下一页' : 'Next'}</span>
+			<span class="nav-arrow-circle">
 				<AngleRightOutline size="sm" />
-			</div>
+			</span>
 		{/if}
-	</div>
+	</button>
 </div>
 
 <style lang="scss">
@@ -200,10 +205,13 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: 3rem;
+		height: 3.35rem;
 		display: flex;
 		align-items: center;
 		z-index: 10;
+		background: rgba(255, 255, 255, 0.96);
+		border-top: 1px solid #c4b5fd;
+		box-shadow: 0 -4px 12px rgba(91, 33, 182, 0.06);
 
 		.nav-section {
 			display: flex;
@@ -212,6 +220,11 @@
 			height: 100%;
 			cursor: pointer;
 			transition: all 0.2s ease;
+			background: transparent;
+			border: none;
+			padding: 0;
+			font: inherit;
+			color: inherit;
 			&.center {
 				flex: 0 0 auto;
 				display: flex;
@@ -254,11 +267,11 @@
 					position: relative;
 
 					.page-counter {
-						width: 3.4rem;
+						min-width: 3.6rem;
 						white-space: nowrap;
-						background: theme('colors.blue.50');
-						color: theme('colors.blue.600');
-						border: 1px solid theme('colors.blue.200');
+						background: #f5f3ff;
+						color: #5b21b6;
+						border: 1px solid #c4b5fd;
 						border-radius: 12px;
 						padding: 0.25rem 0.3rem;
 						font-size: 0.75rem;
@@ -327,23 +340,33 @@
 				-webkit-user-drag: none;
 				flex: 1;
 				justify-content: flex-start;
+				gap: 0.35rem;
 				padding-left: 0.5rem;
+				&:hover .nav-label {
+					color: #4c1d95;
+				}
+				.nav-label {
+					font-size: 0.8rem;
+					font-weight: 700;
+					color: #5b21b6;
+					white-space: nowrap;
+				}
 				.nav-arrow-circle {
-					width: 1.8rem;
-					height: 1.8rem;
+					width: 2rem;
+					height: 2rem;
 					border-radius: 50%;
-					background: rgba(59, 130, 246, 0.08);
-					color: theme('colors.blue.500');
+					background: #ede9fe;
+					color: #5b21b6;
 					display: flex;
 					align-items: center;
 					justify-content: center;
 					transition: all 0.2s ease;
-					border: 1px solid rgba(59, 130, 246, 0.15);
+					border: 1px solid #c4b5fd;
 
 					&:hover {
-						background: rgba(59, 130, 246, 0.12);
-						color: theme('colors.blue.600');
-						border-color: rgba(59, 130, 246, 0.25);
+						background: #ddd6fe;
+						color: #4c1d95;
+						border-color: #8b5cf6;
 					}
 
 					:global(svg) {
