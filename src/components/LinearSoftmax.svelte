@@ -199,7 +199,7 @@
 	// top-p
 	$: topPProbabilities = visibleProbRows.map((d) => d.topPProbability) || [];
 	$: cumulativeProbabilities = visibleProbRows.map((d) => d.cumulativeProbability) || [];
-	$: cutoffIndex = data?.[0].cutoffIndex;
+	$: cutoffIndex = data?.[0]?.cutoffIndex;
 
 	let isHovered = false;
 
